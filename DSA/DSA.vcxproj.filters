@@ -16,6 +16,9 @@
     <Filter Include="Source Files\LinkedList">
       <UniqueIdentifier>{2edf7180-f35d-493f-b8c5-03cfb448a98a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Recursion">
+      <UniqueIdentifier>{905904b5-b9ab-4e0d-89ce-ee14ba0c8f14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Traversal.cpp">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="Reversal.cpp">
       <Filter>Source Files\LinkedList</Filter>
+    </ClCompile>
+    <ClCompile Include="Recursion.cpp">
+      <Filter>Source Files\Recursion</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
