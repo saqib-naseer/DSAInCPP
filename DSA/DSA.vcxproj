@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arrays\Traversal.cpp" />
     <ClCompile Include="LinkedList\Reversal.cpp" />
     <ClCompile Include="LinkedList\Traversal.cpp" />
     <ClCompile Include="Recursion\Recursion.cpp" />
