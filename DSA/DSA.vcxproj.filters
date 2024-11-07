@@ -21,14 +21,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Traversal.cpp">
-      <Filter>Source Files\LinkedList</Filter>
+    <ClCompile Include="LinkedList\Reversal.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Reversal.cpp">
-      <Filter>Source Files\LinkedList</Filter>
+    <ClCompile Include="LinkedList\Traversal.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Recursion.cpp">
-      <Filter>Source Files\Recursion</Filter>
+    <ClCompile Include="Recursion\Recursion.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
