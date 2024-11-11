@@ -36,5 +36,11 @@
     <ClCompile Include="LinkedList\CompareTwoLLists.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LinkedList\ReversalInKGroups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList\Circular LinkedList\CircularLList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

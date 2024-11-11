@@ -128,8 +128,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\Traversal.cpp" />
+    <ClCompile Include="LinkedList\Circular LinkedList\CircularLList.cpp" />
     <ClCompile Include="LinkedList\CompareTwoLLists.cpp" />
     <ClCompile Include="LinkedList\Reversal.cpp" />
+    <ClCompile Include="LinkedList\ReversalInKGroups.cpp" />
     <ClCompile Include="LinkedList\Traversal.cpp" />
     <ClCompile Include="Recursion\Recursion.cpp" />
   </ItemGroup>

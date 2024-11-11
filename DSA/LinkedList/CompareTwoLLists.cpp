@@ -31,19 +31,19 @@ bool compare_lists(Node* head1, Node* head2) {
 	return (head1 == nullptr && head2 == nullptr);
 }
 
-int main()
-{
-	// Linked List 1
-	Node* head1 = new Node(10);
-	head1->next = new Node(20);
-	head1->next->next = new Node(30);
-
-	// Linked List 2
-	Node* head2 = new Node(10);
-	head2->next = new Node(20);
-	head2->next->next = new Node(30);
-	head2->next->next->next = new Node(40);
-
-	 cout<<compare_lists(head1, head2);
-	 return 0;
-}
+//int main()
+//{
+//	// Linked List 1
+//	Node* head1 = new Node(10);
+//	head1->next = new Node(20);
+//	head1->next->next = new Node(30);
+//
+//	// Linked List 2
+//	Node* head2 = new Node(10);
+//	head2->next = new Node(20);
+//	head2->next->next = new Node(30);
+//	head2->next->next->next = new Node(40);
+//
+//	 cout<<compare_lists(head1, head2);
+//	 return 0;
+//}
