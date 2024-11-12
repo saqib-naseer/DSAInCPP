@@ -42,5 +42,8 @@
     <ClCompile Include="LinkedList\Circular LinkedList\CircularLList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LinkedList\LeetCodeDeleteFromNth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

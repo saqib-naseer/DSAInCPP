@@ -2,45 +2,58 @@
 using namespace std;
 
 struct Node {
-    int value;
-    Node* next;
 
-    Node(int value) {
-        this->value = value;
-        this->next = nullptr;
-    }
+	int value;
+	Node* next;
+
+	Node(int value) {
+		this->value = value;
+		this->next = nullptr;
+	}
+
+
 };
+void recursiveCircularTraversal(Node* head);
 
-// Global variable for tracking the head of the circular list
 Node* myHead = nullptr;
 
-void recursiveCircularTraversal(Node* curr) {
-    // Base case: Stop recursion when we return to the starting node
-    if (curr == nullptr || (myHead != nullptr && curr == myHead)) {
-        return;
-    }
+//int main()
+//{
+//	Node* head = new Node(10);
+//	head->next = new Node(20);
+//	head->next->next = new Node(30);
+//	head->next->next->next = head;
+//
+//	Node* curr = head;
 
-    // If myHead is uninitialized, set it to the starting node
-    if (myHead == nullptr) {
-        myHead = curr;
-    }
+	// Iterative Approach
+	/*do
+	{
+		cout << curr->value << endl;
+		curr = curr->next;
+	}
+	while (curr != head);*/
 
-    // Print the current node's value
-    cout << curr->value << endl;
+	// Recursive
+//	recursiveCircularTraversal(curr);
+//}
 
-    // Recurse to the next node
-    recursiveCircularTraversal(curr->next);
-}
+void recursiveCircularTraversal(Node* head) {
 
-int main() {
-    // Create a circular linked list
-    Node* head = new Node(10);
-    head->next = new Node(20);
-    head->next->next = new Node(30);
-    head->next->next->next = head; // Make it circular
+	static int flag = 0;
 
-    // Call recursive function
-    recursiveCircularTraversal(head);
+	if (myHead==nullptr)
+	{
+		myHead = head;
+	}
 
-    return 0;
+	if (myHead != head || flag == 0)
+	{
+	flag++;
+	cout << "Flag" << flag << endl;
+	cout << head->value << endl;
+	recursiveCircularTraversal(head->next);
+	}
+
+
 }
