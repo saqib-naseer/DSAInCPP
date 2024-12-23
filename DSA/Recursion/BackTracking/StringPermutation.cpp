@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-void BackTrackingFunction(string s,int k) {
+void Permute(string s,int k) {
 	static int arrayA[] = { 0 ,0,0};
 	static vector<char> result(3);
 
@@ -17,7 +17,7 @@ void BackTrackingFunction(string s,int k) {
 			if (arrayA[i] == 0) {
 				result[k] = s[i];
 				arrayA[i] = 1;
-				BackTrackingFunction(s, k + 1);
+				Permute(s, k + 1);
 				arrayA[i] = 0;
 			}
 		}
@@ -29,6 +29,6 @@ void BackTrackingFunction(string s,int k) {
 int main() {
 	string s = "ABC";
 	
-	BackTrackingFunction(s,0);
+	Permute(s,0);
 }
 
