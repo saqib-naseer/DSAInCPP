@@ -50,30 +50,30 @@ int calculateLength(Node* head) {
 	return length;
 }
 
-int main()
-{
-	Node* head = new Node(100);
-	head->next = new Node(200);
-	/*head->next->next = new Node(300);
-	head->next->next->next = new Node(400);
-	head->next->next->next->next = new Node(500);*/
-
-	cout<<"Original Linked List"<<endl;
-
-	Node* curr = head;
-
-	while (curr != nullptr) {
-		cout << curr->value << " ";
-		curr = curr->next;
-	}
-
-	Node* returnedHead = removeNthFromEnd(head, 1);
-	cout << "\n After Delete from nth Reverse Linked List" << endl;
-
-	curr = returnedHead;
-
-	while (curr != nullptr) {
-		cout << curr->value << " ";
-		curr = curr->next;
-	}
-}
+//int main()
+//{
+//	Node* head = new Node(100);
+//	head->next = new Node(200);
+//	/*head->next->next = new Node(300);
+//	head->next->next->next = new Node(400);
+//	head->next->next->next->next = new Node(500);*/
+//
+//	cout<<"Original Linked List"<<endl;
+//
+//	Node* curr = head;
+//
+//	while (curr != nullptr) {
+//		cout << curr->value << " ";
+//		curr = curr->next;
+//	}
+//
+//	Node* returnedHead = removeNthFromEnd(head, 1);
+//	cout << "\n After Delete from nth Reverse Linked List" << endl;
+//
+//	curr = returnedHead;
+//
+//	while (curr != nullptr) {
+//		cout << curr->value << " ";
+//		curr = curr->next;
+//	}
+//}
