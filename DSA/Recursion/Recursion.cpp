@@ -3,16 +3,21 @@ using namespace std;
 
 void myRecursiveFunction(int n) {
 
-	if (n==10)
+	if (n==3)
 	{
+		cout << "Base Condition Reacher n = 3 " << endl;
 		return;
 	}
 
+	cout << "Calling Function for : "<<n << endl;
 	myRecursiveFunction(n+1);
-	cout << n << endl;
+	myRecursiveFunction(n+1);
+	cout << "Returning Function for : " << n << endl;
+
+
 }
 
-//int main()
-//{
-//	 myRecursiveFunction(1);
-//}
+int main()
+{
+	 myRecursiveFunction(1);
+}

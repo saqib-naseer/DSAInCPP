@@ -26,9 +26,9 @@ void Permute(string s,int k) {
 	
 }
 
-int main() {
-	string s = "ABC";
-	
-	Permute(s,0);
-}
+//int main() {
+//	string s = "ABC";
+//	
+//	Permute(s,0);
+//}
 
