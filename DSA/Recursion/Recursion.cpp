@@ -5,7 +5,7 @@ void myRecursiveFunction(int n) {
 
 	if (n==3)
 	{
-		cout << "Base Condition Reacher n = 3 " << endl;
+		cout << "Base Condition Reached n = 3 " << endl;
 		return;
 	}
 
@@ -17,7 +17,7 @@ void myRecursiveFunction(int n) {
 
 }
 
-int main()
-{
-	 myRecursiveFunction(1);
-}
+//int main()
+//{
+//	 myRecursiveFunction(1);
+//}

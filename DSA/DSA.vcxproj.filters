@@ -51,5 +51,8 @@
     <ClCompile Include="Recursion\BackTracking\StringPermutation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Stack\StackImplement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
