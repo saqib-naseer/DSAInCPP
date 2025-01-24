@@ -10,7 +10,7 @@ public:
 		size = s;
 		top = -1;
 		arr = new int[size];
-		}
+	}
 
 	void push(int value) {
 		if (top == size - 1) {
@@ -18,7 +18,7 @@ public:
 			return;
 		}
 		arr[++top] = value;
-		cout <<"Pushed value into stack : " << arr[top] << endl;
+		cout << "Pushed value into stack : " << arr[top] << endl;
 	}
 
 	void pop() {
@@ -52,7 +52,7 @@ public:
 		return top + 1;
 	}
 
-	 
+
 };
 
 class Node {
@@ -62,7 +62,7 @@ public:
 	Node(int value) {
 		data = value;
 		next = nullptr;
-}
+	}
 
 };
 
@@ -107,36 +107,36 @@ public:
 	}
 };
 
-int main() {
-	// Using Linked List
-	StackLL linkedListStack;
-	linkedListStack.push(10);
-	linkedListStack.push(20);
-	linkedListStack.push(30);
-	linkedListStack.push(40);
-	linkedListStack.push(50);
-	cout << "\nCurrent Stack size is " << linkedListStack.currentSize()<<endl;
-	linkedListStack.pop();
-	linkedListStack.pop();
-	linkedListStack.pop();
-	cout << "\nCurrent Stack size is " << linkedListStack.currentSize() << endl;
-	linkedListStack.pop();
-	linkedListStack.pop();
-	linkedListStack.pop();
-	cout << "\nCurrent Stack size is " << linkedListStack.currentSize() << endl;
-
-	/*
-	// Using Arrays
-	Stack myStack(5);
-	//cout << "Current Size " << myStack.currentSize()<<endl;
-	myStack.push(1);
-	myStack.push(2);
-	//myStack.pop();
-	myStack.push(4);
-	//cout << "Current Size " << myStack.currentSize() << endl;
-	myStack.push(5);
-	myStack.push(6);
-	myStack.push(7);
-	cout << "Current Size " << myStack.currentSize() << endl;*/
-
-}
+//int main() {
+//	// Using Linked List
+//	StackLL linkedListStack;
+//	linkedListStack.push(10);
+//	linkedListStack.push(20);
+//	linkedListStack.push(30);
+//	linkedListStack.push(40);
+//	linkedListStack.push(50);
+//	cout << "\nCurrent Stack size is " << linkedListStack.currentSize()<<endl;
+//	linkedListStack.pop();
+//	linkedListStack.pop();
+//	linkedListStack.pop();
+//	cout << "\nCurrent Stack size is " << linkedListStack.currentSize() << endl;
+//	linkedListStack.pop();
+//	linkedListStack.pop();
+//	linkedListStack.pop();
+//	cout << "\nCurrent Stack size is " << linkedListStack.currentSize() << endl;
+//
+//	/*
+//	// Using Arrays
+//	Stack myStack(5);
+//	//cout << "Current Size " << myStack.currentSize()<<endl;
+//	myStack.push(1);
+//	myStack.push(2);
+//	//myStack.pop();
+//	myStack.push(4);
+//	//cout << "Current Size " << myStack.currentSize() << endl;
+//	myStack.push(5);
+//	myStack.push(6);
+//	myStack.push(7);
+//	cout << "Current Size " << myStack.currentSize() << endl;*/
+//
+//}

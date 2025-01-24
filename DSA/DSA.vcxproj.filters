@@ -54,5 +54,8 @@
     <ClCompile Include="Stack\StackImplement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PatternPrinting\Patterns.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
