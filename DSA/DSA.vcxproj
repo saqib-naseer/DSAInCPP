@@ -139,6 +139,7 @@
     <ClCompile Include="Recursion\Recursion.cpp" />
     <ClCompile Include="Stack\StackImplement.cpp" />
     <ClCompile Include="Stack\StackSTL.cpp" />
+    <ClCompile Include="Strings\KMPAlgorithm.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

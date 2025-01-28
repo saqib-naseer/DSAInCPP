@@ -57,5 +57,8 @@
     <ClCompile Include="PatternPrinting\Patterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Strings\KMPAlgorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
