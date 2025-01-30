@@ -60,5 +60,8 @@
     <ClCompile Include="Strings\KMPAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Arrays\MultiDimensional\2DArrays.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

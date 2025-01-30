@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arrays\MultiDimensional\2DArrays.cpp" />
     <ClCompile Include="Arrays\Traversal.cpp" />
     <ClCompile Include="LinkedList\Circular LinkedList\CircularLList.cpp" />
     <ClCompile Include="LinkedList\CompareTwoLLists.cpp" />

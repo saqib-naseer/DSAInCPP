@@ -59,8 +59,8 @@ int FirstMatchingIndex() {
 	return -1;
 }
 
-int main() {
-	cout << "Answer : " << FirstMatchingIndex() << endl;
-
-}
+//int main() {
+//	cout << "Answer : " << FirstMatchingIndex() << endl;
+//
+//}
 
