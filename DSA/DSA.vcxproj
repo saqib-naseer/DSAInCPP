@@ -136,6 +136,7 @@
     <ClCompile Include="LinkedList\ReversalInKGroups.cpp" />
     <ClCompile Include="LinkedList\Traversal.cpp" />
     <ClCompile Include="PatternPrinting\Patterns.cpp" />
+    <ClCompile Include="Queues\QueueUsingArray.cpp" />
     <ClCompile Include="Recursion\BackTracking\StringPermutation.cpp" />
     <ClCompile Include="Recursion\Recursion.cpp" />
     <ClCompile Include="Stack\StackImplement.cpp" />

@@ -2,8 +2,44 @@
 using namespace std;
 
 //int main() {
+//	int m = 5, n = 1, count1 = 1;
+//	for (int i = 0;i < 5;i++)
+//	{
+//		for (int i = 1;i <= m;i++) {
+//			cout << " ";
+//		}
+//		m--;
+//		int count2 = count1;
+//		for (int i = 1;i <= n;i++) {
+//			if (i == 1 || i == n) cout << count1;
+//			else {
+//				cout << ++count2;
+//			}
+//		}
+//		n += 2;
+//		count1++;
+//		cout << endl;
+//	}
 //
 //}
+
+void TrouserPattern() {
+	int n = 16;
+	cout << string(n, '*') << endl; // Print the top row of asterisks
+
+	int i = (n / 2) - 1;
+	int j = 2;
+
+	while (i != 0) {
+		while (j <= (n - 2)) {
+			cout << string(i, '*'); // Print left asterisks
+			cout << string(j, ' '); // Print spaces
+			cout << string(i, '*') << endl; // Print right asterisks and newline
+			i--;
+			j += 2;
+		}
+	}
+}
 
 
 void DiagonalPattern() {

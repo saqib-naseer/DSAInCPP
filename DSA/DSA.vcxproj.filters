@@ -63,5 +63,8 @@
     <ClCompile Include="Arrays\MultiDimensional\2DArrays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Queues\QueueUsingArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
