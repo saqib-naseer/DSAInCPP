@@ -60,22 +60,34 @@ public:
 
 	}
 
+	void Front() {
+		if (front == rear) {
+			cout << "Queue is Empty" << endl;
+		}
+		else {
+			cout << "Front Element " << arr[++front] << endl;
+		}
+
+	}
+
 
 };
 
-int main() {
-	Queue myqueue(5);
-	myqueue.Display();
-	myqueue.Enqueue(1);
-	myqueue.Enqueue(2);
-	myqueue.Enqueue(3);
-	myqueue.Enqueue(4);
-	myqueue.Enqueue(5);
-
-	myqueue.Display();
-	myqueue.Dequeue();
-	myqueue.Display();
-
-
-
-}
+//int main() {
+//	Queue myqueue(5);
+//	myqueue.Display();
+//	myqueue.Enqueue(1);
+//	myqueue.Enqueue(2);
+//	myqueue.Enqueue(3);
+//	myqueue.Enqueue(4);
+//	myqueue.Enqueue(5);
+//	myqueue.Front();
+//
+//	myqueue.Display();
+//	myqueue.Dequeue();
+//	myqueue.Display();
+//	myqueue.Front();
+//
+//
+//
+//}
