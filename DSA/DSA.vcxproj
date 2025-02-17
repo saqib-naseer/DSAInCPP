@@ -139,6 +139,7 @@
     <ClCompile Include="Queues\QueueUsingArray.cpp" />
     <ClCompile Include="Recursion\BackTracking\StringPermutation.cpp" />
     <ClCompile Include="Recursion\Recursion.cpp" />
+    <ClCompile Include="Recursion\RecursionOnArrays.cpp" />
     <ClCompile Include="Stack\StackImplement.cpp" />
     <ClCompile Include="Stack\StackSTL.cpp" />
     <ClCompile Include="Strings\KMPAlgorithm.cpp" />

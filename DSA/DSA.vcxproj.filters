@@ -66,5 +66,8 @@
     <ClCompile Include="Queues\QueueUsingArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Recursion\RecursionOnArrays.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

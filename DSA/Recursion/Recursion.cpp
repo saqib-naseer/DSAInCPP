@@ -1,32 +1,61 @@
 #include <iostream>
 using namespace std;
 
+class Recursion {
+public:
+	int number = 10;
+	void recursion(int num) {
+		if (num == 0) return;
+
+		int local = num;
+
+		//cout << number << endl;
+		recursion(local - 1);
+
+		while (num > 0) {
+			cout << num;
+			num--;
+		}
+		cout << endl;
+
+	}
+
+
+
+
+};
+
+//int main() {
+//	Recursion r;
+//	r.recursion(5);
+//	//recursion(5);
+//}
+
+
+
+
+//int main()
+//{
+//	int x, i = 0;
+//	cout << "Enter the number of terms of series : ";
+//	cin >> x;
+//	cout << "\nFibonnaci Series : ";
+//	while (i < x) {
+//		cout << " " << fibonacciRecursive(i);
+//		i++;
+//	}
+//
+//	fibonacciIterative(10);
+//	cout << Exponent(2, 5);
+//	cout << factorial(5);
+//	function(5);
+//}
+
 
 int fibonacciRecursive(int num) {
 	if (num == 0 || num == 1) return num;
 
 	return fibonacciRecursive(num - 1) + fibonacciRecursive(num - 2);
-}
-
-
-
-int main()
-{
-
-
-	//int x, i = 0;
-	//cout << "Enter the number of terms of series : ";
-	//cin >> x;
-	//cout << "\nFibonnaci Series : ";
-	//while (i < x) {
-	//	cout << " " << fibonacciRecursive(i);
-	//	i++;
-	//}
-
-	//fibonacciIterative(10);
-	//cout << Exponent(2, 5);
-	//cout << factorial(5);
-	//function(5);
 }
 
 void fibonacciIterative(int num) {
