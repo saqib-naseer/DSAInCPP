@@ -69,5 +69,8 @@
     <ClCompile Include="Recursion\RecursionOnArrays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Strings\RecursionOnString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
