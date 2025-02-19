@@ -72,5 +72,11 @@
     <ClCompile Include="Strings\RecursionOnString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Searching\BinarySearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Searching\LinearSearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
