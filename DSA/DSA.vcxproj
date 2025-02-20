@@ -142,6 +142,7 @@
     <ClCompile Include="Recursion\RecursionOnArrays.cpp" />
     <ClCompile Include="Searching\BinarySearch.cpp" />
     <ClCompile Include="Searching\LinearSearch.cpp" />
+    <ClCompile Include="Sorting\MergeSort.cpp" />
     <ClCompile Include="Stack\StackImplement.cpp" />
     <ClCompile Include="Stack\StackSTL.cpp" />
     <ClCompile Include="Strings\KMPAlgorithm.cpp" />
