@@ -20,16 +20,24 @@ public:
 
 	}
 
-
-
-
 };
 
-//int main() {
-//	Recursion r;
-//	r.recursion(5);
-//	//recursion(5);
-//}
+void RecursiveFunction(int x) {
+	if (x != 10) {
+		cout << x << endl;
+	}
+	else {
+		RecursiveFunction(x + 1);
+	}
+}
+
+int main() {
+
+	RecursiveFunction(1);
+	/*Recursion r;
+	r.recursion(5);*/
+	//recursion(5);
+}
 
 
 

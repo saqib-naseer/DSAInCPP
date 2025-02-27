@@ -4,6 +4,7 @@
 using namespace std;
 
 void merge(int arr[], int start, int mid, int end) {
+	cout << "merge call for : start: " << start << " end: " << end << endl;
 	vector<int> temp(end - start + 1);
 	int index = 0;
 	int left = start;
@@ -39,6 +40,7 @@ void merge(int arr[], int start, int mid, int end) {
 }
 
 void mergeSort(int arr[], int start, int end) {
+	cout << "mergeSort for : start: " << start << " end: " << end << endl;
 
 	if (start == end) return;
 	int mid = start + (end - start) / 2;
@@ -56,12 +58,12 @@ void mergeSort(int arr[], int start, int end) {
 
 
 
-int main() {
-	int arr[] = { 12,3,2,5,3,7,3,5,3,5,6,1,7,9,11,2 };
-	mergeSort(arr, 0, 15);
-	for (int i = 0; i < 15; i++)
-	{
-		cout << arr[i] << " ";
-
-	}
-}
+//int main() {
+//	int arr[] = { 12,3,2,5,3,7,3,5,3,5,6,1,7,9,11,2 };
+//	mergeSort(arr, 0, 15);
+//	for (int i = 0; i < 15; i++)
+//	{
+//		cout << arr[i] << " ";
+//
+//	}
+//}
