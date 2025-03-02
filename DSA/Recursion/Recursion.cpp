@@ -30,14 +30,14 @@ void RecursiveFunction(int x) {
 		RecursiveFunction(x + 1);
 	}
 }
-
-int main() {
-
-	RecursiveFunction(1);
-	/*Recursion r;
-	r.recursion(5);*/
-	//recursion(5);
-}
+//
+//int main() {
+//
+//	RecursiveFunction(1);
+//	/*Recursion r;
+//	r.recursion(5);*/
+//	//recursion(5);
+//}
 
 
 
