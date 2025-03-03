@@ -148,6 +148,7 @@
     <ClCompile Include="Strings\KMPAlgorithm.cpp" />
     <ClCompile Include="Strings\RecursionOnString.cpp" />
     <ClCompile Include="Trees\BinaryTree.cpp" />
+    <ClCompile Include="Trees\BinaryTreeProblems.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
