@@ -87,5 +87,11 @@
     <ClCompile Include="Trees\BinaryTreeProblems.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Trees\BinaryTreeProblems2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trees\ConstructBinaryTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

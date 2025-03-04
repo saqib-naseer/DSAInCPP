@@ -149,6 +149,8 @@
     <ClCompile Include="Strings\RecursionOnString.cpp" />
     <ClCompile Include="Trees\BinaryTree.cpp" />
     <ClCompile Include="Trees\BinaryTreeProblems.cpp" />
+    <ClCompile Include="Trees\BinaryTreeProblems2.cpp" />
+    <ClCompile Include="Trees\ConstructBinaryTree.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
