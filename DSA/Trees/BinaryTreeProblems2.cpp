@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <stack>
 using namespace std;
 
 class Node {
@@ -12,6 +13,24 @@ public:
 		left = right = NULL;
 	}
 };
+
+vector<int> BinaryTreeSpiralTraversal(Node* root) {
+	stack<Node*> stack1;
+	stack<Node*> stack2;
+	vector<int> result;
+
+	while (!stack1.empty() || !stack2.empty()) {
+
+	}
+
+
+
+	return result;
+}
+
+
+
+
 
 // Check if two binary trees are identical
 bool IsIdentical(Node* root1, Node* root2) {
@@ -150,22 +169,22 @@ Node* CreateBinaryTree2() {
 
 	return root;
 }
-
-int main() {
-
-	Node* root1 = CreateBinaryTree();
-	Node* root2 = CreateBinaryTree2();
-
-	cout << "Binary Trees Identical : " << IsIdentical(root1, root2);
-
-	cout << "\nBefore Mirror :" << endl;
-	LevelOrderTraverse(root1);
-
-	MirrorBinaryTree(root1);
-
-	cout << "\nAfter Mirror :" << endl;
-	LevelOrderTraverse(root1);
-}
+//
+//int main() {
+//
+//	Node* root1 = CreateBinaryTree();
+//	Node* root2 = CreateBinaryTree2();
+//
+//	cout << "Binary Trees Identical : " << IsIdentical(root1, root2);
+//
+//	cout << "\nBefore Mirror :" << endl;
+//	LevelOrderTraverse(root1);
+//
+//	MirrorBinaryTree(root1);
+//
+//	cout << "\nAfter Mirror :" << endl;
+//	LevelOrderTraverse(root1);
+//}
 
 
 

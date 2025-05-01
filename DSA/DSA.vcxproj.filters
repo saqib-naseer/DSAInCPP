@@ -93,5 +93,14 @@
     <ClCompile Include="Trees\ConstructBinaryTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Graph\Traversal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DP\DPProblems1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tries\Traversal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClCompile Include="Arrays\MultiDimensional\2DArrays.cpp" />
     <ClCompile Include="Arrays\Traversal.cpp" />
+    <ClCompile Include="DP\DPProblems1.cpp" />
+    <ClCompile Include="Graph\Traversal.cpp" />
     <ClCompile Include="LinkedList\Circular LinkedList\CircularLList.cpp" />
     <ClCompile Include="LinkedList\CompareTwoLLists.cpp" />
     <ClCompile Include="LinkedList\LeetCodeDeleteFromNth.cpp" />
@@ -151,6 +153,7 @@
     <ClCompile Include="Trees\BinaryTreeProblems.cpp" />
     <ClCompile Include="Trees\BinaryTreeProblems2.cpp" />
     <ClCompile Include="Trees\ConstructBinaryTree.cpp" />
+    <ClCompile Include="Tries\Traversal.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
