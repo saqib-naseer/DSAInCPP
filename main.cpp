@@ -67,6 +67,7 @@ void printArray(int arr[], int size) {
 }
 
 int main() {
+    // Test commit
     cout << "=== Data Structures and Algorithms Demo ===" << endl << endl;
     
     cout << "1. Binary Search Demo:" << endl;
