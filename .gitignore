@@ -16,6 +16,30 @@
 # Mono auto generated files
 mono_crash.*
 
+# Replit / Nix
+@nix/
+.nix*
+.replit*
+replit.nix
+
+# Build artifacts
+temp_bin
+*.out
+*.exe
+
+# Replit internal
+*.blob
+@home/
+@workspace/
+
+# C++ compiled files
+a.out
+
+# OS / Editor
+.ccls-cache/
+.DS_Store
+
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

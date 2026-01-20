@@ -21,9 +21,9 @@ args = "Run DSA"
 name = "Run DSA"
 author = "agent"
 
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "make && ./main"
-
 [workflows.workflow.metadata]
 outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "g++ -std=c++17 temp.cpp -o temp_bin && ./temp_bin"

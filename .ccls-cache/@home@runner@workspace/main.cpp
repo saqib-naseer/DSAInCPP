@@ -66,39 +66,39 @@ void printArray(int arr[], int size) {
     cout << endl;
 }
 
-int main() {
-    // Test commit
-    cout << "=== Data Structures and Algorithms Demo ===" << endl << endl;
+// int main() {
+//     // Test commit
+//     cout << "=== Data Structures and Algorithms Demo ===" << endl << endl;
     
-    cout << "1. Binary Search Demo:" << endl;
-    int searchArr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13};
-    int searchSize = 12;
-    cout << "   Array: ";
-    printArray(searchArr, searchSize);
+//     cout << "1. Binary Search Demo:-----------" << endl;
+//     int searchArr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13};
+//     int searchSize = 12;
+//     cout << "   Array: ";
+//     printArray(searchArr, searchSize);
     
-    int target = 7;
-    int result = IterativeBinarySearch(searchArr, target, searchSize);
-    cout << "   Searching for " << target << " (iterative): Found at index " << result << endl;
+//     int target = 7;
+//     int result = IterativeBinarySearch(searchArr, target, searchSize);
+//     cout << "   Searching for " << target << " (iterative): Found at index " << result << endl;
     
-    target = 13;
-    result = RecursiveBinarySearch(searchArr, target, 0, searchSize - 1);
-    cout << "   Searching for " << target << " (recursive): Found at index " << result << endl;
+//     target = 13;
+//     result = RecursiveBinarySearch(searchArr, target, 0, searchSize - 1);
+//     cout << "   Searching for " << target << " (recursive): Found at index " << result << endl;
     
-    target = 12;
-    result = IterativeBinarySearch(searchArr, target, searchSize);
-    cout << "   Searching for " << target << ": " << (result == -1 ? "Not found" : "Found") << endl;
+//     target = 12;
+//     result = IterativeBinarySearch(searchArr, target, searchSize);
+//     cout << "   Searching for " << target << ": " << (result == -1 ? "Not found" : "Found") << endl;
     
-    cout << endl << "2. Merge Sort Demo:" << endl;
-    int sortArr[] = {64, 34, 25, 12, 22, 11, 90, 5};
-    int sortSize = 8;
-    cout << "   Before sorting: ";
-    printArray(sortArr, sortSize);
+//     cout << endl << "2. Merge Sort Demo:" << endl;
+//     int sortArr[] = {64, 34, 25, 12, 22, 11, 90, 5};
+//     int sortSize = 8;
+//     cout << "   Before sorting: ";
+//     printArray(sortArr, sortSize);
     
-    mergeSort(sortArr, 0, sortSize - 1);
-    cout << "   After sorting:  ";
-    printArray(sortArr, sortSize);
+//     mergeSort(sortArr, 0, sortSize - 1);
+//     cout << "   After sorting:  ";
+//     printArray(sortArr, sortSize);
     
-    cout << endl << "=== Demo Complete ===" << endl;
+//     cout << endl << "=== Demo Complete ===" << endl;
     
-    return 0;
-}
+//     return 0;
+// }
