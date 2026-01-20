@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 int IterativeBinarySearch(int arr[], int target, int size) {
     int start = 0;
@@ -67,6 +69,8 @@ void printArray(int arr[], int size) {
 }
 
 int main() {
+    auto start_time = high_resolution_clock::now();
+
     cout << "=== Data Structures and Algorithms Demo ===" << endl << endl;
     
     cout << "1. Binary Search Demo:" << endl;
@@ -98,6 +102,11 @@ int main() {
     printArray(sortArr, sortSize);
     
     cout << endl << "=== Demo Complete ===" << endl;
+
+    auto end_time = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(end_time - start_time);
+    
+    cout << endl << "Execution Time: " << duration.count() << " microseconds" << endl;
     
     return 0;
 }
