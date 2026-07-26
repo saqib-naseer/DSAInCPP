@@ -2,6 +2,86 @@
 #include <queue>
 using namespace std;
 
+class Node{
+	public:
+   int data;
+		Node* left;
+			Node* right;
+
+	Node(int val){
+		data = val;
+		left = right = NULL;
+	}
+
+};
+
+void PreOrder(Node* root){
+	if(root==NULL) return;
+
+	cout<<root->data<<" ";
+	PreOrder(root->left);
+	PreOrder(root->right);
+}
+
+void PostOrder(Node* root){
+	if(root==NULL) return;
+
+	PostOrder(root->left);
+	PostOrder(root->right);
+	cout<<root->data<<" ";
+}
+
+void InOrder(Node* root){
+	if(root==nullptr) return;
+
+	InOrder(root->left);
+	cout<<root->data<<" ";
+	InOrder(root->right);
+}
+
+int main(){
+	int x;
+	cout<<"Enter value for root node: "<<endl;
+	cin>>x;
+	Node* root = new Node(x);
+
+	// Creation Method 1: Using Queue
+	queue<Node*> q;
+	if(x!=-1)	q.push(root);
+
+	while(!q.empty()){
+		Node* temp = q.front();
+		q.pop();
+		cout<<"Enter Left Node for "<<temp->data<<endl;
+		cin>>x;
+		if(x!=-1){
+			Node* leftNode = new Node(x);
+			temp->left = leftNode;
+			q.push(leftNode);
+		}
+		cout<<"Enter Right Node for "<<temp->data<<endl;
+		cin>>x;
+		if(x!=-1){
+			Node* rightNode = new Node(x);
+			temp->right = rightNode;
+			q.push(rightNode);
+		}
+		
+	}
+
+	// PreOrder Traversal
+	cout<<"PreOrder Traversal: "<<endl;
+	PreOrder(root);
+
+	cout<<"\nInorder Traversal: "<<endl;
+	InOrder(root);
+
+	cout<<"\nPostOrder Traversal: "<<endl;
+	PostOrder(root);
+}
+
+
+
 
 
 /*
