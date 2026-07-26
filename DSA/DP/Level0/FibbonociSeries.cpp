@@ -15,17 +15,17 @@ int TopDownDP(int n, vector<int> &dp){
 
 int BottomUpDP(int n){
   if (n <= 1) return 1;
-  
-  int prev1=0;
+
+  int prev1=1;
   int prev2=1;
   int ans=0;
-  
-  for(int i=2;i<=n;i++){
+
+  for(int i=3;i<=n;i++){
     ans=prev1+prev2;
     prev1=prev2;
     prev2=ans;
   }  
-  
+
 
   return ans;
 }
@@ -33,7 +33,7 @@ int BottomUpDP(int n){
 int BottomUpDP2(int n){
   if (n <= 1) return 1;
   vector<int> dp(n+1,0);
-  
+
   dp[0]=0;
   dp[1]=1;
 
@@ -61,7 +61,7 @@ int main() {
   auto end_time = high_resolution_clock::now();
   auto duration = duration_cast<microseconds>(end_time - start_time);
   cout << endl << "Execution Time: " << duration.count() << " microseconds" << endl;
-  
+
   return 0;
 }
 
