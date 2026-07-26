@@ -39,13 +39,14 @@ void InOrder(Node* root){
 	InOrder(root->right);
 }
 
-int main(){
+// Creation Method 1: Using Queue
+Node* CreationMethod1(Node* root){
 	int x;
 	cout<<"Enter value for root node: "<<endl;
 	cin>>x;
-	Node* root = new Node(x);
 
-	// Creation Method 1: Using Queue
+	if(x==-1) return NULL;
+	
 	queue<Node*> q;
 	if(x!=-1)	q.push(root);
 
@@ -66,9 +67,61 @@ int main(){
 			temp->right = rightNode;
 			q.push(rightNode);
 		}
+	
+	}
+	return root;
+}
+
+// Creation Method 2: Using Recursion
+Node* CreationMethod2(){
+	int x;
+	cout << "Enter value (-1 for NULL): ";
+	cin >> x;
+
+	if (x == -1)
+			return NULL;
+
+	Node* temp = new Node(x);
+
+	cout << "Enter Left Node for " << temp->data << endl;
+	temp->left = CreationMethod2();
+
+	cout << "Enter Right Node for " << temp->data << endl;
+	temp->right = CreationMethod2();
+
+	return temp;
+}
+
+void LevelOrder(Node* root){
+
+	queue<Node*> q;
+	q.push(root);
+
+	while(!q.empty()){
+		Node* temp = q.front();
+
+		q.pop();
+		cout<<temp->data<<" ";
+
+		if(temp->left!=NULL) q.push(temp->left);
+		if(temp->right!=NULL) q.push(temp->right);
+
 		
 	}
+	
+}
 
+
+int main(){
+	
+	Node* root = CreationMethod2();
+
+	// Creation Method 1: Using Queue
+	// CreationMethod1(root);
+
+	// Creation Method 2: Using Recursion
+	//CreationMethod2();
+	
 	// PreOrder Traversal
 	cout<<"PreOrder Traversal: "<<endl;
 	PreOrder(root);
@@ -78,6 +131,9 @@ int main(){
 
 	cout<<"\nPostOrder Traversal: "<<endl;
 	PostOrder(root);
+
+	cout<<"\nLevelOrder Traversal: "<<endl;
+	LevelOrder(root);
 }
 
 
