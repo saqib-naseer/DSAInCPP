@@ -24,6 +24,7 @@ replit.nix
 
 # Build artifacts
 temp_bin
+fibo_bin
 *.out
 *.exe
 
