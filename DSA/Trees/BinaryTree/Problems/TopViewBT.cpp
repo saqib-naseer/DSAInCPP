@@ -127,6 +127,25 @@ vector<int> TopView(Node* root)
 
     return ans;
 }
+
+  // Method 2 : Recursive
+void PrintTopViewRec(Node* root, int currentIndex,int level, vector<int>& ans, vector<int>& levels){
+
+		if(!root) return;
+		
+		level++;
+		if(level<levels[currentIndex]){
+			
+			ans[currentIndex] = root->data;
+			levels[currentIndex] = level;
+		}
+
+	
+	PrintTopViewRec(root->left, currentIndex-1,level,ans,levels);
+	PrintTopViewRec(root->right, currentIndex+1,level,ans,levels);
+
+}
+
 int main() {
   Node *root = new Node(1);
   Node *second = root->left = new Node(2);
@@ -165,5 +184,18 @@ int main() {
 
   for(auto i: ans)
     cout<<i<<" ";
-  
+
+
+  // Recursion Method
+  cout << "\nTop View Recursion Method: " <<endl;
+  int left = 0,right = 0;
+  FindLeftRightPosition(root,0,left,right);
+  cout << "Values Of Left and Right Range "<<left << " " << right << endl;
+  vector<int> ans1(right-left+1,0);
+  vector<int> levels(right-left+1,INT_MAX);
+  PrintTopViewRec(root,left*-1,0,ans1,levels);
+
+  for(auto i : ans1){
+    cout<<i<<" ";
+  }
 }
