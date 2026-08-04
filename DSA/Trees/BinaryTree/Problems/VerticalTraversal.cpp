@@ -53,8 +53,9 @@ void find(int &l, int& r,int pos, Node* root){
 	int l=0;int r=0;
 	find(l,r,0,root);
 	
-	vector<vector<int>> positives(r+1);
-	vector<vector<int>> negatives(-l+1);
+	vector<vector<int>> positives(abs(l)+1);
+	vector<vector<int>> negatives(abs(r)+1);
+	
 	queue<Node*> nodeQ;
 	queue<int> indexQ;
 	nodeQ.push(root);
