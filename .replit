@@ -26,4 +26,4 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "g++ -std=c++17 DSA/Trees/BinaryTree/Problems/FlattenBTLinkedList.cpp -o fibo_bin && ./fibo_bin"
+args = "g++ -std=c++17 DSA/Trees/BinaryTree/Problems/BurningBT.cpp -o fibo_bin && ./fibo_bin"
