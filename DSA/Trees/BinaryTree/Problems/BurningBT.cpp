@@ -78,6 +78,45 @@ int FindTargetNodeHeight(Node* root){
 	return 1+max(left,right);
 }
 
+
+// Approach 2 - GPT
+void BurnSubtree(Node* root, int &ans,int time){
+
+	if(!root) return;
+	
+	ans = max(ans,time);
+	
+	BurnSubtree(root->left,ans,time+1);
+	BurnSubtree(root->right,ans,time+1);
+}
+
+int BurnApproach2(Node* root,int target, int &answer){
+	
+	if(!root) return -1;
+	
+	if(root->data == target){
+		BurnSubtree(root,answer,0);
+		return 0;
+	}
+	
+	int left = BurnApproach2(root->left,target,answer);
+	int right = BurnApproach2(root->right,target,answer);
+	
+	if(left!=-1){
+		BurnSubtree(root->right,answer,left+2);
+		return left+1;
+	}
+	if(right!=-1){
+		BurnSubtree(root->left,answer,right+2);
+		return right+1;
+	}
+	
+	return -1;
+}
+
+
+
+
 int main() {
   Node *root = new Node(1);
   Node *second = root->left = new Node(2);
@@ -121,7 +160,12 @@ FindTargetNode(root,target,targetNode);
 int downSideTime = FindTargetNodeHeight(targetNode)-1;
 int BurnningTime = max(timer,downSideTime);
   
-  cout << "\nAnswer" << BurnningTime<< endl;
+  cout << "\nAnswer " << BurnningTime<< endl;
 
+  // Burning Tree Approach 2 - GPT
+  int time=0;
+  BurnApproach2(root,target,time);
+  cout << "\nBurning Tree Approach 2 -GPT";
+  cout << "\nAnswer " << time;
   
 }
