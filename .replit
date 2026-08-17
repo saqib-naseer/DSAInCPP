@@ -26,4 +26,4 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "g++ -std=c++17 DSA/Trees/BinaryTree/Problems/MaximumPathSum.cpp -o fibo_bin && ./fibo_bin"
+args = "g++ -std=c++17 DSA/Trees/BinaryTree/Problems/LowestCommonAncestor.cpp -o fibo_bin && ./fibo_bin"
