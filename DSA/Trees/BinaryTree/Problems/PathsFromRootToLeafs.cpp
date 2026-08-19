@@ -35,6 +35,37 @@ void LevelOrder(Node *root) {
   }
 }
 
+void PrintPaths(vector<vector<int>> result){
+	cout<<"All Paths from room to leafs are following:" <<endl;
+	for(int i=0;i<result.size();i++){
+	
+		for(int j =0;j<result[i].size();j++){
+		
+			cout<<result[i][j]<<" ";
+		
+		}
+		cout<<endl;
+	}
+
+}
+
+void SaveRootToLeaf(Node* root,vector<vector<int>> &result,vector<int>& curr){
+	if (!root)
+		return;
+	if(!root->left && !root->right){
+		curr.push_back(root->data);
+		result.push_back(curr);
+		curr.pop_back();
+		return;
+	}
+	
+	curr.push_back(root->data);
+	
+	if(root->left) SaveRootToLeaf(root->left,result,curr);
+	if(root->right) SaveRootToLeaf(root->right,result,curr);
+	curr.pop_back();
+
+}
 
 
 int main() {
@@ -70,5 +101,9 @@ int main() {
   cout << "LevelOrder: " << endl;
   LevelOrder(root);
 
-  
+  cout << "\nPaths From Root To Leafs: "<<endl;
+  vector<vector<int>> result;
+  vector<int> curr;
+  SaveRootToLeaf(root,result,curr);
+  PrintPaths(result);
 }
