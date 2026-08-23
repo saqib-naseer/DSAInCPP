@@ -10,25 +10,56 @@ struct Node {
   }
 };
 
-/* Time:  O(N)
-Space: O(log N) recursion stack */
 
- Node* sortedArrayToBST(vector<int>& nums) {
-        return build(nums,0,nums.size()-1);
+
+/* Time:  O(N^2)
+
+ TreeNode* bstFromPreorder(vector<int>& preorder) {
+        
+        return bstFromPreorderHelper(preorder,0,preorder.size()-1);
     }
 
-    Node* build(vector<int>& nums, int start,int end){
+     TreeNode* bstFromPreorderHelper(vector<int>& preorder,int start,int end){
+        
+        if(start > end) return nullptr;
+
+        if(start == end){
+            return new TreeNode(preorder[start]);
+        }
+
+        int split = start+1;
+
+        while(split<=end && preorder[split]<preorder[start])
+        split++;
+
+        TreeNode* root = new  TreeNode(preorder[start]);
+
+        root->left =   bstFromPreorderHelper(preorder,start+1,split-1);
+        root->right =   bstFromPreorderHelper(preorder,split,end);
+
+        return root;
+    }
+
+
+*/
+
+  Node* bstFromPreorder(vector<int>& preorder) {
+        int index=0;
+        return bstFromPreorderHelper2(preorder,index,INT_MIN,INT_MAX);
+    }
+
+
+    Node* bstFromPreorderHelper2(vector<int>& preorder,int& index,int minRange,int maxRange){
     
-        if(start>end) return nullptr;
+        if(index == preorder.size() || preorder[index]>maxRange || preorder[index]<minRange)
+        return NULL;
 
-        int mid = start + (end-start)/2;
+        Node* root = new Node(preorder[index++]);
 
-        Node* curr = new Node(nums[mid]);
+        root->left = bstFromPreorderHelper2(preorder,index,minRange,root->data);
+        root->right = bstFromPreorderHelper2(preorder,index,root->data,maxRange);
 
-        curr->left = build(nums,start,mid-1);
-        curr->right = build(nums,mid+1,end);
-
-        return curr;
+        return root;
     }
 
 int main() {

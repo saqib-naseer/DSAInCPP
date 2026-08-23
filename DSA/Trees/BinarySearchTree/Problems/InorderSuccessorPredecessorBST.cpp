@@ -10,26 +10,38 @@ struct Node {
   }
 };
 
-/* Time:  O(N)
-Space: O(log N) recursion stack */
 
- Node* sortedArrayToBST(vector<int>& nums) {
-        return build(nums,0,nums.size()-1);
-    }
+	vector<int> succPredBST(Node* root,int key){
+			//your code goes here
+			
+			vector<int> inorder;
+			vector<int> ans;
+			InOrder(root,inorder);
+			
+			// Search key
+			for(int i=0;i<inorder.size();i++){
+			if(inorder[i]==key){
+			
+			ans.push_back((i - 1 < 0) ? -1 : inorder[i - 1]);
+			ans.push_back((i + 1 == inorder.size()) ? -1 : inorder[i + 1]);
+			
+			}
+			
+			}
 
-    Node* build(vector<int>& nums, int start,int end){
-    
-        if(start>end) return nullptr;
-
-        int mid = start + (end-start)/2;
-
-        Node* curr = new Node(nums[mid]);
-
-        curr->left = build(nums,start,mid-1);
-        curr->right = build(nums,mid+1,end);
-
-        return curr;
-    }
+            return ans;
+		}
+		
+		
+		void InOrder(Node* root,vector<int>& ans){
+			if(!root) return;
+			
+			
+		InOrder(root->left,ans);
+		ans.push_back(root->data);
+		InOrder(root->right,ans);
+		
+		} 
 
 int main() {
 Node* root = new Node(50);
