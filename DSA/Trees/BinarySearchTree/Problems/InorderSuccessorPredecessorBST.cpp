@@ -43,6 +43,50 @@ struct Node {
 		
 		} 
 
+//Approach 2 Start here
+vector<Node*> findPreSuc(Node* root, int key) {
+        // code here
+        Node* pre=NULL;
+        Node* suc=NULL;
+        
+        if(!root) return {pre,suc};
+        
+        Node* curr = root;
+        
+        while(curr){
+            
+            // if key < curr
+            if(key<curr->data){
+                suc=curr;
+                curr=curr->left;
+            }
+            else if (key>curr->data){
+                pre=curr;
+                curr=curr->right;
+            }
+            else{
+                //Key found
+                if(curr->left){
+                    Node* temp = curr->left;
+                    while(temp->right){
+                        temp = temp->right;
+                    }
+                    pre = temp;
+                }
+                
+                if(curr->right){
+                    Node* temp = curr->right;
+                    while(temp->left) temp = temp->left;
+                    suc = temp;
+                }
+                break;
+            }
+            
+        }
+        
+        return {pre,suc};
+    }
+
 int main() {
 Node* root = new Node(50);
 Node* n30 = root->left = new Node(30);
