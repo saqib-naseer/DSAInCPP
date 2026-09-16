@@ -9,6 +9,64 @@
  
 class Solution {
 public:
+  // Approach 5: Merge two with each other and then result with next
+ ListNode* mergeKLists(vector<ListNode*>& lists) {
+
+        if (lists.empty()) return NULL;
+
+        // Start with the first sorted list as our current merged result.
+        ListNode* mergedHead = lists[0];
+
+        // Merge each remaining list one-by-one into the growing result.
+        //
+        // Example:
+        // L1 + L2       -> L12
+        // L12 + L3      -> L123
+        // L123 + L4     -> L1234
+        for (int i = 1; i < lists.size(); i++) {
+            mergedHead = mergeTwoLists(mergedHead, lists[i]);
+        }
+
+        return mergedHead;
+    }
+
+
+    // Merge two already sorted linked lists.
+    ListNode* mergeTwoLists(ListNode* h1, ListNode* h2) {
+
+        // Dummy node avoids special handling for the first node.
+        ListNode* dummy = new ListNode(0);
+        ListNode* tail = dummy;
+
+        // Compare the current nodes of both lists and
+        // attach the smaller one to the merged result.
+        while (h1 && h2) {
+
+            if (h1->val <= h2->val) {
+                tail->next = h1;
+                h1 = h1->next;
+            }
+            else {
+                tail->next = h2;
+                h2 = h2->next;
+            }
+
+            // Move tail to the newly attached node.
+            tail = tail->next;
+        }
+
+        // One list may still contain nodes.
+        // Since it is already sorted, attach the whole remainder.
+        if (h1) {
+            tail->next = h1;
+        }
+        else {
+            tail->next = h2;
+        }
+
+        return dummy->next;
+    }
+
     // Approach 4: Using Merge Sort
     ListNode* mergeKLists(vector<ListNode*>& lists) {
 
