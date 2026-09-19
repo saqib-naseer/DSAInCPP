@@ -1,0 +1,416 @@
+BIT MANIPULATION — OPERATIONS + XOR + MAX XOR PREP
+
+
+========================
+1. SET ith BIT
+========================
+
+Meaning:
+Turn bit i ON → make it 1.
+
+Formula:
+num | (1 << i)
+
+Why?
+1 << i creates a mask with 1 only at position i.
+OR with 1 forces that position to 1.
+
+Key property:
+x | 1 = 1
+x | 0 = x
+
+Example:
+num = 1010
+Set bit 2:
+
+mask = 0100
+
+1010
+0100 |
+----
+1110
+
+Memory:
+SET → OR with 1
+
+
+========================
+2. CLEAR ith BIT
+========================
+
+Meaning:
+Turn bit i OFF → make it 0.
+
+Formula:
+num & ~(1 << i)
+
+Steps:
+1 << i       → put 1 at position i
+~(1 << i)    → flip mask, so position i becomes 0
+num & mask   → AND with 0 clears that position
+
+Key property:
+x & 0 = 0
+x & 1 = x
+
+Example:
+num = 1101
+Clear bit 2:
+
+1 << 2       = 0100
+~(1 << 2)    = 1011   (conceptually)
+
+1101
+1011 &
+----
+1001
+
+Memory:
+CLEAR → AND with 0
+
+NOTE:
+~ means NOT → flips bits:
+0 → 1
+1 → 0
+
+
+========================
+3. TOGGLE ith BIT
+========================
+
+Meaning:
+Flip bit i.
+
+0 → 1
+1 → 0
+
+Formula:
+num ^ (1 << i)
+
+Why?
+XOR with 1 flips a bit.
+XOR with 0 leaves a bit unchanged.
+
+Key property:
+x ^ 1 = opposite of x
+x ^ 0 = x
+
+Example:
+num = 1010
+Toggle bit 2:
+
+mask = 0100
+
+1010
+0100 ^
+----
+1110
+
+Toggle bit 2 again:
+
+1110
+0100 ^
+----
+1010
+
+Memory:
+TOGGLE → XOR with 1
+
+
+========================
+4. IMPORTANT BIT OPERATIONS
+========================
+
+CHECK:
+num & (1 << i)
+
+EXTRACT exactly 0/1:
+(num >> i) & 1
+
+SET:
+num | (1 << i)
+
+CLEAR:
+num & ~(1 << i)
+
+TOGGLE:
+num ^ (1 << i)
+
+Quick Memory:
+
+CHECK   → &
+SET     → |
+CLEAR   → & ~
+TOGGLE  → ^
+
+
+========================
+5. USEFUL XOR PROPERTIES
+========================
+
+XOR means:
+SAME      → 0
+DIFFERENT → 1
+
+Truth table:
+
+0 ^ 0 = 0
+0 ^ 1 = 1
+1 ^ 0 = 1
+1 ^ 1 = 0
+
+
+Important Properties:
+
+1) x ^ x = 0
+   Same number cancels itself.
+
+   1010
+ ^ 1010
+ -------
+   0000
+
+
+2) x ^ 0 = x
+   XOR with zero changes nothing.
+
+   1010
+ ^ 0000
+ -------
+   1010
+
+
+3) x ^ 1 flips ONE BIT
+
+   0 ^ 1 = 1
+   1 ^ 1 = 0
+
+
+4) bit ^ 1 gives OPPOSITE bit
+
+   0 ^ 1 = 1
+   1 ^ 1 = 0
+
+So:
+int opposite = bit ^ 1;
+
+Useful in Binary Trie when searching for Maximum XOR.
+
+
+========================
+6. MAXIMUM XOR — CORE IDEA
+========================
+
+To make an XOR bit = 1,
+we need DIFFERENT bits.
+
+Current bit  → Prefer
+     0       →   1
+     1       →   0
+
+Because:
+
+0 ^ 1 = 1
+1 ^ 0 = 1
+
+So for Maximum XOR:
+
+ALWAYS TRY THE OPPOSITE BIT FIRST.
+
+
+Example:
+
+My bit = 0
+Trie has 1 → choose 1 because 0^1 = 1
+
+My bit = 1
+Trie has 0 → choose 0 because 1^0 = 1
+
+
+========================
+7. MSB AND LSB
+========================
+
+MSB = Most Significant Bit
+      Highest-value / left-side bit
+
+LSB = Least Significant Bit
+      Lowest-value / rightmost bit
+
+Example:
+
+Bit Index:   3   2   1   0
+Value:       8   4   2   1
+Binary:      1   0   1   0
+             ↑           ↑
+            MSB         LSB
+
+
+========================
+8. WHY MAX XOR GOES MSB → LSB
+========================
+
+Higher bits are more valuable.
+
+Example:
+
+1000 = 8
+0111 = 7
+
+Even though 0111 has THREE 1s,
+1000 is still larger.
+
+Reason:
+A 1 at a higher bit can be worth more than
+all lower bits combined.
+
+Therefore when maximizing XOR:
+Try to produce 1 at the HIGHEST bit first.
+
+Traversal:
+
+for (int i = highestBit; i >= 0; i--)
+
+Meaning:
+MSB → LSB
+
+
+========================
+9. EXTRACTING BITS FOR BINARY TRIE
+========================
+
+Very important:
+
+int bit = (num >> i) & 1;
+
+Meaning:
+
+num >> i
+→ bring bit i to the rightmost position
+
+& 1
+→ keep only that bit
+
+Result:
+bit is exactly 0 or 1.
+
+Example:
+
+10 = 1010
+
+bit 3 → (10 >> 3) & 1 = 1
+bit 2 → (10 >> 2) & 1 = 0
+bit 1 → (10 >> 1) & 1 = 1
+bit 0 → (10 >> 0) & 1 = 0
+
+
+========================
+10. CONNECTION TO BINARY TRIE
+========================
+
+Normal Trie:
+children[26]
+→ one path for each letter a-z
+
+Binary Trie:
+children[2]
+→ only two possible paths:
+
+children[0]
+children[1]
+
+A number is inserted bit-by-bit.
+
+Example:
+10 = 1010
+
+ROOT
+ |
+ 1
+ |
+ 0
+ |
+ 1
+ |
+ 0
+
+Use:
+int bit = (num >> i) & 1;
+
+Then move through:
+children[bit]
+
+
+========================
+11. MAX XOR + BINARY TRIE MENTAL FLOW
+========================
+
+For each bit from MSB → LSB:
+
+1. Extract current bit:
+   bit = (num >> i) & 1
+
+2. Find opposite:
+   opposite = bit ^ 1
+
+3. Prefer opposite Trie child.
+
+4. If opposite exists:
+   take it → XOR bit becomes 1
+
+5. Otherwise:
+   take same bit → XOR bit becomes 0
+
+
+Mental Picture:
+
+Number
+  ↓
+Extract bits MSB → LSB
+  ↓
+Current bit = 0? → Hope Trie has 1
+Current bit = 1? → Hope Trie has 0
+  ↓
+Opposite exists → take it
+  ↓
+Get 1 at that XOR position
+
+
+========================
+12. MOST IMPORTANT REVISION RULES
+========================
+
+• Bit positions count RIGHT → LEFT starting from 0.
+
+• 1 << i
+  → creates a mask with bit i ON.
+
+• (num >> i) & 1
+  → extracts bit i as exactly 0 or 1.
+
+• SET    → OR with 1
+• CLEAR  → AND with 0
+• TOGGLE → XOR with 1
+
+• XOR:
+  SAME → 0
+  DIFFERENT → 1
+
+• x ^ x = 0
+• x ^ 0 = x
+• bit ^ 1 = opposite bit
+
+• Maximum XOR wants DIFFERENT bits.
+
+• Current 0 → prefer 1
+• Current 1 → prefer 0
+
+• Maximum XOR processes MSB → LSB
+  because higher bits have greater value.
+
+• Binary Trie has only:
+  children[0]
+  children[1]
+
+• Normal Trie stores characters.
+  Binary Trie stores paths of bits.

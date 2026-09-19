@@ -1,0 +1,591 @@
+BIT MANIPULATION — QUICK RECALL
+================================
+
+BINARY BASICS
+-------------
+• Binary digits = 0 / 1
+• Bit positions count RIGHT → LEFT starting from 0.
+
+Bit Index:    4    3    2    1    0
+Bit Value:   16    8    4    2    1
+
+• Value of bit i = 2^i
+• 1 = ON
+• 0 = OFF
+
+
+DECIMAL ↔ BINARY
+----------------
+Example:
+13 = 1101
+     8 + 4 + 0 + 1
+
+Useful powers of 2:
+2^0  = 1
+2^1  = 2
+2^2  = 4
+2^3  = 8
+2^4  = 16
+2^5  = 32
+2^6  = 64
+2^7  = 128
+2^8  = 256
+2^9  = 512
+2^10 = 1024
+
+
+BINARY COUNTING PATTERN
+-----------------------
+From RIGHT:
+
+bit 0 → changes every 1 number
+bit 1 → changes every 2 numbers
+bit 2 → changes every 4 numbers
+bit 3 → changes every 8 numbers
+
+Example:
+0 = 0000
+1 = 0001
+2 = 0010
+3 = 0011
+4 = 0100
+5 = 0101
+6 = 0110
+7 = 0111
+8 = 1000
+
+
+OPERATORS
+---------
+&   AND
+|   OR
+^   XOR
+~   NOT
+<<  Left Shift
+>>  Right Shift
+
+
+AND &
+-----
+1 only when BOTH are 1.
+
+0 & 0 = 0
+0 & 1 = 0
+1 & 0 = 0
+1 & 1 = 1
+
+Quick:
+x & 0 = 0
+x & 1 = x
+
+Think:
+AND → BOTH
+
+
+OR |
+----
+1 when ANY is 1.
+
+0 | 0 = 0
+0 | 1 = 1
+1 | 0 = 1
+1 | 1 = 1
+
+Quick:
+x | 0 = x
+x | 1 = 1
+
+Think:
+OR → ANY
+
+
+XOR ^
+-----
+1 when bits are DIFFERENT.
+
+0 ^ 0 = 0
+0 ^ 1 = 1
+1 ^ 0 = 1
+1 ^ 1 = 0
+
+Think:
+SAME      → 0
+DIFFERENT → 1
+
+
+IMPORTANT XOR PROPERTIES
+------------------------
+x ^ x = 0
+x ^ 0 = x
+
+bit ^ 1 = opposite bit
+
+0 ^ 1 = 1
+1 ^ 1 = 0
+
+So:
+int opposite = bit ^ 1;
+
+Useful for:
+• Toggle
+• Finding opposite bit
+• Maximum XOR / Binary Trie
+
+
+NOT ~
+-----
+Flips bits:
+
+0 → 1
+1 → 0
+
+Conceptually:
+0100
+  ~
+1011
+
+Main use learned:
+CLEAR ith bit.
+
+
+LEFT SHIFT <<
+--------------
+Moves bits LEFT.
+
+1 << 0 = 0001 = 1
+1 << 1 = 0010 = 2
+1 << 2 = 0100 = 4
+1 << 3 = 1000 = 8
+
+KEY:
+1 << i
+→ create a 1 at position i
+→ commonly used as a MASK
+
+
+RIGHT SHIFT >>
+---------------
+Moves bits RIGHT.
+
+1100 >> 1 = 0110
+1100 >> 2 = 0011
+
+For non-negative integers:
+
+num >> 1 ≈ num / 2
+num >> 2 ≈ num / 4
+
+Important use:
+Move desired bit to rightmost position.
+
+
+MASK
+----
+Mask = helper binary pattern used to focus on selected bit(s).
+
+Most common mask:
+
+1 << i
+
+Example:
+i = 2
+
+1 << 2 = 0100
+
+Think:
+"Point at bit i."
+
+
+CHECK ith BIT
+-------------
+Method 1:
+
+num & (1 << i)
+
+Result:
+0        → bit OFF
+non-zero → bit ON
+
+
+EXTRACT ith BIT
+---------------
+VERY IMPORTANT:
+
+(num >> i) & 1
+
+Returns exactly:
+0 or 1
+
+Mental steps:
+
+num >> i
+→ bring bit i to rightmost position
+
+& 1
+→ keep only rightmost bit
+
+Example:
+13 = 1101
+
+bit 2:
+(13 >> 2) & 1 = 1
+
+bit 1:
+(13 >> 1) & 1 = 0
+
+
+CHECK vs EXTRACT
+----------------
+num & (1 << i)
+→ tells OFF / ON using 0 or non-zero
+
+(num >> i) & 1
+→ gives actual bit as 0 or 1
+
+For Binary Trie:
+Prefer:
+int bit = (num >> i) & 1;
+
+
+SET ith BIT
+-----------
+Turn bit i → 1
+
+num | (1 << i)
+
+Short:
+num |= (1 << i);
+
+Memory:
+SET → OR with 1
+
+
+CLEAR ith BIT
+-------------
+Turn bit i → 0
+
+num & ~(1 << i)
+
+Short:
+num &= ~(1 << i);
+
+Memory:
+CLEAR → AND with 0
+
+
+TOGGLE ith BIT
+--------------
+Flip:
+
+0 → 1
+1 → 0
+
+num ^ (1 << i)
+
+Short:
+num ^= (1 << i);
+
+Memory:
+TOGGLE → XOR with 1
+
+
+CORE FORMULAS
+-------------
+CHECK:
+num & (1 << i)
+
+EXTRACT:
+(num >> i) & 1
+
+SET:
+num | (1 << i)
+
+CLEAR:
+num & ~(1 << i)
+
+TOGGLE:
+num ^ (1 << i)
+
+
+ULTRA-SHORT MEMORY
+------------------
+CHECK   → &
+SET     → |
+CLEAR   → & ~
+TOGGLE  → ^
+
+1 << i
+→ target bit i
+
+
+ODD / EVEN USING BITS
+---------------------
+Check bit 0:
+
+num & 1
+
+Last bit:
+0 → EVEN
+1 → ODD
+
+Example:
+10 = 1010 → even
+11 = 1011 → odd
+
+
+MSB / LSB
+---------
+MSB = Most Significant Bit
+→ highest-value bit / left side
+
+LSB = Least Significant Bit
+→ lowest-value bit / right side
+
+Example:
+
+Bit:     3  2  1  0
+Value:   8  4  2  1
+         ↑        ↑
+        MSB      LSB
+
+
+WHY HIGHER BITS MATTER
+----------------------
+1000 = 8
+0111 = 7
+
+A higher 1 can be worth more than
+ALL lower bits combined.
+
+Therefore for maximizing a binary value:
+Prioritize higher bits first.
+
+
+MAXIMUM XOR
+-----------
+XOR wants DIFFERENT bits to produce 1.
+
+Current bit     Prefer
+    0      →      1
+    1      →      0
+
+Rule:
+MAX XOR → TRY OPPOSITE BIT
+
+Get opposite:
+bit ^ 1
+
+
+WHY MAX XOR USES MSB → LSB
+---------------------------
+Higher XOR bits contribute more value.
+
+Therefore process:
+
+highest bit → ... → bit 0
+
+Example loop:
+
+for (int i = highestBit; i >= 0; i--) {
+    int bit = (num >> i) & 1;
+}
+
+
+BINARY TRIE CONNECTION
+----------------------
+Normal Trie:
+TrieNode* children[26];
+→ a-z
+
+Binary Trie:
+TrieNode* children[2];
+→ 0 / 1
+
+Extract current bit:
+
+int bit = (num >> i) & 1;
+
+Then:
+children[bit]
+
+
+BINARY TRIE INSERT MENTAL MODEL
+-------------------------------
+Number:
+10 = 1010
+
+Path:
+
+ROOT
+ ↓
+ 1
+ ↓
+ 0
+ ↓
+ 1
+ ↓
+ 0
+
+Process bits:
+MSB → LSB
+
+
+MAX XOR + BINARY TRIE FLOW
+--------------------------
+For each bit MSB → LSB:
+
+1. Extract:
+   bit = (num >> i) & 1;
+
+2. Opposite:
+   opposite = bit ^ 1;
+
+3. If children[opposite] exists:
+   → take opposite
+   → XOR gets 1 at this bit
+
+4. Otherwise:
+   → take children[bit]
+   → XOR gets 0 at this bit
+
+
+MAX XOR GOLDEN RULE
+-------------------
+Current 0 → search for 1
+Current 1 → search for 0
+
+Opposite exists?
+YES → take it
+NO  → take same bit
+
+
+INTERVIEW MENTAL CHECKLIST
+--------------------------
+When seeing a bit problem, ask:
+
+• Do I need to CHECK a bit?
+• Do I need to EXTRACT a bit?
+• Do I need to SET / CLEAR / TOGGLE?
+• Can XOR cancellation help?
+• Do I care about opposite bits?
+• Do higher bits matter more?
+• Should I process MSB → LSB?
+• Is this really a Binary Trie problem?
+
+
+MOST IMPORTANT THINGS TO REMEMBER
+---------------------------------
+1. Bit positions start from RIGHT at 0.
+
+2. 1 << i
+   → mask with bit i = 1.
+
+3. (num >> i) & 1
+   → extract ith bit.
+
+4. SET:
+   num | (1 << i)
+
+5. CLEAR:
+   num & ~(1 << i)
+
+6. TOGGLE:
+   num ^ (1 << i)
+
+7. XOR:
+   SAME = 0
+   DIFFERENT = 1
+
+8. x ^ x = 0
+   x ^ 0 = x
+
+9. bit ^ 1
+   → opposite bit.
+
+10. Maximum XOR:
+    prefer OPPOSITE bit.
+
+11. Maximum XOR:
+    process MSB → LSB.
+
+12. Binary Trie:
+    children[2] = {0, 1}.
+
+
+ONE-MINUTE PRE-INTERVIEW RECALL
+-------------------------------
+&  → BOTH
+|  → ANY
+^  → DIFFERENT
+~  → FLIP
+
+1 << i              → mask / target bit i
+(num >> i) & 1      → extract ith bit
+
+num & (1 << i)      → CHECK
+num | (1 << i)      → SET
+num & ~(1 << i)     → CLEAR
+num ^ (1 << i)      → TOGGLE
+
+x ^ x = 0
+x ^ 0 = x
+bit ^ 1 = opposite
+
+num & 1:
+0 = even
+1 = odd
+
+MAX XOR:
+different bits → 1
+0 wants 1
+1 wants 0
+MSB → LSB
+
+BINARY TRIE:
+children[2]
+extract bit → children[bit]
+
+------------------------------------------------------------------------------------------------
+
+                                BIT MANIPULATION QUICK RECALL
+
+1 << i              → mask / 1 at bit i
+(num >> i) & 1      → extract ith bit
+
+num | (1 << i)      → SET
+num & ~(1 << i)     → CLEAR
+num ^ (1 << i)      → TOGGLE
+
+XOR:
+same = 0
+different = 1
+
+bit ^ 1             → opposite bit
+
+MAX XOR:
+Prefer opposite bit.
+Process MSB → LSB.
+
+Binary Trie:
+children[2] → 0 / 1
+
+
+-----------------------------------------------------------------------------------------
+C++ int → typically 32 bits
+
+Bit positions:
+31 30 29 ... 2 1 0
+
+Signed int:
+bit 31 participates in representing sign
+0 → non-negative
+1 → negative
+
+If problem only has non-negative signed values
+within 0 ... 2^31-1:
+use value bits 30 → 0
+
+If full 32-bit patterns matter:
+bit 31 may matter too.
+
+Always check problem constraints.

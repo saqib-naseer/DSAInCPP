@@ -1,0 +1,159 @@
+BINARY BASICS
+• Binary uses only 0 and 1.
+• Bit positions are counted RIGHT → LEFT, starting from 0.
+
+Bit Index:    3   2   1   0
+Bit Value:    8   4   2   1
+
+Example:
+13 = 1101
+     8+4+0+1 = 13
+
+Think: Each bit tells whether that power of 2 is ON (1) or OFF (0).
+
+
+BINARY COUNTING PATTERN
+From right to left:
+Bit 0 → changes every 1 number:  0 1 0 1...
+Bit 1 → changes every 2 numbers: 0 0 1 1...
+Bit 2 → changes every 4 numbers: 0 0 0 0 1 1 1 1...
+Bit 3 → changes every 8 numbers.
+
+
+BIT OPERATORS
+&  AND → 1 only if BOTH bits are 1
+|  OR  → 1 if ANY bit is 1
+^  XOR → 1 if bits are DIFFERENT
+
+Memory:
+AND = BOTH
+OR  = ANY
+XOR = DIFFERENT
+
+XOR:
+0 ^ 0 = 0
+1 ^ 1 = 0
+0 ^ 1 = 1
+1 ^ 0 = 1
+
+
+LEFT SHIFT <<
+Moves bits LEFT.
+
+1 << 0 = 0001 = 1
+1 << 1 = 0010 = 2
+1 << 2 = 0100 = 4
+1 << 3 = 1000 = 8
+
+Key:
+1 << i → puts a single 1 at bit position i.
+
+
+MASK
+A mask = helper binary pattern used to focus on a particular bit.
+
+Example: Check bit 2
+
+number = 1101
+mask   = 0100   ← 1 << 2
+
+1101
+0100 &
+----
+0100 → non-zero → bit 2 is ON
+
+Think of mask as a flashlight pointing at the bit we care about.
+
+
+CHECK ith BIT — METHOD 1
+
+num & (1 << i)
+
+Example:
+13 = 1101
+Check bit 2:
+
+1 << 2 = 0100
+
+1101 & 0100 = 0100 → ON
+
+
+RIGHT SHIFT >>
+Moves bits RIGHT.
+
+12 = 1100
+
+12 >> 1 = 0110 = 6
+12 >> 2 = 0011 = 3
+
+For positive numbers:
+>> 1 ≈ divide by 2
+>> 2 ≈ divide by 4
+
+
+EXTRACT ith BIT — VERY IMPORTANT
+
+(num >> i) & 1
+
+Step 1:
+num >> i
+→ move desired bit to RIGHTMOST position.
+
+Step 2:
+& 1
+→ keep/check only the rightmost bit.
+
+Result is exactly 0 or 1.
+
+Example:
+13 = 1101
+
+bit 2:
+(13 >> 2) & 1
+1101 >> 2 = 0011
+0011 & 0001 = 1
+
+Therefore bit 2 = 1.
+
+
+EXAMPLE: 10 = 1010
+
+Bit index:       3 2 1 0
+                 1 0 1 0
+
+(10 >> 0) & 1 = 0
+(10 >> 1) & 1 = 1
+(10 >> 2) & 1 = 0
+(10 >> 3) & 1 = 1
+
+
+MOST IMPORTANT FOR BINARY TRIE
+
+int bit = (num >> i) & 1;
+
+Meaning:
+"Give me the bit at position i."
+
+Normal Trie:
+children[0...25] → letters a-z
+
+Binary Trie:
+children[0...1]  → bits 0 or 1
+
+So extracted bit tells us whether to move to:
+children[0] or children[1].
+
+-------------------------------------------------------------
+              Tiny memory section
+
+&  = BOTH
+|  = ANY
+^  = DIFFERENT
+
+1 << i          → create 1 at position i
+num & (1 << i)  → check whether ith bit is ON
+(num >> i) & 1  → extract ith bit as exactly 0 or 1
+
+MASK = helper pattern to focus on selected bit(s)
+
+Bit positions always count from RIGHT, starting at 0.
