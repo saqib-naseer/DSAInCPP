@@ -1,0 +1,1699 @@
+============================================================
+DSA GRAPHS - MASTER QUICK REVISION NOTES
+============================================================
+
+Node/Vertex is same THING
+
+
+PURPOSE:
+Use this file when revising Graphs after a gap.
+Focus on:
+- What is the concept?
+- Why do we need it?
+- How does it work?
+- What pattern should I recognize?
+- What should I learn next?
+
+
+============================================================
+0. WHAT IS A GRAPH?
+============================================================
+
+A Graph is a collection of:
+
+1. Vertices / Nodes
+2. Edges / Connections
+
+Example:
+
+    1 ----- 2
+    |       |
+    |       |
+    4 ----- 3
+
+Nodes = {1, 2, 3, 4}
+
+Edges:
+1-2
+2-3
+3-4
+4-1
+
+
+------------------------------------------------------------
+TREE VS GRAPH
+------------------------------------------------------------
+
+Tree:
+- Special type of graph.
+- Connected.
+- No cycles.
+- Usually think parent -> children.
+- N nodes have N-1 edges.
+- Usually don't need visited[] when traversing downward.
+
+Graph:
+- Can have cycles.
+- Can be disconnected.
+- No required parent/child relationship.
+- A node can connect to many other nodes.
+- Usually need visited[] during BFS/DFS.
+
+IMPORTANT:
+
+In a graph:
+
+1 -> 2 -> 3 -> 1
+
+Without visited[], traversal could continue forever.
+
+Therefore:
+
+visited[node] = true
+
+is one of the most important ideas in Graphs.
+
+
+============================================================
+1. GRAPH TYPES
+============================================================
+
+UNDIRECTED GRAPH
+
+Edge works both ways.
+
+1 ----- 2
+
+Means:
+
+1 -> 2
+2 -> 1
+
+
+DIRECTED GRAPH
+
+Edge has direction.
+
+1 -----> 2
+
+Means:
+
+1 can go to 2.
+
+It does NOT automatically mean:
+
+2 can go to 1.
+
+
+WEIGHTED GRAPH
+
+Edges contain costs/distances/weights.
+
+Example:
+
+1 --5--> 2
+
+Weight = 5
+
+
+UNWEIGHTED GRAPH
+
+Edges don't have weights.
+
+1 ----- 2
+
+
+CONNECTED GRAPH
+
+Every node can be reached from every other node.
+
+
+DISCONNECTED GRAPH
+
+Graph contains separate components.
+
+Example:
+
+1 -- 2       4 -- 5
+     |
+     3
+
+There are 2 connected components.
+
+
+CYCLIC GRAPH
+
+Contains a cycle.
+
+1 -- 2
+|    |
+4 -- 3
+
+
+ACYCLIC GRAPH
+
+Contains no cycle.
+
+
+DAG
+
+Directed Acyclic Graph
+
+= Directed graph with NO cycle.
+
+Very important for:
+- Topological Sort
+- Dependency problems
+- Some shortest path problems
+
+
+============================================================
+2. GRAPH REPRESENTATION
+============================================================
+
+We need a way to store:
+
+"Which nodes are connected?"
+
+            2 Methods To Represent
+------------------------------------------------------------
+A. ADJACENCY MATRIX
+------------------------------------------------------------
+
+For N nodes:
+
+matrix[N][N]
+
+Example:
+
+1 -- 2
+|
+3
+
+Matrix roughly:
+
+    1  2  3
+
+1   0  1  1
+2   1  0  0
+3   1  0  0
+
+matrix[u][v] = 1
+
+means:
+
+u and v are connected.
+
+
+Advantages:
+- Very easy to understand.
+- Checking whether edge exists is O(1).
+
+Disadvantage:
+- Uses O(V^2) memory.
+
+Usually bad for large sparse graphs.
+
+
+------------------------------------------------------------
+B. ADJACENCY LIST
+------------------------------------------------------------
+
+Most commonly used representation.
+
+Example:
+
+1 -- 2
+|
+3
+
+Store:
+
+1 -> [2,3]
+2 -> [1]
+3 -> [1]
+
+C++:
+
+vector<vector<int>> adj(V);
+
+For undirected edge u-v:
+
+adj[u].push_back(v);
+adj[v].push_back(u);
+
+For directed u -> v:
+
+adj[u].push_back(v);
+
+ONLY add:
+
+u -> v
+
+
+Weighted graph may store:
+
+adj[u].push_back({v, weight});
+
+
+SPACE:
+
+Adjacency list:
+O(V + E)
+
+Usually preferred in interviews.
+
+
+============================================================
+3. BFS - BREADTH FIRST SEARCH
+============================================================
+
+BFS explores graph LEVEL BY LEVEL.
+
+Uses:
+
+QUEUE + VISITED
+
+
+Example:
+
+        1
+       / \
+      2   3
+     / \
+    4   5
+
+Possible BFS:
+
+1 2 3 4 5
+
+
+CORE TEMPLATE:
+
+queue<int> q;
+vector<bool> visited(V, false);
+
+q.push(start);
+visited[start] = true;
+
+while (!q.empty()) {
+
+    int node = q.front();
+    q.pop();
+
+    for (int neighbor : adj[node]) {
+
+        if (!visited[neighbor]) {
+
+            visited[neighbor] = true;
+            q.push(neighbor);
+        }
+    }
+}
+
+
+IMPORTANT:
+
+Usually mark visited when PUSHING into queue:
+
+visited[neighbor] = true;
+q.push(neighbor);
+
+This prevents the same node from being pushed repeatedly.
+
+
+BFS IS USEFUL FOR:
+
+- Level-order traversal
+- Shortest path in UNWEIGHTED graph
+- Grid shortest paths
+- Rotten Oranges
+- Multi-source BFS
+- Cycle detection
+- Bipartite checking
+- Kahn's Topological Sort
+
+
+TIME:
+O(V + E)
+
+SPACE:
+O(V)
+
+
+============================================================
+4. DFS - DEPTH FIRST SEARCH
+============================================================
+
+DFS goes as DEEP as possible before returning.
+
+Usually uses:
+
+RECURSION + VISITED
+
+
+CORE TEMPLATE:
+
+void dfs(int node) {
+
+    visited[node] = true;
+
+    for (int neighbor : adj[node]) {
+
+        if (!visited[neighbor]) {
+            dfs(neighbor);
+        }
+    }
+}
+
+
+Think:
+
+Visit me
+    ↓
+Visit one unvisited neighbor
+    ↓
+Go deeper
+    ↓
+No more?
+    ↓
+Return to parent
+    ↓
+Try next neighbor
+
+
+VERY SIMILAR TO TREE RECURSION.
+
+Tree:
+
+dfs(root->left);
+dfs(root->right);
+
+Graph:
+
+for every neighbor:
+    dfs(neighbor);
+
+
+Main difference:
+
+GRAPH NEEDS visited[]
+
+because graphs may contain cycles.
+
+
+DFS IS USEFUL FOR:
+
+- Connected components
+- Number of Islands
+- Cycle detection
+- Topological Sort
+- Bipartite graph
+- Bridges
+- Articulation points
+- SCC
+- General graph exploration
+
+
+TIME:
+O(V + E)
+
+SPACE:
+O(V)
+
+
+============================================================
+5. CONNECTED COMPONENTS
+============================================================
+
+A connected component is a group of nodes that can reach each other.
+
+Example:
+
+1 -- 2       4 -- 5
+     |
+     3
+
+Components:
+
+{1,2,3}
+{4,5}
+
+Answer = 2 components.
+
+
+PATTERN:
+
+for every node:
+
+    if not visited:
+
+        run DFS/BFS
+        components++
+
+
+Pseudo:
+
+for (int i = 0; i < V; i++) {
+
+    if (!visited[i]) {
+
+        dfs(i);
+
+        count++;
+    }
+}
+
+
+KEY IDEA:
+
+One complete DFS/BFS discovers ONE whole connected component.
+
+
+============================================================
+6. GRID PROBLEMS
+============================================================
+
+A 2D grid can be treated like a GRAPH.
+
+Example:
+
+grid[row][col]
+
+Each cell = NODE.
+
+Its neighbors may be:
+
+UP
+DOWN
+LEFT
+RIGHT
+
+Directions:
+
+int dr[] = {-1, 1, 0, 0};
+int dc[] = {0, 0, -1, 1};
+
+
+For cell:
+
+(r,c)
+
+neighbors:
+
+(r-1,c)
+(r+1,c)
+(r,c-1)
+(r,c+1)
+
+
+Always check:
+
+- row inside grid?
+- column inside grid?
+- already visited?
+- valid cell type?
+
+
+------------------------------------------------------------
+NUMBER OF ISLANDS
+------------------------------------------------------------
+
+Each land cell is a node.
+
+When unvisited land is found:
+
+DFS/BFS from it.
+
+One traversal discovers one complete island.
+
+Then:
+
+islands++
+
+
+------------------------------------------------------------
+FLOOD FILL
+------------------------------------------------------------
+
+Start from one cell.
+
+DFS/BFS all connected cells having the required original value.
+
+Change their value/color.
+
+
+------------------------------------------------------------
+ROTTEN ORANGES
+------------------------------------------------------------
+
+Classic MULTI-SOURCE BFS.
+
+Put ALL initially rotten oranges into queue first.
+
+Then spread level-by-level.
+
+Why BFS?
+
+Because we care about minimum time / levels.
+
+
+------------------------------------------------------------
+01 MATRIX / DISTANCE PROBLEMS
+------------------------------------------------------------
+
+Often:
+
+Start BFS simultaneously from multiple source cells.
+
+This is called:
+
+MULTI-SOURCE BFS.
+
+
+============================================================
+7. CYCLE DETECTION - UNDIRECTED GRAPH
+============================================================
+
+Important problem:
+
+If I encounter a visited neighbor, is it automatically a cycle?
+
+NO.
+
+Because that neighbor might simply be my PARENT.
+
+
+Example:
+
+1 -- 2
+
+DFS:
+
+1 -> 2
+
+From 2 we see 1 again.
+
+But that's not a cycle.
+
+1 is simply 2's parent.
+
+
+Therefore carry:
+
+(node, parent)
+
+
+RULE:
+
+For neighbor:
+
+if not visited:
+    explore it
+
+else if neighbor != parent:
+    CYCLE FOUND
+
+
+Can solve using:
+
+- BFS
+- DFS
+
+
+============================================================
+8. CYCLE DETECTION - DIRECTED GRAPH
+============================================================
+
+Different from undirected graphs.
+
+visited[] alone isn't enough.
+
+Need to know:
+
+"Is this node currently in my active DFS path?"
+
+
+Common approach:
+
+visited[]
+pathVisited[]
+
+
+visited[node]:
+Have I ever visited this node?
+
+pathVisited[node]:
+Is this node currently in my recursion path?
+
+
+If during DFS:
+
+neighbor is already pathVisited
+
+→ cycle exists.
+
+
+When leaving node:
+
+pathVisited[node] = false;
+
+
+This is sometimes called:
+
+recursion stack / DFS path tracking.
+
+
+============================================================
+9. BIPARTITE GRAPH
+============================================================
+
+A graph is bipartite if nodes can be divided into TWO groups such that:
+
+No edge connects nodes belonging to the same group.
+
+
+Think of coloring nodes:
+
+Color 0
+Color 1
+
+
+For every edge:
+
+neighbors must have opposite colors.
+
+
+Example:
+
+1 -- 2
+|    |
+4 -- 3
+
+Can color:
+
+1 = RED
+2 = BLUE
+3 = RED
+4 = BLUE
+
+Therefore bipartite.
+
+
+If:
+
+neighbor has no color:
+    give opposite color
+
+else if:
+    neighbor has SAME color
+    → NOT bipartite
+
+
+Can use:
+
+BFS or DFS.
+
+
+IMPORTANT FACT:
+
+An undirected graph with an ODD-LENGTH cycle is NOT bipartite.
+
+
+============================================================
+10. TOPOLOGICAL SORT
+============================================================
+
+Topological Sort gives an ordering where:
+
+For every directed edge:
+
+u -> v
+
+u appears BEFORE v.
+
+
+ONLY works for:
+
+DAG
+Directed Acyclic Graph
+
+
+Example:
+
+Study Basics -> Learn Graphs -> Interview
+
+Valid order:
+
+Study Basics
+Learn Graphs
+Interview
+
+
+Useful for:
+
+- Dependencies
+- Course prerequisites
+- Build systems
+- Scheduling
+
+
+TWO MAIN METHODS:
+
+1. DFS Topological Sort
+2. Kahn's Algorithm (BFS)
+
+
+------------------------------------------------------------
+A. DFS TOPOLOGICAL SORT
+------------------------------------------------------------
+
+DFS completely explores children first.
+
+When finished with node:
+
+push node into stack.
+
+Finally reverse/pop stack.
+
+Key idea:
+
+CHILD finishes before PARENT is added.
+
+
+------------------------------------------------------------
+B. KAHN'S ALGORITHM
+------------------------------------------------------------
+
+Uses:
+
+INDEGREE + QUEUE
+
+
+Indegree:
+
+Number of incoming edges to a node.
+
+
+Steps:
+
+1. Calculate indegree of every node.
+2. Put all indegree=0 nodes into queue.
+3. Remove node.
+4. Add it to result.
+5. Reduce indegree of its neighbors.
+6. If neighbor becomes 0, push it.
+7. Continue.
+
+
+Important:
+
+If processed nodes < V:
+
+DIRECTED CYCLE EXISTS.
+
+
+============================================================
+11. COURSE SCHEDULE PATTERN
+============================================================
+
+Courses/prerequisites form a directed graph.
+
+Example:
+
+To take B, first take A.
+
+A -> B
+
+
+Question often becomes:
+
+"Can all courses be completed?"
+
+Translation:
+
+Does directed graph contain a cycle?
+
+No cycle:
+Possible.
+
+Cycle:
+Impossible.
+
+
+Usually solved with:
+
+- Kahn's Algorithm
+OR
+- Directed DFS cycle detection
+
+
+============================================================
+12. SHORTEST PATH - BIG PICTURE
+============================================================
+
+Do NOT automatically use Dijkstra.
+
+Choose algorithm based on graph type.
+
+
+UNWEIGHTED GRAPH:
+→ BFS
+
+
+DAG:
+→ Topological Sort + relaxation
+
+
+NON-NEGATIVE WEIGHTS:
+→ Dijkstra
+
+
+NEGATIVE EDGES:
+→ Bellman-Ford
+
+
+ALL-PAIRS SHORTEST PATH:
+→ Floyd-Warshall
+
+
+Remember:
+
+Graph type determines shortest-path algorithm.
+
+
+============================================================
+13. SHORTEST PATH IN UNWEIGHTED GRAPH
+============================================================
+
+Use BFS.
+
+Why?
+
+BFS explores:
+
+distance 0
+distance 1
+distance 2
+distance 3
+...
+
+Therefore first shortest discovery is optimal when each edge has equal cost.
+
+
+============================================================
+14. DIJKSTRA'S ALGORITHM
+============================================================
+
+Used for:
+
+Shortest paths from ONE source in a weighted graph with NON-NEGATIVE edge weights.
+
+
+Usually uses:
+
+MIN HEAP / PRIORITY QUEUE
+
+
+Store:
+
+{distance, node}
+
+
+Core concept:
+
+Take currently closest node.
+
+Try to improve distances to its neighbors.
+
+
+RELAXATION:
+
+if:
+
+dist[node] + weight < dist[neighbor]
+
+then:
+
+dist[neighbor] =
+    dist[node] + weight
+
+
+IMPORTANT:
+
+Standard Dijkstra does NOT support negative edge weights.
+
+
+============================================================
+15. SHORTEST PATH IN DAG
+============================================================
+
+For a weighted DAG:
+
+1. Find Topological Order.
+2. Process nodes in that order.
+3. Relax outgoing edges.
+
+Why?
+
+Dependencies are processed in correct order.
+
+
+============================================================
+16. BELLMAN-FORD
+============================================================
+
+Finds shortest paths from one source.
+
+Can handle:
+
+NEGATIVE edge weights.
+
+
+Core idea:
+
+Relax ALL edges repeatedly.
+
+Repeat:
+
+V - 1 times.
+
+
+Why V-1?
+
+A simple shortest path can contain at most V-1 edges.
+
+
+Important feature:
+
+Can detect NEGATIVE WEIGHT CYCLES.
+
+After V-1 rounds:
+
+Try relaxing again.
+
+If distance can still improve:
+
+negative cycle exists.
+
+
+Complexity:
+
+O(V * E)
+
+Slower than Dijkstra.
+
+
+============================================================
+17. FLOYD-WARSHALL
+============================================================
+
+Used for:
+
+ALL-PAIRS shortest paths.
+
+Meaning:
+
+Shortest distance:
+
+every node -> every other node.
+
+
+Uses dynamic programming style.
+
+Core idea:
+
+Try every node as an intermediate node.
+
+
+Formula:
+
+dist[i][j] =
+min(
+    dist[i][j],
+    dist[i][k] + dist[k][j]
+)
+
+
+Complexity:
+
+O(V^3)
+
+Usually useful when graph isn't extremely large.
+
+
+============================================================
+18. MINIMUM SPANNING TREE - MST
+============================================================
+
+For a connected weighted UNDIRECTED graph.
+
+Goal:
+
+Connect ALL vertices:
+
+- with minimum total edge weight
+- without cycles
+
+
+A spanning tree with V vertices contains:
+
+V - 1 edges.
+
+
+Two famous algorithms:
+
+1. Prim's
+2. Kruskal's
+
+
+============================================================
+19. PRIM'S ALGORITHM
+============================================================
+
+Think:
+
+"Grow one tree."
+
+
+Start from a node.
+
+Repeatedly choose the cheapest edge that connects the current tree to a new node.
+
+
+Usually uses:
+
+MIN HEAP + VISITED
+
+
+Conceptually similar to:
+
+Grow MST node-by-node.
+
+
+============================================================
+20. KRUSKAL'S ALGORITHM
+============================================================
+
+Think:
+
+"Pick cheapest edges globally."
+
+
+Steps:
+
+1. Sort all edges by weight.
+2. Take smallest edge.
+3. Add it IF it doesn't create a cycle.
+4. Continue until MST has V-1 edges.
+
+
+Question:
+
+How do we quickly know whether adding an edge creates a cycle?
+
+Answer:
+
+DSU / Union-Find.
+
+
+============================================================
+21. DISJOINT SET UNION - DSU
+============================================================
+
+Also called:
+
+Union-Find.
+
+
+Purpose:
+
+Quickly determine:
+
+"Do these two nodes belong to the same connected component?"
+
+
+Main operations:
+
+find(node)
+
+union(u,v)
+
+
+------------------------------------------------------------
+PARENT ARRAY
+------------------------------------------------------------
+
+Initially:
+
+parent[i] = i
+
+Every node is its own component.
+
+
+------------------------------------------------------------
+FIND
+------------------------------------------------------------
+
+Find representative / ultimate parent of a component.
+
+
+------------------------------------------------------------
+UNION
+------------------------------------------------------------
+
+Combine two components.
+
+
+Optimizations:
+
+1. Path Compression
+2. Union by Rank
+OR
+3. Union by Size
+
+
+------------------------------------------------------------
+PATH COMPRESSION
+------------------------------------------------------------
+
+During find(), directly connect nodes closer to ultimate parent.
+
+Makes future find operations extremely fast.
+
+
+------------------------------------------------------------
+UNION BY SIZE/RANK
+------------------------------------------------------------
+
+Attach smaller/shallower tree under larger/deeper tree.
+
+Prevents DSU tree from becoming unnecessarily tall.
+
+
+DSU is useful for:
+
+- Kruskal MST
+- Dynamic connectivity
+- Detecting cycles
+- Merging groups/components
+- Accounts Merge type problems
+
+
+============================================================
+22. BRIDGES
+============================================================
+
+A bridge is an edge which, if removed, increases the number of connected components.
+
+Example:
+
+1 -- 2 -- 3
+     |
+     4
+
+Some edges may be critical connections.
+
+Common algorithm:
+
+Tarjan-style DFS
+
+Important concepts:
+
+tin[node]
+low[node]
+
+
+tin:
+Time when node was first visited.
+
+low:
+Earliest visited node reachable from this subtree.
+
+
+This is an ADVANCED topic.
+
+Learn after basic DFS is strong.
+
+
+============================================================
+23. ARTICULATION POINTS
+============================================================
+
+An articulation point is a NODE whose removal increases the number of connected components.
+
+Difference:
+
+Bridge:
+Critical EDGE.
+
+Articulation Point:
+Critical NODE.
+
+
+Also commonly solved using:
+
+DFS + discovery time + low values.
+
+
+============================================================
+24. STRONGLY CONNECTED COMPONENTS - SCC
+============================================================
+
+Applies to DIRECTED graphs.
+
+A strongly connected component is a group where:
+
+Every node can reach every other node.
+
+
+Example:
+
+1 -> 2
+^    |
+|    v
+3 <- 
+
+{1,2,3} may form an SCC.
+
+
+Common algorithm:
+
+Kosaraju's Algorithm.
+
+
+High-level Kosaraju:
+
+1. DFS and store finishing order.
+2. Reverse all graph edges.
+3. DFS nodes in finishing-order sequence.
+4. Each DFS gives one SCC.
+
+
+============================================================
+25. BFS VS DFS - QUICK DECISION
+============================================================
+
+Use BFS when thinking:
+
+- Levels
+- Minimum steps
+- Unweighted shortest path
+- Spread over time
+- Nearest thing
+- Multi-source spreading
+
+
+Use DFS when thinking:
+
+- Explore entire component
+- Recursive traversal
+- Islands/components
+- Cycle detection
+- Backtracking-style graph exploration
+- Topological DFS
+- Bridges/SCC
+
+
+But remember:
+
+Many traversal problems can be solved with either BFS or DFS.
+
+
+============================================================
+26. GRAPH PROBLEM RECOGNITION
+============================================================
+
+Problem says:
+
+"connections / roads / friends / networks"
+
+Think:
+GRAPH
+
+
+"minimum number of edges/steps"
+
+Think:
+BFS if unweighted
+
+
+"minimum weighted cost"
+
+Think:
+Dijkstra if weights are non-negative
+
+
+"prerequisites / dependencies"
+
+Think:
+DIRECTED GRAPH + TOPOLOGICAL SORT
+
+
+"groups / provinces / islands"
+
+Think:
+CONNECTED COMPONENTS
+
+
+"can divide into two groups"
+
+Think:
+BIPARTITE
+
+
+"critical connection"
+
+Think:
+BRIDGE
+
+
+"connect everything with minimum total cost"
+
+Think:
+MST
+
+
+"repeatedly merge groups"
+
+Think:
+DSU
+
+
+============================================================
+27. MOST IMPORTANT GRAPH MENTAL MODEL
+============================================================
+
+Graph traversal almost always starts with:
+
+1. Pick a node.
+2. Mark it visited.
+3. Look at its neighbors.
+4. Visit unvisited neighbors.
+
+
+BFS:
+
+neighbors go into QUEUE.
+
+
+DFS:
+
+neighbors go into RECURSION.
+
+
+So:
+
+                 GRAPH
+                   |
+             Adjacent nodes
+              /         \
+            BFS         DFS
+             |           |
+           Queue      Recursion
+             \           /
+              visited[]
+
+
+============================================================
+28. COMMON MISTAKES
+============================================================
+
+1. Forgetting visited[].
+
+2. Marking visited too late in BFS.
+
+3. For undirected adjacency list, forgetting BOTH:
+
+adj[u].push_back(v);
+adj[v].push_back(u);
+
+4. Adding both directions for a directed graph.
+
+5. Assuming graph is connected.
+
+Sometimes need:
+
+for every node:
+    if not visited:
+        traversal(node)
+
+6. Confusing parent with cycle in undirected graph.
+
+7. Using Dijkstra with negative weights.
+
+8. Forgetting Topological Sort requires DAG.
+
+9. Mixing node count V with edge count E.
+
+10. Going directly to advanced algorithms without being comfortable with BFS/DFS.
+
+
+============================================================
+29. LEARNING ORDER / PREPARATION FLOW
+============================================================
+
+PHASE 1 - FOUNDATION
+
+[ ] Graph terminology
+[ ] Directed vs Undirected
+[ ] Weighted vs Unweighted
+[ ] Adjacency Matrix
+[ ] Adjacency List
+
+
+PHASE 2 - CORE TRAVERSAL
+
+[ ] BFS
+[ ] DFS
+[ ] Connected Components
+
+
+DO NOT RUSH THIS PHASE.
+
+BFS + DFS are the foundation for most Graph problems.
+
+
+PHASE 3 - GRID AS GRAPH
+
+[ ] Flood Fill
+[ ] Number of Islands
+[ ] Rotten Oranges
+[ ] 01 Matrix / nearest-distance problems
+[ ] Multi-source BFS
+
+
+PHASE 4 - GRAPH PROPERTIES
+
+[ ] Undirected Cycle Detection - BFS
+[ ] Undirected Cycle Detection - DFS
+[ ] Directed Cycle Detection - DFS/pathVisited
+[ ] Bipartite Graph
+
+
+PHASE 5 - DEPENDENCIES
+
+[ ] Topological Sort - DFS
+[ ] Kahn's Algorithm - BFS
+[ ] Course Schedule
+[ ] Directed cycle using Kahn's Algorithm
+
+
+PHASE 6 - SHORTEST PATH
+
+[ ] Unweighted shortest path - BFS
+[ ] DAG shortest path
+[ ] Dijkstra
+[ ] Bellman-Ford
+[ ] Floyd-Warshall
+
+
+PHASE 7 - MST + DSU
+
+[ ] Prim's Algorithm
+[ ] DSU basics
+[ ] Find
+[ ] Union
+[ ] Path Compression
+[ ] Union by Size/Rank
+[ ] Kruskal's Algorithm
+
+
+PHASE 8 - ADVANCED GRAPHS
+
+[ ] Bridges
+[ ] Articulation Points
+[ ] Strongly Connected Components
+[ ] Kosaraju's Algorithm
+
+
+============================================================
+30. WHAT SHOULD BE STRONG BEFORE MOVING ON?
+============================================================
+
+After basic Graph study, I should be able to explain:
+
+1. What is an adjacency list?
+
+2. Why does a graph need visited[]?
+
+3. Difference between BFS and DFS?
+
+4. Why does BFS give shortest path in an unweighted graph?
+
+5. How do I handle disconnected graphs?
+
+6. How do I detect cycles?
+
+7. What makes a graph bipartite?
+
+8. What is Topological Sort and when can I use it?
+
+9. When should I use:
+   BFS
+   Dijkstra
+   Bellman-Ford
+   Floyd-Warshall?
+
+10. What is an MST?
+
+11. Difference between Prim and Kruskal?
+
+12. What problem does DSU solve?
+
+
+============================================================
+31. ONE-LINE REVISION
+============================================================
+
+Adjacency List:
+Store neighbors of every node.
+
+BFS:
+Queue + visited; explore level by level.
+
+DFS:
+Recursion/stack + visited; explore deeply.
+
+Connected Components:
+Run BFS/DFS from every unvisited node.
+
+Grid:
+Treat each cell as a graph node.
+
+Undirected Cycle:
+Visited neighbor that is NOT parent.
+
+Directed Cycle:
+Node encountered again in current DFS path.
+
+Bipartite:
+Color graph using 2 colors; neighbors must differ.
+
+Topological Sort:
+Dependency ordering of a DAG.
+
+Kahn's:
+Topological Sort using indegree + queue.
+
+Unweighted Shortest Path:
+BFS.
+
+Dijkstra:
+Shortest path with non-negative weights.
+
+Bellman-Ford:
+Shortest path supporting negative edges.
+
+Floyd-Warshall:
+All-pairs shortest paths.
+
+MST:
+Connect all vertices with minimum total edge cost.
+
+Prim:
+Grow MST from nodes using cheapest connecting edge.
+
+Kruskal:
+Sort edges and add cheapest non-cycle edge.
+
+DSU:
+Efficiently track and merge connected components.
+
+Bridge:
+Critical edge.
+
+Articulation Point:
+Critical node.
+
+SCC:
+Group in directed graph where every node can reach every other.
+
+
+============================================================
+FINAL MEMORY MAP
+============================================================
+
+GRAPHS
+│
+├── Representation
+│   ├── Matrix
+│   └── Adjacency List
+│
+├── Traversal
+│   ├── BFS
+│   └── DFS
+│
+├── Components / Grids
+│
+├── Cycle Detection
+│   ├── Undirected
+│   └── Directed
+│
+├── Bipartite
+│
+├── Topological Sort
+│   ├── DFS
+│   └── Kahn's
+│
+├── Shortest Path
+│   ├── BFS
+│   ├── DAG
+│   ├── Dijkstra
+│   ├── Bellman-Ford
+│   └── Floyd-Warshall
+│
+├── Minimum Spanning Tree
+│   ├── Prim
+│   └── Kruskal
+│
+├── DSU / Union-Find
+│
+└── Advanced
+    ├── Bridges
+    ├── Articulation Points
+    └── SCC / Kosaraju
+
+
+============================================================
+MOST IMPORTANT FOUNDATION
+============================================================
+
+Do not think of Graphs as 30 unrelated algorithms.
+
+Start with:
+
+GRAPH
+  ↓
+Who are my neighbors?
+  ↓
+How do I visit them?
+  ↓
+BFS or DFS
+  ↓
+How do I avoid visiting again?
+  ↓
+visited[]
+
+Most advanced Graph algorithms are built on top of these ideas.
+============================================================

@@ -1,0 +1,3934 @@
+======================================================================
+DYNAMIC PROGRAMMING (DP) - MASTER QUICK REVISION NOTES
+======================================================================
+
+PURPOSE:
+Use this file when revising DP after a gap.
+
+Main goals:
+- Understand what DP actually is.
+- Recognize when a problem may be DP.
+- Learn how to create a recurrence.
+- Convert recursion -> memoization -> tabulation.
+- Understand DP states and transitions.
+- Recognize common DP patterns.
+- Avoid memorizing solutions blindly.
+
+
+======================================================================
+1. WHAT IS DYNAMIC PROGRAMMING?
+======================================================================
+
+Dynamic Programming is mainly an optimization technique for problems
+where the same smaller problems are solved repeatedly.
+
+The basic idea:
+
+    Solve a smaller problem once
+            ↓
+    Store its answer
+            ↓
+    Reuse that answer when needed again
+
+
+DP usually appears when we have:
+
+1. OVERLAPPING SUBPROBLEMS
+2. OPTIMAL SUBSTRUCTURE
+
+
+----------------------------------------------------------------------
+OVERLAPPING SUBPROBLEMS
+----------------------------------------------------------------------
+
+Same subproblem gets calculated multiple times.
+
+Example:
+
+fib(5)
+
+                 fib(5)
+               /        \
+           fib(4)        fib(3)
+          /     \        /    \
+      fib(3)  fib(2)  fib(2) fib(1)
+
+Notice:
+
+fib(3)
+fib(2)
+
+are calculated multiple times.
+
+DP stores their answers.
+
+
+----------------------------------------------------------------------
+OPTIMAL SUBSTRUCTURE
+----------------------------------------------------------------------
+
+Answer to a bigger problem can be constructed using answers to
+smaller problems.
+
+Example:
+
+fib(n) = fib(n-1) + fib(n-2)
+
+Answer for n depends on smaller answers.
+
+
+======================================================================
+2. DP IS OFTEN RECURSION + MEMORY
+======================================================================
+
+This is one of the easiest ways to understand DP.
+
+Normal recursion:
+
+solve(n)
+   ↓
+solve smaller problems
+   ↓
+same smaller problems may repeat
+
+
+DP:
+
+solve(n)
+   ↓
+Have I already solved this state?
+   |
+ YES ─────→ return stored answer
+   |
+  NO
+   ↓
+solve it
+   ↓
+store answer
+   ↓
+return answer
+
+
+Therefore:
+
+RECURSION
+    +
+CACHE / DP ARRAY
+    =
+MEMOIZATION
+
+
+======================================================================
+3. THREE MAIN WAYS TO WRITE DP
+======================================================================
+
+Most DP problems can be written in:
+
+1. Recursion
+2. Memoization
+3. Tabulation
+
+Sometimes:
+
+4. Space Optimization
+
+
+======================================================================
+4. STEP 1 - PURE RECURSION
+======================================================================
+
+First understand the recurrence.
+
+Example Fibonacci:
+
+int fib(int n) {
+
+    if (n <= 1)
+        return n;
+
+    return fib(n-1) + fib(n-2);
+}
+
+
+This is easy to understand but repeats work.
+
+Time complexity:
+
+approximately O(2^N)
+
+
+======================================================================
+5. STEP 2 - MEMOIZATION (TOP-DOWN DP)
+======================================================================
+
+Add storage:
+
+vector<int> dp(n + 1, -1);
+
+
+Before calculating:
+
+if (dp[n] != -1)
+    return dp[n];
+
+
+Then store result:
+
+return dp[n] = fib(n-1) + fib(n-2);
+
+
+Complete idea:
+
+int solve(int n, vector<int>& dp) {
+
+    if (n <= 1)
+        return n;
+
+    if (dp[n] != -1)
+        return dp[n];
+
+    return dp[n] =
+        solve(n-1, dp)
+        +
+        solve(n-2, dp);
+}
+
+
+Called:
+
+TOP-DOWN DP
+
+
+Why?
+
+Start from big problem:
+
+solve(n)
+
+and recursively move toward smaller problems.
+
+
+======================================================================
+6. STEP 3 - TABULATION (BOTTOM-UP DP)
+======================================================================
+
+Instead of recursion:
+
+Start from smallest known answers.
+
+Example:
+
+dp[0] = 0;
+dp[1] = 1;
+
+for (int i = 2; i <= n; i++) {
+
+    dp[i] = dp[i-1] + dp[i-2];
+}
+
+
+Called:
+
+BOTTOM-UP DP
+
+
+Why?
+
+We start with smallest states and build upward.
+
+
+======================================================================
+7. STEP 4 - SPACE OPTIMIZATION
+======================================================================
+
+Look at:
+
+dp[i] = dp[i-1] + dp[i-2];
+
+
+To calculate current answer we only need:
+
+previous
+previous previous
+
+
+We don't need entire dp[].
+
+
+Therefore:
+
+prev2 = 0;
+prev1 = 1;
+
+for (...) {
+
+    curr = prev1 + prev2;
+
+    prev2 = prev1;
+    prev1 = curr;
+}
+
+
+Space:
+
+O(N)
+    ↓
+O(1)
+
+
+IMPORTANT:
+
+Do space optimization LAST.
+
+First get recurrence correct.
+
+
+======================================================================
+8. THE MOST IMPORTANT DP CONCEPT: STATE
+======================================================================
+
+A DP state represents:
+
+"What information uniquely identifies my current subproblem?"
+
+
+Example:
+
+Fibonacci:
+
+solve(index)
+
+State:
+
+index
+
+
+Grid:
+
+solve(row, col)
+
+State:
+
+(row, col)
+
+
+Knapsack:
+
+solve(index, capacity)
+
+State:
+
+(index, capacity)
+
+
+LCS:
+
+solve(i, j)
+
+State:
+
+(i, j)
+
+
+Stock problems may use:
+
+solve(day, canBuy)
+
+State:
+
+(day, canBuy)
+
+
+IMPORTANT:
+
+The parameters that CHANGE between recursive calls usually help
+identify the DP state.
+
+
+======================================================================
+9. DP STATE EXAMPLES
+======================================================================
+
+1D:
+
+dp[i]
+
+Meaning might be:
+
+"Best answer up to index i"
+
+
+2D:
+
+dp[i][j]
+
+Meaning might be:
+
+"Best answer using first i items with capacity j"
+
+
+Grid:
+
+dp[row][col]
+
+Meaning:
+
+"Answer starting from/reaching this cell"
+
+
+Strings:
+
+dp[i][j]
+
+Meaning:
+
+"Answer involving prefixes/substrings ending around i and j"
+
+
+Stock:
+
+dp[index][buy]
+
+Meaning:
+
+"Maximum profit starting at this day with this buy/sell state"
+
+
+======================================================================
+10. TRANSITION
+======================================================================
+
+Transition means:
+
+How do I calculate CURRENT state using SMALLER states?
+
+
+Example Fibonacci:
+
+dp[i] = dp[i-1] + dp[i-2];
+
+
+Example House Robber:
+
+dp[i] = max(
+    nums[i] + dp[i-2],
+    dp[i-1]
+);
+
+
+Example Grid:
+
+dp[r][c] =
+grid[r][c]
++
+min(
+    dp[r-1][c],
+    dp[r][c-1]
+);
+
+
+Transition is basically:
+
+THE RECURRENCE RELATION.
+
+
+======================================================================
+11. BASE CASE
+======================================================================
+
+Base case means:
+
+What answers do I already know?
+
+
+Example Fibonacci:
+
+fib(0) = 0
+fib(1) = 1
+
+
+Grid:
+
+Starting cell may have known value.
+
+
+Knapsack:
+
+No items:
+
+answer = 0
+
+
+Target becomes 0:
+
+sometimes answer = true / 1 depending on problem.
+
+
+IMPORTANT:
+
+Base cases are extremely important in DP.
+
+A wrong base case can make the entire DP wrong.
+
+
+======================================================================
+12. HOW TO RECOGNIZE A DP PROBLEM
+======================================================================
+
+Common clues:
+
+"Maximum..."
+
+"Minimum..."
+
+"Number of ways..."
+
+"Count ways..."
+
+"Can we..."
+
+"Longest..."
+
+"Shortest..."
+
+"Best possible..."
+
+"Choose / skip..."
+
+"Partition..."
+
+"Subsequence..."
+
+"Reach target..."
+
+"Minimum cost..."
+
+"Maximum profit..."
+
+
+These words do NOT guarantee DP.
+
+But they should make you ask:
+
+"Can this problem be broken into smaller repeating states?"
+
+
+======================================================================
+13. THE MOST IMPORTANT DP QUESTION
+======================================================================
+
+Before writing dp[] ask:
+
+WHAT DOES solve(...) MEAN?
+
+
+Example:
+
+int solve(int i)
+
+could mean:
+
+"Maximum money I can rob starting from index i."
+
+
+Or:
+
+"Maximum money I can rob from indices 0...i."
+
+
+Both can work.
+
+But mixing the meanings causes bugs.
+
+
+Always define the function in one English sentence.
+
+
+Example:
+
+solve(i, capacity)
+
+=
+
+"Maximum value obtainable using items from index i onward
+with remaining capacity."
+
+
+Once meaning is clear:
+
+recurrence becomes much easier.
+
+
+======================================================================
+14. STANDARD DP THINKING PROCESS
+======================================================================
+
+When seeing a new DP problem:
+
+
+STEP 1:
+Try to think recursively.
+
+
+STEP 2:
+Define:
+
+solve(...)
+
+in English.
+
+
+STEP 3:
+Identify choices.
+
+
+STEP 4:
+Write recurrence.
+
+
+STEP 5:
+Write base cases.
+
+
+STEP 6:
+Check if states repeat.
+
+
+STEP 7:
+Add memoization.
+
+
+STEP 8:
+If needed, convert to tabulation.
+
+
+STEP 9:
+If possible, optimize space.
+
+
+DO NOT start by randomly creating dp[][].
+
+
+======================================================================
+15. THE TAKE / NOT TAKE PATTERN
+======================================================================
+
+One of the MOST IMPORTANT DP patterns.
+
+
+At every element:
+
+Option 1:
+TAKE it
+
+Option 2:
+DON'T TAKE it
+
+
+Generic:
+
+take = ...
+notTake = ...
+
+answer = best(take, notTake);
+
+
+Used in:
+
+- House Robber
+- Subset Sum
+- Knapsack
+- Partition problems
+- Subsequences
+- Coin Change variants
+
+
+======================================================================
+16. TAKE / NOT TAKE EXAMPLE
+======================================================================
+
+Array:
+
+[2, 7, 9, 3, 1]
+
+House Robber:
+
+Cannot take adjacent houses.
+
+
+At index i:
+
+OPTION 1:
+
+Take nums[i]
+
+Then cannot take i-1.
+
+take =
+nums[i] + solve(i-2)
+
+
+OPTION 2:
+
+Don't take nums[i]
+
+notTake =
+solve(i-1)
+
+
+Therefore:
+
+solve(i) =
+max(
+    nums[i] + solve(i-2),
+    solve(i-1)
+);
+
+
+This is classic:
+
+TAKE / NOT TAKE.
+
+
+======================================================================
+17. SUBSEQUENCE DP PATTERN
+======================================================================
+
+Subsequence means:
+
+We may TAKE or SKIP elements while preserving order.
+
+
+Example:
+
+[1,2,3]
+
+Subsequences include:
+
+[]
+[1]
+[2]
+[3]
+[1,2]
+[1,3]
+[2,3]
+[1,2,3]
+
+
+Many subsequence problems become:
+
+TAKE
+vs
+NOT TAKE
+
+
+Important problems:
+
+- Subset Sum
+- Partition Equal Subset Sum
+- Knapsack
+- Target Sum
+- Coin Change
+- LIS variants
+
+
+======================================================================
+18. 1D DP PATTERN
+======================================================================
+
+State usually:
+
+dp[i]
+
+
+Common problems:
+
+- Fibonacci
+- Climbing Stairs
+- Frog Jump
+- House Robber
+- Maximum Sum Non-Adjacent Elements
+- Min Cost Climbing Stairs
+
+
+General idea:
+
+Current answer depends on previous few positions.
+
+
+Example:
+
+dp[i] =
+something involving dp[i-1], dp[i-2], ...
+
+
+======================================================================
+19. CLIMBING STAIRS PATTERN
+======================================================================
+
+If we can climb:
+
+1 step
+or
+2 steps
+
+
+To reach step n:
+
+Last move came from:
+
+n-1
+OR
+n-2
+
+
+Therefore:
+
+ways(n) =
+ways(n-1)
++
+ways(n-2)
+
+
+Important DP thinking:
+
+Ask:
+
+"What could my LAST move have been?"
+
+
+This question is useful in many counting problems.
+
+
+======================================================================
+20. HOUSE ROBBER / NON-ADJACENT DP
+======================================================================
+
+At index i:
+
+TAKE:
+
+nums[i] + answer before adjacent position
+
+
+SKIP:
+
+answer without taking current
+
+
+Recurrence:
+
+dp[i] =
+max(
+    nums[i] + dp[i-2],
+    dp[i-1]
+);
+
+
+Core pattern:
+
+TAKE vs SKIP
+
+
+======================================================================
+21. GRID DP
+======================================================================
+
+Grid problems commonly use:
+
+dp[row][col]
+
+
+Typical movement:
+
+RIGHT
+DOWN
+
+or sometimes:
+
+UP
+LEFT
+DIAGONAL
+
+
+Examples:
+
+- Unique Paths
+- Minimum Path Sum
+- Triangle
+- Falling Path Sum
+
+
+Important question:
+
+"From which previous cells could I reach this cell?"
+
+
+Or in recursion:
+
+"Which next cells can I move to?"
+
+
+======================================================================
+22. UNIQUE PATHS
+======================================================================
+
+Suppose we can move:
+
+RIGHT
+DOWN
+
+
+To reach cell:
+
+(r,c)
+
+we could come from:
+
+(r-1,c)
+or
+(r,c-1)
+
+
+Therefore:
+
+dp[r][c] =
+dp[r-1][c]
++
+dp[r][c-1]
+
+
+Because we're COUNTING ways.
+
+
+======================================================================
+23. MINIMUM PATH SUM
+======================================================================
+
+If each grid cell has a cost:
+
+dp[r][c] =
+grid[r][c]
++
+min(
+    dp[r-1][c],
+    dp[r][c-1]
+);
+
+
+Notice difference:
+
+
+COUNT paths:
+
+ADD possibilities
+
+
+MINIMUM path:
+
+MIN of possibilities
+
+
+MAXIMUM:
+
+MAX of possibilities
+
+
+The problem statement tells us how to COMBINE choices.
+
+
+======================================================================
+24. GRID OBSTACLES
+======================================================================
+
+If cell is blocked:
+
+ways = 0
+
+
+Then normal transition continues around it.
+
+
+This is an example where base/invalid states matter greatly.
+
+
+======================================================================
+25. TRIANGLE / FALLING PATH DP
+======================================================================
+
+A cell may have multiple possible next positions.
+
+Example Triangle:
+
+from (r,c):
+
+(r+1,c)
+(r+1,c+1)
+
+
+Then:
+
+answer =
+value
++
+min/max(
+    solve(next1),
+    solve(next2)
+);
+
+
+Again:
+
+CURRENT + BEST CHILD ANSWER
+
+
+Very similar mentally to Tree recursion.
+
+
+======================================================================
+26. 0/1 KNAPSACK
+======================================================================
+
+One of the most important DP patterns.
+
+
+Given items:
+
+weight[i]
+value[i]
+
+
+Bag capacity:
+
+W
+
+
+Each item can be used:
+
+AT MOST ONCE.
+
+
+State:
+
+solve(index, capacity)
+
+
+Choices:
+
+
+NOT TAKE:
+
+solve(index-1, capacity)
+
+
+TAKE:
+
+value[index]
++
+solve(index-1, capacity-weight[index])
+
+
+if item fits.
+
+
+Then:
+
+answer =
+max(take, notTake)
+
+
+State dimensions:
+
+INDEX
+CAPACITY
+
+
+This is classic 2D DP.
+
+
+======================================================================
+27. WHY "0/1" KNAPSACK?
+======================================================================
+
+For each item:
+
+0 = don't take it
+
+1 = take it
+
+
+Cannot take same item repeatedly.
+
+
+This distinction becomes important when comparing with:
+
+UNBOUNDED KNAPSACK.
+
+
+======================================================================
+28. UNBOUNDED KNAPSACK
+======================================================================
+
+Each item can be used unlimited times.
+
+
+Main difference when TAKING:
+
+0/1 Knapsack:
+
+take -> move to next/previous item
+
+
+Unbounded:
+
+take -> remain on SAME item
+
+
+Why?
+
+Because we may take it again.
+
+
+This tiny change is extremely important.
+
+
+======================================================================
+29. SUBSET SUM
+======================================================================
+
+Question:
+
+Does some subset sum to TARGET?
+
+
+State:
+
+solve(index, target)
+
+
+Choices:
+
+NOT TAKE:
+
+solve(index-1, target)
+
+
+TAKE:
+
+solve(index-1, target-arr[index])
+
+
+if arr[index] <= target.
+
+
+Combine with:
+
+OR
+
+
+Because we only need to know:
+
+Does ANY valid way exist?
+
+
+So:
+
+answer =
+take || notTake
+
+
+======================================================================
+30. PARTITION EQUAL SUBSET SUM
+======================================================================
+
+Goal:
+
+Divide array into two subsets having equal sum.
+
+
+First calculate:
+
+totalSum
+
+
+If totalSum is odd:
+
+impossible.
+
+
+Otherwise:
+
+target = totalSum / 2
+
+
+Now problem becomes:
+
+"Does any subset sum to target?"
+
+
+Therefore:
+
+Partition Equal Subset Sum
+        ↓
+Subset Sum
+
+
+IMPORTANT DP SKILL:
+
+Convert unfamiliar problem into known pattern.
+
+
+======================================================================
+31. COUNT SUBSETS WITH SUM K
+======================================================================
+
+Similar to Subset Sum.
+
+But instead of TRUE/FALSE:
+
+we COUNT ways.
+
+
+Transition:
+
+ways =
+waysNotTake
++
+waysTake
+
+
+Difference:
+
+
+Subset Sum:
+OR
+
+
+Count Subsets:
+ADD
+
+
+This distinction appears repeatedly in DP.
+
+
+======================================================================
+32. TARGET SUM
+======================================================================
+
+Assign:
+
++
+or
+-
+
+to numbers to reach target.
+
+
+Often transformed mathematically into:
+
+COUNT SUBSETS WITH A CERTAIN SUM.
+
+
+Important lesson:
+
+Some DP problems first require an algebraic transformation
+before the standard pattern becomes visible.
+
+
+======================================================================
+33. COIN CHANGE - MINIMUM COINS
+======================================================================
+
+Coins can usually be used unlimited times.
+
+Therefore:
+
+UNBOUNDED KNAPSACK pattern.
+
+
+State:
+
+(index, amount)
+
+
+Choices:
+
+Don't take coin:
+
+move to next/previous coin.
+
+
+Take coin:
+
+remain on SAME coin
+because it can be reused.
+
+
+Goal:
+
+MINIMUM number of coins.
+
+
+Therefore:
+
+answer =
+min(
+    notTake,
+    1 + take
+);
+
+
+For impossible states:
+
+use large value / INF.
+
+
+======================================================================
+34. COIN CHANGE - NUMBER OF WAYS
+======================================================================
+
+Same state concept.
+
+But now we want:
+
+COUNT of combinations.
+
+
+Therefore:
+
+answer =
+notTake + take
+
+
+Same choices.
+
+Different combination operation.
+
+
+VERY IMPORTANT:
+
+Minimum problem:
+MIN
+
+
+Maximum problem:
+MAX
+
+
+Count problem:
+ADD
+
+
+Existence problem:
+OR
+
+
+======================================================================
+35. STRING DP
+======================================================================
+
+String DP commonly uses:
+
+dp[i][j]
+
+
+where:
+
+i = position in string 1
+j = position in string 2
+
+
+Important problems:
+
+- Longest Common Subsequence
+- Longest Common Substring
+- Edit Distance
+- Distinct Subsequences
+- Wildcard Matching
+- Palindrome problems
+
+
+======================================================================
+36. LONGEST COMMON SUBSEQUENCE - LCS
+======================================================================
+
+Given:
+
+text1
+text2
+
+
+Find longest sequence appearing in both while maintaining order.
+
+
+State:
+
+solve(i,j)
+
+
+If characters MATCH:
+
+text1[i] == text2[j]
+
+then:
+
+1 + solve(i-1, j-1)
+
+
+If they DON'T match:
+
+We try:
+
+ignore char from first string
+
+OR
+
+ignore char from second string
+
+
+Therefore:
+
+max(
+    solve(i-1,j),
+    solve(i,j-1)
+)
+
+
+CORE LCS PATTERN:
+
+MATCH:
+    1 + diagonal
+
+NOT MATCH:
+    max(up, left)
+
+
+======================================================================
+37. SUBSEQUENCE VS SUBSTRING
+======================================================================
+
+SUBSEQUENCE:
+
+Characters do NOT need to be continuous.
+
+Example:
+
+"abcde"
+
+"ace"
+
+is subsequence.
+
+
+SUBSTRING:
+
+Characters MUST be continuous.
+
+Example:
+
+"abcde"
+
+"bcd"
+
+is substring.
+
+
+This distinction changes DP logic.
+
+
+======================================================================
+38. LONGEST COMMON SUBSTRING
+======================================================================
+
+If characters match:
+
+dp[i][j] =
+1 + dp[i-1][j-1]
+
+
+If they DON'T match:
+
+dp[i][j] = 0
+
+
+Why zero?
+
+Because substring must remain CONTINUOUS.
+
+
+This is a major difference from LCS.
+
+
+======================================================================
+39. LONGEST PALINDROMIC SUBSEQUENCE
+======================================================================
+
+Useful transformation:
+
+LPS(s)
+
+=
+
+LCS(
+    s,
+    reverse(s)
+)
+
+
+Example:
+
+s = "bbab"
+
+reverse = "babb"
+
+
+Find LCS.
+
+
+Again:
+
+Recognizing transformations is an important DP skill.
+
+
+======================================================================
+40. MINIMUM INSERTIONS TO MAKE PALINDROME
+======================================================================
+
+Often:
+
+answer =
+
+n - longestPalindromicSubsequence
+
+
+Because characters already belonging to the longest palindromic
+subsequence do not need matching insertions.
+
+
+======================================================================
+41. EDIT DISTANCE
+======================================================================
+
+Operations:
+
+INSERT
+DELETE
+REPLACE
+
+
+State:
+
+solve(i,j)
+
+
+If characters match:
+
+move both.
+
+
+If different:
+
+try:
+
+INSERT
+DELETE
+REPLACE
+
+
+Then:
+
+1 + minimum(all three)
+
+
+Classic:
+
+MULTIPLE CHOICES + MINIMUM
+
+
+======================================================================
+42. DISTINCT SUBSEQUENCES
+======================================================================
+
+Question:
+
+How many ways can string S produce target T as a subsequence?
+
+
+State:
+
+(i,j)
+
+
+If characters match:
+
+Two choices:
+
+USE current matching character
+
+OR
+
+SKIP it
+
+
+If characters don't match:
+
+must skip current source character.
+
+
+This is another:
+
+TAKE / NOT TAKE style pattern.
+
+
+======================================================================
+43. PALINDROME INTERVAL DP
+======================================================================
+
+Some problems work on a RANGE:
+
+solve(i,j)
+
+
+Meaning:
+
+answer for substring from:
+
+i to j
+
+
+Examples:
+
+- Palindrome Partitioning
+- Minimum cuts
+- Burst Balloons style interval problems
+- Matrix Chain Multiplication
+
+
+State:
+
+LEFT BOUNDARY
+RIGHT BOUNDARY
+
+
+======================================================================
+44. LONGEST INCREASING SUBSEQUENCE - LIS
+======================================================================
+
+Given array:
+
+Find longest strictly increasing subsequence.
+
+
+Classic recursive state:
+
+solve(index, previousIndex)
+
+
+At each index:
+
+DON'T TAKE current
+
+OR
+
+TAKE current if:
+
+previousIndex == -1
+OR
+nums[index] > nums[previousIndex]
+
+
+This is again:
+
+TAKE / NOT TAKE
+
+
+Other LIS approaches exist:
+
+O(N^2) DP
+
+and
+
+O(N log N) Binary Search method.
+
+
+======================================================================
+45. LIS O(N^2) DP
+======================================================================
+
+Define:
+
+dp[i] = length of longest increasing subsequence
+ENDING at i.
+
+
+Initialize:
+
+dp[i] = 1
+
+
+For every previous index j < i:
+
+if nums[j] < nums[i]:
+
+    dp[i] =
+    max(
+        dp[i],
+        1 + dp[j]
+    )
+
+
+Answer:
+
+max(dp[i])
+
+
+Important:
+
+dp[i] does NOT mean global LIS.
+
+It means:
+
+LIS ENDING AT i.
+
+
+Again:
+
+STATE MEANING matters.
+
+
+======================================================================
+46. STOCK DP
+======================================================================
+
+Stock problems are a major DP family.
+
+
+Basic state:
+
+solve(day, canBuy)
+
+
+canBuy = 1:
+
+we currently may BUY.
+
+
+canBuy = 0:
+
+we currently own stock and may SELL.
+
+
+At each state:
+
+BUY/SKIP
+
+or
+
+SELL/SKIP
+
+
+This becomes a state machine.
+
+
+======================================================================
+47. STOCK - BASIC TRANSITION
+======================================================================
+
+If canBuy:
+
+BUY:
+
+-price[day]
++
+solve(day+1, false)
+
+
+SKIP:
+
+solve(day+1, true)
+
+
+Take max.
+
+
+If cannot buy:
+
+SELL:
+
++price[day]
++
+solve(day+1, true)
+
+
+SKIP:
+
+solve(day+1, false)
+
+
+Take max.
+
+
+This pattern expands for:
+
+- Transaction limits
+- Cooldown
+- Transaction fees
+
+
+======================================================================
+48. DP WITH TRANSACTION LIMIT
+======================================================================
+
+Additional changing information becomes another state.
+
+
+Example:
+
+solve(day, canBuy, transactionsLeft)
+
+
+Therefore DP may become:
+
+dp[day][buy][transactions]
+
+
+Important lesson:
+
+If future choices depend on some information,
+that information may need to be part of the DP STATE.
+
+
+======================================================================
+49. MATRIX CHAIN MULTIPLICATION PATTERN
+======================================================================
+
+Important advanced DP pattern:
+
+PARTITION DP
+
+
+Given a range:
+
+i...j
+
+
+Try every possible split:
+
+for (k = i; k < j; k++) {
+
+    cost =
+        leftPart
+        +
+        rightPart
+        +
+        costOfCombining;
+
+    answer = min(answer, cost);
+}
+
+
+Core idea:
+
+TRY EVERY PARTITION POINT.
+
+
+Used in:
+
+- Matrix Chain Multiplication
+- Burst Balloons
+- Palindrome Partitioning variants
+- Cutting problems
+
+
+======================================================================
+50. PARTITION DP PATTERN
+======================================================================
+
+General:
+
+solve(i,j)
+
+
+Try:
+
+k = i ... j
+
+
+For every k:
+
+answer =
+best(
+    solve(left range)
+    +
+    solve(right range)
+    +
+    current cost
+)
+
+
+Recognition clue:
+
+"Where should I split this range?"
+
+
+======================================================================
+51. DP ON TREES
+======================================================================
+
+DP can also occur on Trees.
+
+
+At every node:
+
+Get information from:
+
+LEFT
+RIGHT
+
+
+Then combine.
+
+
+Example:
+
+House Robber III:
+
+For each node we may need:
+
+TAKE node
+
+or
+
+SKIP node
+
+
+If take node:
+
+cannot take children.
+
+
+If skip node:
+
+children may be taken.
+
+
+A recursive call may return:
+
+{take, skip}
+
+
+This is Tree DP.
+
+
+======================================================================
+52. DP ON DAG
+======================================================================
+
+A DAG naturally supports DP because there are no cycles.
+
+
+We can:
+
+1. Use recursion + memoization.
+
+OR
+
+2. Process nodes in topological order.
+
+
+Examples:
+
+- Longest path in DAG
+- Number of paths
+- Minimum/maximum path costs
+
+
+======================================================================
+53. MEMOIZATION TEMPLATE
+======================================================================
+
+Generic:
+
+int solve(int state, vector<int>& dp) {
+
+    if (base case)
+        return baseAnswer;
+
+    if (dp[state] != -1)
+        return dp[state];
+
+    int answer = ...recursive calls...;
+
+    return dp[state] = answer;
+}
+
+
+For 2D:
+
+int solve(int i, int j, vector<vector<int>>& dp) {
+
+    if (base case)
+        return ...;
+
+    if (dp[i][j] != -1)
+        return dp[i][j];
+
+    ...
+
+    return dp[i][j] = answer;
+}
+
+
+======================================================================
+54. WHY MEMOIZATION IMPROVES TIME
+======================================================================
+
+Without memoization:
+
+Same state may be calculated repeatedly.
+
+
+With memoization:
+
+Each unique state is calculated ONCE.
+
+
+Therefore complexity often becomes:
+
+NUMBER OF STATES
+    ×
+WORK PER STATE
+
+
+Example:
+
+States:
+
+N * W
+
+
+Work per state:
+
+O(1)
+
+
+Complexity:
+
+O(N * W)
+
+
+This formula is extremely useful.
+
+
+======================================================================
+55. DP TIME COMPLEXITY RULE
+======================================================================
+
+Think:
+
+TIME ≈
+
+NUMBER OF UNIQUE STATES
+×
+TRANSITIONS / WORK PER STATE
+
+
+Example:
+
+dp[i][target]
+
+States:
+
+N * TARGET
+
+
+Each state tries:
+
+TAKE
+NOT TAKE
+
+constant work.
+
+
+Time:
+
+O(N * TARGET)
+
+
+If every state loops through N choices:
+
+could become:
+
+O(N^3), etc.
+
+
+======================================================================
+56. DP SPACE COMPLEXITY
+======================================================================
+
+Memoization:
+
+DP storage
++
+recursion stack
+
+
+Tabulation:
+
+DP storage
+
+
+Space optimized:
+
+Only previous states required.
+
+
+Example:
+
+2D:
+
+dp[n][m]
+
+may sometimes become:
+
+previous[m]
+current[m]
+
+
+Then possibly:
+
+single array[m]
+
+
+======================================================================
+57. MEMOIZATION VS TABULATION
+======================================================================
+
+MEMOIZATION:
+
+Top-down.
+
+Uses recursion.
+
+Usually easier to derive.
+
+Only calculates states actually needed.
+
+Has recursion-stack overhead.
+
+
+TABULATION:
+
+Bottom-up.
+
+Uses loops.
+
+No recursion stack.
+
+Can sometimes be faster.
+
+Usually easier to space-optimize.
+
+
+For learning:
+
+RECURSION
+    ↓
+MEMOIZATION
+    ↓
+TABULATION
+    ↓
+SPACE OPTIMIZATION
+
+
+Do NOT force yourself to jump directly to tabulation.
+
+
+======================================================================
+58. HOW TO CONVERT MEMOIZATION TO TABULATION
+======================================================================
+
+Suppose recursion:
+
+solve(i)
+
+depends on:
+
+solve(i-1)
+solve(i-2)
+
+
+Then tabulation should calculate states in an order where:
+
+i-1
+i-2
+
+are already known before i.
+
+
+Steps:
+
+1. Identify dp dimensions.
+2. Set base cases in dp.
+3. Determine iteration order.
+4. Replace recursive calls with dp accesses.
+5. Return required dp state.
+
+
+======================================================================
+59. HOW TO DETERMINE LOOP ORDER
+======================================================================
+
+This is important.
+
+Look at dependencies.
+
+
+If:
+
+dp[i] depends on dp[i-1]
+
+iterate:
+
+LEFT → RIGHT
+
+
+If:
+
+dp[i] depends on dp[i+1]
+
+iterate:
+
+RIGHT → LEFT
+
+
+For 2D:
+
+Look at which neighboring states are needed.
+
+
+RULE:
+
+When calculating a state,
+all states it depends on must already be available.
+
+
+======================================================================
+60. SPACE OPTIMIZATION RULE
+======================================================================
+
+Ask:
+
+"How much previous information does the current state actually need?"
+
+
+If:
+
+dp[i] depends only on:
+
+dp[i-1]
+
+keep one previous value.
+
+
+If:
+
+dp[row] depends only on:
+
+dp[row-1]
+
+keep:
+
+prev row
+current row
+
+
+No need to keep full matrix.
+
+
+======================================================================
+61. COMMON DP RETURN TYPES
+======================================================================
+
+DP isn't always integer maximum.
+
+
+State may return:
+
+
+BOOLEAN:
+
+Can it be done?
+
+Example:
+Subset Sum
+
+
+INTEGER:
+
+Minimum/maximum/count.
+
+Example:
+Coin Change
+
+
+LONG LONG:
+
+Large counts.
+
+
+PAIR / STRUCT:
+
+Multiple pieces of information.
+
+
+STRING:
+
+Occasionally reconstruction problems.
+
+
+======================================================================
+62. DP: COUNT VS MIN/MAX VS BOOLEAN
+======================================================================
+
+Very important recognition:
+
+
+COUNT WAYS:
+
+Usually combine choices with:
+
++
+
+
+EXISTENCE:
+
+Usually combine choices with:
+
+OR
+
+
+MINIMUM:
+
+Usually:
+
+min(...)
+
+
+MAXIMUM:
+
+Usually:
+
+max(...)
+
+
+Examples:
+
+
+Count paths:
+
+up + left
+
+
+Can reach target:
+
+take || notTake
+
+
+Minimum coins:
+
+min(take, notTake)
+
+
+Maximum profit:
+
+max(buy, skip)
+
+
+======================================================================
+63. INVALID STATES
+======================================================================
+
+Sometimes recursion reaches an impossible state.
+
+
+For MAXIMUM problem:
+
+Return something very small:
+
+-∞
+
+
+For MINIMUM problem:
+
+Return something very large:
+
++∞
+
+
+For BOOLEAN:
+
+return false
+
+
+For COUNT:
+
+return 0
+
+
+Why?
+
+We don't want an invalid path to accidentally become the best answer.
+
+
+======================================================================
+64. INF / OVERFLOW WARNING
+======================================================================
+
+Suppose:
+
+INF = INT_MAX
+
+
+Then doing:
+
+1 + INF
+
+can overflow.
+
+
+Safer:
+
+use a large controlled value:
+
+1e9
+
+or check before adding.
+
+
+This commonly appears in:
+
+Minimum Coins
+Minimum Path problems
+
+
+======================================================================
+65. INDEX SHIFTING IN DP
+======================================================================
+
+Sometimes recursion uses:
+
+index = -1
+
+
+But arrays cannot use:
+
+dp[-1]
+
+
+Tabulation often shifts indexes.
+
+
+Example:
+
+recursive i corresponds to:
+
+dp[i+1]
+
+
+This is especially common in:
+
+LCS
+LIS with previousIndex = -1
+
+
+Don't let index shifting change the STATE meaning.
+
+
+======================================================================
+66. DP RECONSTRUCTION
+======================================================================
+
+Sometimes question asks not only:
+
+"What is the length/value?"
+
+but:
+
+"Which elements form the answer?"
+
+
+Examples:
+
+Print LCS
+Print LIS
+Actual shortest path
+
+
+Technique:
+
+After filling dp:
+
+walk backward through decisions.
+
+
+For LCS:
+
+If chars match:
+    include char
+    move diagonal
+
+Otherwise:
+    move toward larger dp value
+
+
+DP table stores enough information to reconstruct choices.
+
+
+======================================================================
+67. MAJOR DP PATTERN 1 - LINEAR / 1D DP
+======================================================================
+
+Examples:
+
+Fibonacci
+Climbing Stairs
+Frog Jump
+House Robber
+
+
+State:
+
+index
+
+
+Usually depends on:
+
+previous few indexes.
+
+
+Recognition:
+
+"I move through a sequence and make local choices."
+
+
+======================================================================
+68. MAJOR DP PATTERN 2 - TAKE / NOT TAKE
+======================================================================
+
+Examples:
+
+0/1 Knapsack
+Subset Sum
+Partition Equal Subset
+House Robber
+Count Subsets
+
+
+At each item:
+
+TAKE
+
+or
+
+DON'T TAKE
+
+
+State usually includes:
+
+index
++
+some constraint such as target/capacity
+
+
+======================================================================
+69. MAJOR DP PATTERN 3 - UNBOUNDED DP
+======================================================================
+
+Examples:
+
+Coin Change
+Unbounded Knapsack
+Rod Cutting
+
+
+Main clue:
+
+Same item can be used AGAIN.
+
+
+When TAKE:
+
+remain at same item/index.
+
+
+======================================================================
+70. MAJOR DP PATTERN 4 - GRID DP
+======================================================================
+
+Examples:
+
+Unique Paths
+Minimum Path Sum
+Triangle
+Falling Path
+
+
+State:
+
+(row, col)
+
+
+Think:
+
+"Where can I come from?"
+
+or
+
+"Where can I go next?"
+
+
+======================================================================
+71. MAJOR DP PATTERN 5 - TWO STRING DP
+======================================================================
+
+Examples:
+
+LCS
+Edit Distance
+Distinct Subsequences
+Wildcard Matching
+
+
+State:
+
+(i,j)
+
+
+Each index represents position in one string.
+
+
+Typical questions:
+
+Do chars match?
+
+If yes:
+    what happens?
+
+If no:
+    which index/indexes should move?
+
+
+======================================================================
+72. MAJOR DP PATTERN 6 - LIS
+======================================================================
+
+Subsequence ordering problems.
+
+
+Possible states:
+
+(index, previousIndex)
+
+
+Or:
+
+dp[i] = best subsequence ending at i
+
+
+Recognition:
+
+"Longest sequence satisfying an ordering condition."
+
+
+======================================================================
+73. MAJOR DP PATTERN 7 - STOCK DP
+======================================================================
+
+State machine pattern.
+
+
+State may contain:
+
+day
+buy/sell state
+transactions remaining
+cooldown
+
+
+Recognition:
+
+Repeated decisions over days.
+
+
+======================================================================
+74. MAJOR DP PATTERN 8 - INTERVAL / PARTITION DP
+======================================================================
+
+State:
+
+(i,j)
+
+
+Try split point:
+
+k
+
+
+Examples:
+
+Matrix Chain Multiplication
+Burst Balloons
+Palindrome Partitioning
+
+
+Recognition:
+
+"Try every possible place to split/cut."
+
+
+======================================================================
+75. MAJOR DP PATTERN 9 - TREE DP
+======================================================================
+
+State lives on Tree nodes.
+
+
+Get answers from children.
+
+Combine at parent.
+
+
+Often:
+
+TAKE current
+vs
+SKIP current
+
+
+or return multiple subtree values.
+
+
+======================================================================
+76. MAJOR DP PATTERN 10 - DAG DP
+======================================================================
+
+State lives on Graph nodes.
+
+Because DAG has no cycles:
+
+dependencies can be processed safely.
+
+
+Use:
+
+memoized DFS
+
+or
+
+Topological Sort
+
+
+======================================================================
+77. PROBLEM -> PATTERN QUICK MAP
+======================================================================
+
+Fibonacci
+→ 1D DP
+
+
+Climbing Stairs
+→ 1D / counting
+
+
+House Robber
+→ Take / Skip
+
+
+Frog Jump
+→ 1D minimum cost
+
+
+Unique Paths
+→ Grid DP
+
+
+Minimum Path Sum
+→ Grid DP
+
+
+Subset Sum
+→ Take / Not Take + Boolean
+
+
+Partition Equal Subset
+→ Subset Sum transformation
+
+
+0/1 Knapsack
+→ Take / Not Take + capacity
+
+
+Unbounded Knapsack
+→ Reuse same item
+
+
+Coin Change
+→ Unbounded DP
+
+
+LCS
+→ Two Strings
+
+
+Longest Common Substring
+→ Two Strings + reset on mismatch
+
+
+Longest Palindromic Subsequence
+→ LCS with reversed string
+
+
+Edit Distance
+→ Two Strings + operations
+
+
+LIS
+→ Subsequence DP
+
+
+Stock Buy/Sell
+→ State Machine DP
+
+
+Matrix Chain Multiplication
+→ Partition DP
+
+
+Burst Balloons
+→ Interval/Partition DP
+
+
+House Robber III
+→ Tree DP
+
+
+Longest Path DAG
+→ Graph/DAG DP
+
+
+======================================================================
+78. DP DECISION TREE
+======================================================================
+
+When you see a problem:
+
+
+Does it involve a SEQUENCE / ARRAY?
+
+    ↓
+
+Do I choose or skip elements?
+
+YES
+→ TAKE / NOT TAKE
+
+
+Can same item be reused?
+
+YES
+→ UNBOUNDED DP
+
+
+Does it involve a GRID?
+
+YES
+→ dp[row][col]
+
+
+Does it compare TWO STRINGS?
+
+YES
+→ dp[i][j]
+
+
+Does it ask LONGEST INCREASING SUBSEQUENCE?
+
+YES
+→ LIS family
+
+
+Does it involve BUY / SELL over days?
+
+YES
+→ STOCK DP
+
+
+Does it ask where to CUT / SPLIT a range?
+
+YES
+→ PARTITION DP
+
+
+Does it involve TREE subproblems?
+
+YES
+→ TREE DP
+
+
+Does it involve DAG dependencies?
+
+YES
+→ DAG DP
+
+
+======================================================================
+79. COMMON DP MISTAKES
+======================================================================
+
+1. Starting with dp[][] before defining the state.
+
+
+2. Not knowing what solve(i,j) means.
+
+
+3. Wrong base case.
+
+
+4. Forgetting to store memoized answer.
+
+
+Wrong:
+
+return solve(...);
+
+
+Correct pattern:
+
+return dp[i] = answer;
+
+
+5. Checking memo table after doing recursive work.
+
+
+Check memo BEFORE recursion.
+
+
+6. Wrong dimensions.
+
+
+If state is:
+
+(index, target)
+
+you probably need both dimensions.
+
+
+7. Forgetting TAKE condition.
+
+Example:
+
+if weight <= capacity
+
+
+8. For Unbounded Knapsack, moving index after TAKE.
+
+If reusable:
+
+stay on same item.
+
+
+9. Mixing subsequence and substring.
+
+
+10. Wrong tabulation iteration order.
+
+
+11. Using INT_MAX then adding to it.
+
+
+12. Space optimizing before understanding full DP.
+
+
+13. Confusing dp[i] meaning between recursion and tabulation.
+
+
+14. Returning global answer when state expects local answer.
+
+
+15. Memorizing recurrence without understanding choices.
+
+
+======================================================================
+80. HOW TO DEBUG A DP SOLUTION
+======================================================================
+
+If DP is wrong:
+
+STEP 1:
+Write the meaning of solve(...) in English.
+
+
+STEP 2:
+Check base cases.
+
+
+STEP 3:
+Draw a tiny recursion tree.
+
+
+STEP 4:
+List choices at one state.
+
+
+STEP 5:
+Check whether each recursive call moves toward base case.
+
+
+STEP 6:
+Check if memo dimensions match changing parameters.
+
+
+STEP 7:
+Test tiny input manually.
+
+
+STEP 8:
+Only then inspect tabulation/space optimization.
+
+
+======================================================================
+81. BABY-STEP METHOD FOR LEARNING A NEW DP PROBLEM
+======================================================================
+
+Do NOT immediately look at optimized solution.
+
+
+First:
+
+1. Draw small example.
+
+
+2. Ask:
+
+"What choices do I have?"
+
+
+3. Write brute-force recursion.
+
+
+4. Draw 2-3 recursion levels.
+
+
+5. Find repeated calls.
+
+
+6. Add memoization.
+
+
+7. Calculate complexity from states.
+
+
+8. Convert to tabulation.
+
+
+9. Understand loop direction.
+
+
+10. Space optimize only if useful.
+
+
+This builds understanding instead of memorization.
+
+
+======================================================================
+82. RECURSION TREE -> DP
+======================================================================
+
+Think of DP as:
+
+A recursion tree where repeated branches are calculated only once.
+
+
+Normal recursion:
+
+                    A
+                  /   \
+                 B     C
+                / \   /
+               D   E D
+
+D calculated twice.
+
+
+Memoization:
+
+First D:
+
+calculate + store
+
+
+Second D:
+
+return stored answer
+
+
+That is the heart of DP.
+
+
+======================================================================
+83. TREE RECURSION VS DP RECURSION
+======================================================================
+
+Tree recursion:
+
+Different nodes usually represent different subproblems.
+
+
+DP recursion:
+
+The SAME state may be reached through multiple paths.
+
+
+Example:
+
+solve(5)
+    ↓
+solve(3)
+
+and another branch may also reach:
+
+solve(3)
+
+
+Therefore memoization helps.
+
+
+KEY QUESTION:
+
+"Can I reach the exact same state again?"
+
+If yes:
+
+DP may be useful.
+
+
+======================================================================
+84. DP DOES NOT MEAN "USE AN ARRAY"
+======================================================================
+
+Using dp[] does not automatically make something Dynamic Programming.
+
+
+DP is about:
+
+1. Defining states.
+2. Reusing solutions to overlapping subproblems.
+3. Building larger answers from smaller answers.
+
+
+The array/map is just STORAGE.
+
+
+======================================================================
+85. MEMOIZATION WITH MAP
+======================================================================
+
+Sometimes state isn't convenient for an array.
+
+Can use:
+
+map
+unordered_map
+
+
+Example:
+
+unordered_map<State, Answer>
+
+
+Useful when:
+
+- states are sparse
+- state values are large
+- only some states are visited
+
+
+Arrays/vectors are usually faster when dimensions are known and small.
+
+
+======================================================================
+86. PSEUDO-POLYNOMIAL DP
+======================================================================
+
+Example:
+
+Subset Sum:
+
+O(N * TARGET)
+
+
+This is not necessarily polynomial in the number of input bits.
+
+If TARGET is enormous:
+
+DP may be too expensive.
+
+
+Important:
+
+Always check constraints before choosing DP.
+
+
+======================================================================
+87. CONSTRAINTS HELP CHOOSE DP
+======================================================================
+
+Rough thinking:
+
+N around 20:
+Exponential/backtracking may sometimes work.
+
+
+N around 100:
+O(N^2) may be fine.
+
+
+N around 1000:
+O(N^2) may or may not be okay depending on limits.
+
+
+N around 1e5:
+Usually need near O(N) / O(N log N).
+
+
+DP with target:
+
+N * target
+
+must fit time and memory.
+
+
+Always inspect constraints.
+
+
+======================================================================
+88. DP VS GREEDY
+======================================================================
+
+DP:
+
+Explores multiple possibilities and stores best answers.
+
+
+Greedy:
+
+Makes locally best decision and doesn't reconsider.
+
+
+Not every optimization problem is DP.
+
+
+Example:
+
+If local best choice is mathematically guaranteed to lead to global best:
+
+Greedy may work.
+
+
+Otherwise:
+
+DP may be required.
+
+
+======================================================================
+89. DP VS BACKTRACKING
+======================================================================
+
+Backtracking:
+
+Explore choices.
+
+Often exponential.
+
+
+DP:
+
+Can optimize backtracking/recursion when states repeat.
+
+
+Think:
+
+BACKTRACKING
+    +
+REPEATED STATES
+    +
+CACHE
+    =
+MEMOIZED DP
+
+
+But not every backtracking problem has useful overlapping states.
+
+
+======================================================================
+90. DP VS DIVIDE AND CONQUER
+======================================================================
+
+Divide and Conquer:
+
+Break into independent subproblems.
+
+Example:
+
+Merge Sort
+
+
+DP:
+
+Subproblems often OVERLAP.
+
+
+Main distinction:
+
+Are the same smaller problems repeatedly solved?
+
+
+======================================================================
+91. RECURSION PARAMETER TEST
+======================================================================
+
+Suppose:
+
+solve(i, target, sum, count)
+
+
+Do ALL parameters need to be DP dimensions?
+
+
+Ask:
+
+"If two calls have the same relevant future situation,
+will their future answer always be identical?"
+
+
+Only information affecting future decisions belongs in state.
+
+
+Avoid unnecessary state dimensions.
+
+
+Smaller state:
+
+less memory
+less time
+simpler code
+
+
+======================================================================
+92. FORWARD VS BACKWARD DP
+======================================================================
+
+You can often define DP in either direction.
+
+
+Example:
+
+solve(i)
+
+could mean:
+
+"answer starting FROM i"
+
+
+or:
+
+"answer ending AT i"
+
+
+Both may work.
+
+
+Choose the meaning that makes recurrence easiest.
+
+
+But:
+
+DO NOT switch meanings halfway through.
+
+
+======================================================================
+93. PICK THE RIGHT BASE VALUE
+======================================================================
+
+Ask:
+
+"What should an empty remaining problem contribute?"
+
+
+MAX sum:
+
+possibly 0
+
+
+COUNT:
+
+possibly 1 when target successfully reaches 0
+
+
+BOOLEAN:
+
+true when target is satisfied
+
+
+MIN:
+
+0 at destination, INF for impossible
+
+
+Base cases should follow the meaning of solve(...).
+
+
+======================================================================
+94. WHY TARGET == 0 OFTEN RETURNS TRUE / 1
+======================================================================
+
+Subset Sum:
+
+If target becomes 0:
+
+We successfully formed target.
+
+Therefore:
+
+return true;
+
+
+Count Subsets:
+
+If target becomes 0:
+
+There is a valid way.
+
+But be careful with zeros and counting variants because multiple
+subsets may still need special handling.
+
+
+======================================================================
+95. ZERO ELEMENT EDGE CASE
+======================================================================
+
+Zeros can create tricky counting behavior.
+
+
+Example:
+
+[0]
+
+target = 0
+
+
+Possible subsets:
+
+{}
+{0}
+
+
+Both have sum 0.
+
+
+Therefore counting DP may need special base handling.
+
+
+Important lesson:
+
+DP base cases can depend heavily on problem details.
+
+
+======================================================================
+96. MODULO IN COUNTING DP
+======================================================================
+
+Number of ways can become huge.
+
+Problems often ask:
+
+answer % 1e9+7
+
+
+Then apply modulo during additions:
+
+(a + b) % MOD
+
+
+Do not wait until the very end if values may overflow.
+
+
+======================================================================
+97. DP INTERVIEW EXPLANATION TEMPLATE
+======================================================================
+
+When explaining DP in an interview:
+
+
+1. DEFINE STATE
+
+"dp[i][j] represents..."
+
+
+2. EXPLAIN CHOICES
+
+"At this state I can..."
+
+
+3. GIVE TRANSITION
+
+"Therefore recurrence is..."
+
+
+4. GIVE BASE CASE
+
+"When ... answer is ..."
+
+
+5. GIVE COMPLEXITY
+
+"There are X states and Y work per state."
+
+
+6. MENTION OPTIMIZATION
+
+"This can be space optimized because current row only depends
+on previous row."
+
+
+This is much stronger than only writing code.
+
+
+======================================================================
+98. RECOMMENDED DP LEARNING ORDER
+======================================================================
+
+PHASE 1 - DP FOUNDATION
+
+[ ] Fibonacci
+[ ] Climbing Stairs
+[ ] Frog Jump
+[ ] Min Cost Climbing Stairs
+[ ] House Robber
+[ ] House Robber II
+
+
+Goal:
+
+Understand:
+
+recursion
+→ memoization
+→ tabulation
+→ space optimization
+
+
+----------------------------------------------------------------------
+PHASE 2 - GRID DP
+----------------------------------------------------------------------
+
+[ ] Unique Paths
+[ ] Unique Paths II
+[ ] Minimum Path Sum
+[ ] Triangle
+[ ] Minimum Falling Path Sum
+[ ] Maximum Path style problems
+
+
+Goal:
+
+Become comfortable with:
+
+dp[row][col]
+
+
+----------------------------------------------------------------------
+PHASE 3 - SUBSEQUENCE / KNAPSACK
+----------------------------------------------------------------------
+
+[ ] Subset Sum
+[ ] Partition Equal Subset Sum
+[ ] Count Subsets with Sum K
+[ ] Minimum Subset Sum Difference
+[ ] 0/1 Knapsack
+[ ] Target Sum
+
+
+Goal:
+
+MASTER:
+
+TAKE / NOT TAKE
+
+
+----------------------------------------------------------------------
+PHASE 4 - UNBOUNDED DP
+----------------------------------------------------------------------
+
+[ ] Unbounded Knapsack
+[ ] Coin Change - Minimum Coins
+[ ] Coin Change - Number of Ways
+[ ] Rod Cutting
+
+
+Goal:
+
+Understand difference between:
+
+0/1
+vs
+UNLIMITED reuse
+
+
+----------------------------------------------------------------------
+PHASE 5 - STRING DP
+----------------------------------------------------------------------
+
+[ ] LCS
+[ ] Print LCS
+[ ] Longest Common Substring
+[ ] Longest Palindromic Subsequence
+[ ] Minimum Insertions for Palindrome
+[ ] Edit Distance
+[ ] Distinct Subsequences
+[ ] Wildcard Matching
+
+
+Goal:
+
+Become comfortable with:
+
+dp[i][j]
+
+
+----------------------------------------------------------------------
+PHASE 6 - LIS
+----------------------------------------------------------------------
+
+[ ] Longest Increasing Subsequence - recursion
+[ ] LIS O(N^2)
+[ ] Print LIS
+[ ] Largest Divisible Subset
+[ ] Longest String Chain
+[ ] Bitonic Subsequence
+[ ] Number of LIS
+
+
+----------------------------------------------------------------------
+PHASE 7 - STOCK DP
+----------------------------------------------------------------------
+
+[ ] Buy/Sell Stock I
+[ ] Stock II
+[ ] Stock III
+[ ] Stock IV
+[ ] Stock with Cooldown
+[ ] Stock with Transaction Fee
+
+
+Goal:
+
+Understand:
+
+STATE MACHINE DP
+
+
+----------------------------------------------------------------------
+PHASE 8 - PARTITION DP
+----------------------------------------------------------------------
+
+[ ] Matrix Chain Multiplication
+[ ] Minimum Cost to Cut Stick
+[ ] Burst Balloons
+[ ] Palindrome Partitioning II
+[ ] Partition Array for Maximum Sum
+
+
+Goal:
+
+Understand:
+
+solve(i,j)
++
+try every partition k
+
+
+----------------------------------------------------------------------
+PHASE 9 - ADVANCED
+----------------------------------------------------------------------
+
+[ ] Tree DP
+[ ] DAG DP
+[ ] Bitmask DP - if needed
+[ ] Digit DP - later / competitive programming focus
+
+
+======================================================================
+99. WHAT MUST BE STRONG BEFORE SAYING "I KNOW DP"?
+======================================================================
+
+You should be able to answer:
+
+
+1. What is a DP state?
+
+
+2. What is a transition?
+
+
+3. What is a base case?
+
+
+4. What are overlapping subproblems?
+
+
+5. What is memoization?
+
+
+6. Memoization vs tabulation?
+
+
+7. How do I convert recursion to memoization?
+
+
+8. How do I convert memoization to tabulation?
+
+
+9. How do I calculate DP complexity?
+
+
+10. How do I recognize TAKE / NOT TAKE?
+
+
+11. Difference between 0/1 and Unbounded Knapsack?
+
+
+12. Why does LCS use dp[i][j]?
+
+
+13. How do Grid DP states work?
+
+
+14. How do I decide loop direction?
+
+
+15. When can DP be space optimized?
+
+
+Most importantly:
+
+Can I define:
+
+"solve(...) means ______"
+
+before writing code?
+
+
+======================================================================
+100. MASTER DP CHEAT SHEET
+======================================================================
+
+DP
+│
+├── 1D DP
+│   ├── Fibonacci
+│   ├── Climbing Stairs
+│   ├── Frog Jump
+│   └── House Robber
+│
+├── Grid DP
+│   ├── Unique Paths
+│   ├── Minimum Path Sum
+│   ├── Triangle
+│   └── Falling Path
+│
+├── Subsequence DP
+│   ├── Subset Sum
+│   ├── Partition
+│   ├── 0/1 Knapsack
+│   └── Target Sum
+│
+├── Unbounded DP
+│   ├── Coin Change
+│   ├── Unbounded Knapsack
+│   └── Rod Cutting
+│
+├── String DP
+│   ├── LCS
+│   ├── Longest Common Substring
+│   ├── Palindrome
+│   ├── Edit Distance
+│   └── Distinct Subsequences
+│
+├── LIS
+│   ├── Take/Skip
+│   ├── O(N^2) DP
+│   └── O(N log N) optimization
+│
+├── Stock DP
+│   ├── Buy/Sell
+│   ├── Transaction Limit
+│   ├── Cooldown
+│   └── Fee
+│
+├── Partition DP
+│   ├── MCM
+│   ├── Burst Balloons
+│   └── Cut problems
+│
+├── Tree DP
+│
+└── DAG DP
+
+
+======================================================================
+101. THE FOUR QUESTIONS TO ASK IN EVERY DP PROBLEM
+======================================================================
+
+QUESTION 1:
+
+WHAT DOES MY FUNCTION MEAN?
+
+Example:
+
+solve(i, target)
+
+= number/best answer from this particular state.
+
+
+QUESTION 2:
+
+WHAT CHOICES DO I HAVE?
+
+Examples:
+
+take / don't take
+
+left / right
+
+buy / skip
+
+sell / skip
+
+split at k
+
+
+QUESTION 3:
+
+WHAT CHANGES AFTER EACH CHOICE?
+
+Those changing values usually form the DP state.
+
+
+QUESTION 4:
+
+HOW DO I COMBINE THE CHOICES?
+
+Need number of ways?
+
+→ ADD
+
+
+Need possibility?
+
+→ OR
+
+
+Need minimum?
+
+→ MIN
+
+
+Need maximum?
+
+→ MAX
+
+
+======================================================================
+102. FINAL MEMORY MODEL
+======================================================================
+
+When DP feels confusing, DO NOT think:
+
+"What dp[][] should I make?"
+
+
+Instead think:
+
+                 PROBLEM
+                    |
+                    v
+          Write recursive meaning
+                    |
+                    v
+          What are my CHOICES?
+                    |
+                    v
+          What changes after choice?
+                    |
+                    v
+              Define STATE
+                    |
+                    v
+           Write BASE CASE
+                    |
+                    v
+          Write RECURRENCE
+                    |
+                    v
+        Are states repeating?
+                    |
+                   YES
+                    |
+                    v
+              MEMOIZATION
+                    |
+                    v
+               TABULATION
+                    |
+                    v
+           SPACE OPTIMIZATION
+
+
+======================================================================
+MOST IMPORTANT DP RULE
+======================================================================
+
+DO NOT MEMORIZE:
+
+dp[i][j] = ...
+
+
+First understand:
+
+"What does dp[i][j] MEAN?"
+
+
+Then ask:
+
+"How can I reach this state?"
+
+or
+
+"What choices can I make from this state?"
+
+
+The recurrence should come from that reasoning.
+
+
+======================================================================
+DP IN ONE SENTENCE
+======================================================================
+
+Define a smaller problem clearly,
+solve it using even smaller problems,
+store its answer,
+and reuse that answer instead of solving it again.
+
+======================================================================

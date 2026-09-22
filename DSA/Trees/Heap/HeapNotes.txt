@@ -1,0 +1,1963 @@
+============================================================
+DSA HEAPS - MASTER QUICK REVISION NOTES
+============================================================
+
+PURPOSE:
+Quickly revise Heaps after a long gap.
+
+Main things to remember:
+- What is a Heap?
+- Min Heap vs Max Heap
+- Heap as an array
+- Heapify Up vs Heapify Down
+- Build Heap
+- priority_queue in C++
+- Top K / Kth problems
+- Merge K structures
+- Two-heaps pattern
+- Common interview patterns
+
+
+============================================================
+1. WHAT IS A HEAP?
+============================================================
+
+A Heap is a COMPLETE BINARY TREE that follows a
+HEAP PROPERTY.
+
+Two main types:
+
+1. MAX HEAP
+2. MIN HEAP
+
+
+IMPORTANT:
+
+Heap is NOT the same as BST.
+
+BST:
+Left < Root < Right
+
+Heap:
+Only parent-child ordering is guaranteed.
+
+
+============================================================
+2. COMPLETE BINARY TREE
+============================================================
+
+A Heap must be a COMPLETE Binary Tree.
+
+Meaning:
+
+- Every level is completely filled,
+  except possibly the last.
+
+- Last level is filled LEFT TO RIGHT.
+
+
+VALID:
+
+        10
+       /  \
+      8    7
+     / \  /
+    4  3 2
+
+
+INVALID:
+
+        10
+       /  \
+      8    7
+       \
+        4
+
+Why invalid?
+
+There is a gap before 4.
+
+
+============================================================
+3. MAX HEAP
+============================================================
+
+Every parent is >= its children.
+
+Example:
+
+          50
+        /    \
+      30      40
+     /  \
+    10  20
+
+
+Root contains:
+
+MAXIMUM ELEMENT
+
+
+IMPORTANT:
+
+It does NOT mean the entire tree is sorted.
+
+For example:
+
+          50
+        /    \
+      20      40
+
+is still valid.
+
+We only care that:
+
+PARENT >= CHILDREN
+
+
+============================================================
+4. MIN HEAP
+============================================================
+
+Every parent is <= its children.
+
+Example:
+
+          10
+        /    \
+      20      15
+     /  \
+    40  30
+
+
+Root contains:
+
+MINIMUM ELEMENT
+
+
+Again:
+
+Heap is NOT fully sorted.
+
+Only:
+
+PARENT <= CHILDREN
+
+
+============================================================
+5. WHY CAN HEAP BE STORED IN AN ARRAY?
+============================================================
+
+Because Heap is a COMPLETE Binary Tree.
+
+There are no random gaps.
+
+Example:
+
+          50
+        /    \
+      30      40
+     /  \
+    10  20
+
+
+Array:
+
+[50, 30, 40, 10, 20]
+
+
+We don't need:
+
+Node*
+left
+right
+
+We can calculate relationships using indexes.
+
+
+============================================================
+6. ARRAY INDEX FORMULAS
+============================================================
+
+For 0-based indexing:
+
+PARENT:
+
+(i - 1) / 2
+
+
+LEFT CHILD:
+
+2*i + 1
+
+
+RIGHT CHILD:
+
+2*i + 2
+
+
+Example:
+
+Array:
+
+[50, 30, 40, 10, 20]
+
+Indexes:
+
+ 0   1   2   3   4
+
+
+For index 1:
+
+value = 30
+
+left:
+2(1)+1 = 3
+value = 10
+
+right:
+2(1)+2 = 4
+value = 20
+
+parent:
+(1-1)/2 = 0
+value = 50
+
+
+============================================================
+7. INSERT INTO HEAP - HEAPIFY UP
+============================================================
+
+When inserting:
+
+STEP 1:
+Put new element at END.
+
+Why?
+
+To preserve COMPLETE TREE property.
+
+
+STEP 2:
+Compare with parent.
+
+
+STEP 3:
+If heap property is violated:
+
+SWAP with parent.
+
+
+STEP 4:
+Continue upward.
+
+
+Example Max Heap:
+
+[50, 30, 40, 10, 20]
+
+Insert:
+
+60
+
+
+First:
+
+[50, 30, 40, 10, 20, 60]
+
+
+Compare 60 with parent 40:
+
+60 > 40
+
+swap:
+
+[50, 30, 60, 10, 20, 40]
+
+
+Compare 60 with parent 50:
+
+60 > 50
+
+swap:
+
+[60, 30, 50, 10, 20, 40]
+
+
+Done.
+
+
+This process is:
+
+HEAPIFY UP
+
+
+TIME:
+
+O(log N)
+
+
+============================================================
+8. DELETE ROOT - HEAPIFY DOWN
+============================================================
+
+Usually Heap deletion means removing the ROOT.
+
+For Max Heap:
+remove maximum.
+
+For Min Heap:
+remove minimum.
+
+
+STEP 1:
+
+Replace root with LAST element.
+
+
+STEP 2:
+
+Remove last element.
+
+
+STEP 3:
+
+Compare new root with children.
+
+
+STEP 4:
+
+Swap with appropriate child.
+
+Max Heap:
+swap with LARGER child.
+
+Min Heap:
+swap with SMALLER child.
+
+
+STEP 5:
+
+Continue downward.
+
+
+This is:
+
+HEAPIFY DOWN
+
+
+TIME:
+
+O(log N)
+
+
+============================================================
+9. HEAPIFY UP VS HEAPIFY DOWN
+============================================================
+
+INSERT:
+
+New element appears at bottom.
+
+Problem may exist between:
+
+CHILD and PARENT
+
+Therefore:
+
+HEAPIFY UP
+
+
+DELETE ROOT / BUILD HEAP:
+
+Problem may exist between:
+
+PARENT and CHILDREN
+
+Therefore:
+
+HEAPIFY DOWN
+
+
+MEMORY:
+
+INSERT
+    ↓
+Heapify UP
+
+
+DELETE ROOT
+    ↓
+Heapify DOWN
+
+
+============================================================
+10. HEAPIFY DOWN - MAX HEAP
+============================================================
+
+At index i:
+
+largest = i
+
+Compare with:
+
+left child
+right child
+
+
+If left > current:
+    largest = left
+
+If right > current largest:
+    largest = right
+
+
+If largest changed:
+
+swap(arr[i], arr[largest])
+
+heapify(largest)
+
+
+IMPORTANT:
+
+Compare BOTH children before deciding where to swap.
+
+
+============================================================
+11. LAST NON-LEAF NODE
+============================================================
+
+For 0-based array:
+
+last non-leaf index = n/2 - 1
+
+
+Why?
+
+All indexes:
+
+n/2 ... n-1
+
+are LEAF nodes.
+
+
+Leaf nodes already satisfy Heap property because they
+have no children.
+
+Therefore Build Heap starts from:
+
+n/2 - 1
+
+
+and moves backward:
+
+for (int i = n/2 - 1; i >= 0; i--)
+    heapify(...);
+
+
+============================================================
+12. BUILD HEAP
+============================================================
+
+Given random array:
+
+[4, 10, 3, 5, 1]
+
+
+We don't insert every element individually.
+
+Instead:
+
+Start from LAST NON-LEAF:
+
+n/2 - 1
+
+
+Then Heapify Down each node going backwards.
+
+
+Pattern:
+
+for (int i = n/2 - 1; i >= 0; i--) {
+
+    heapify(arr, n, i);
+}
+
+
+TIME COMPLEXITY:
+
+O(N)
+
+
+IMPORTANT:
+
+It may LOOK like:
+
+N nodes * O(log N)
+
+= O(N log N)
+
+but Build Heap is actually:
+
+O(N)
+
+because most nodes are near the leaves and require
+very little/no movement.
+
+
+============================================================
+13. C++ PRIORITY_QUEUE
+============================================================
+
+C++ priority_queue is a Heap.
+
+
+DEFAULT:
+
+MAX HEAP
+
+
+priority_queue<int> pq;
+
+
+Operations:
+
+pq.push(x);
+
+pq.top();
+
+pq.pop();
+
+pq.empty();
+
+pq.size();
+
+
+------------------------------------------------------------
+MIN HEAP IN C++
+------------------------------------------------------------
+
+priority_queue<
+    int,
+    vector<int>,
+    greater<int>
+> pq;
+
+
+Quick memory:
+
+priority_queue<int>
+    → MAX HEAP
+
+
+priority_queue<int, vector<int>, greater<int>>
+    → MIN HEAP
+
+
+============================================================
+14. HEAP COMPLEXITIES
+============================================================
+
+Get min/max from root:
+
+O(1)
+
+
+Insert:
+
+O(log N)
+
+
+Delete root:
+
+O(log N)
+
+
+Heapify:
+
+O(log N)
+
+
+Build Heap:
+
+O(N)
+
+
+Heap space:
+
+O(N)
+
+
+============================================================
+15. WHEN SHOULD I THINK "HEAP"?
+============================================================
+
+Look for words like:
+
+Kth smallest
+
+Kth largest
+
+Top K
+
+Smallest K
+
+Largest K
+
+Repeatedly find minimum
+
+Repeatedly find maximum
+
+Merge K sorted...
+
+Running median
+
+Closest K
+
+Minimum cost while repeatedly combining things
+
+
+Very common clue:
+
+"I repeatedly need the smallest/largest element."
+
+
+Think:
+
+HEAP / PRIORITY QUEUE
+
+
+============================================================
+16. KTH LARGEST - CORE PATTERN
+============================================================
+
+To find Kth LARGEST:
+
+Use a MIN HEAP of size K.
+
+
+Why MIN heap?
+
+We want to keep the K LARGEST elements seen so far.
+
+The smallest among those K sits at root.
+
+
+Pattern:
+
+for each number:
+
+    push into min heap
+
+    if heap size > K:
+        pop()
+
+
+At end:
+
+heap.top()
+
+= Kth largest
+
+
+Example:
+
+nums:
+
+3 2 1 5 6 4
+
+k = 2
+
+
+Keep only 2 largest:
+
+[5,6]
+
+Minimum among them:
+
+5
+
+Therefore:
+
+2nd largest = 5
+
+
+============================================================
+17. KTH SMALLEST - CORE PATTERN
+============================================================
+
+To find Kth SMALLEST:
+
+Use a MAX HEAP of size K.
+
+
+Why MAX heap?
+
+Keep the K smallest elements.
+
+The largest among those K sits at root.
+
+
+Pattern:
+
+push element
+
+if heap size > K:
+    pop maximum
+
+
+At end:
+
+heap.top()
+
+= Kth smallest
+
+
+MEMORY TRICK:
+
+Kth LARGEST
+→ MIN heap of size K
+
+
+Kth SMALLEST
+→ MAX heap of size K
+
+
+It feels opposite at first.
+
+Reason:
+
+The root should represent the "boundary" element
+that we want as the final answer.
+
+
+============================================================
+18. WHY SIZE K?
+============================================================
+
+Suppose finding:
+
+3rd largest
+
+
+We don't care about every element.
+
+We only need to remember:
+
+the 3 largest values seen so far.
+
+
+Whenever heap becomes size 4:
+
+remove the least useful element.
+
+
+This keeps memory:
+
+O(K)
+
+
+============================================================
+19. KTH LARGEST - DIFFERENT APPROACHES
+============================================================
+
+Common approaches:
+
+1. Sort
+   O(N log N)
+
+2. Heap containing all elements
+   O(N log N) approximately
+
+3. Heap of size K
+   O(N log K)
+
+4. Quickselect
+   Average O(N)
+
+
+For Heap topic, understand:
+
+SIZE-K HEAP PATTERN
+
+
+============================================================
+20. KTH SMALLEST IN SORTED MATRIX
+============================================================
+
+One approach:
+
+MIN HEAP
+
+
+Because each row is sorted.
+
+Initially push first element from each row.
+
+
+Store:
+
+value
+row
+column
+
+
+Pop smallest.
+
+Then push next element from SAME ROW.
+
+
+Repeat K times.
+
+
+This is similar to:
+
+MERGE K SORTED LISTS.
+
+
+Another important approach:
+
+Binary Search on VALUE.
+
+Learn both eventually.
+
+
+============================================================
+21. MERGE K SORTED LISTS
+============================================================
+
+Classic Heap problem.
+
+
+Suppose:
+
+L1: 1 -> 4 -> 7
+
+L2: 2 -> 5 -> 8
+
+L3: 3 -> 6 -> 9
+
+
+Put first node from every list into MIN HEAP:
+
+1, 2, 3
+
+
+Pop smallest:
+
+1
+
+
+Add 1 to answer.
+
+Then push:
+
+1's next node = 4
+
+
+Heap now:
+
+2, 3, 4
+
+
+Repeat.
+
+
+CORE IDEA:
+
+Heap contains ONE CURRENT CANDIDATE from each list.
+
+
+TIME:
+
+O(N log K)
+
+N = total nodes
+K = number of lists
+
+
+============================================================
+22. MERGE K SORTED ARRAYS
+============================================================
+
+Same idea as Merge K Sorted Lists.
+
+Store:
+
+value
+array index
+element index
+
+
+Pop minimum.
+
+Then push next element from the SAME array.
+
+
+This pattern appears repeatedly.
+
+
+============================================================
+23. SMALLEST RANGE COVERING K LISTS
+============================================================
+
+Very important Heap pattern.
+
+
+Goal:
+
+Find smallest range containing at least one number
+from every list.
+
+
+Use:
+
+MIN HEAP + CURRENT MAXIMUM
+
+
+Initially:
+
+Put first element from each list in Min Heap.
+
+Also track:
+
+maxi = maximum of those elements.
+
+
+Current range:
+
+[minHeap.top(), maxi]
+
+
+Then:
+
+1. Pop minimum.
+2. Check/update range.
+3. Move forward in the SAME list.
+4. Push next value.
+5. Update maxi.
+6. Repeat.
+
+
+STOP when one list has no next element.
+
+
+WHY?
+
+To contain all K lists:
+
+Heap must always contain one candidate from each list.
+
+
+============================================================
+24. MINIMUM COST TO CONNECT ROPES
+============================================================
+
+Given rope lengths.
+
+Every time two ropes are joined:
+
+cost = a + b
+
+
+Goal:
+
+minimum total cost.
+
+
+GREEDY IDEA:
+
+Always combine TWO SMALLEST ropes first.
+
+
+Therefore:
+
+MIN HEAP
+
+
+Pattern:
+
+while heap.size() > 1:
+
+    first = pop minimum
+    second = pop minimum
+
+    cost = first + second
+
+    total += cost
+
+    push(cost)
+
+
+Why push combined rope back?
+
+Because the newly created rope may be used again.
+
+
+============================================================
+25. LAST STONE WEIGHT
+============================================================
+
+Repeatedly need:
+
+TWO LARGEST elements.
+
+
+Therefore:
+
+MAX HEAP
+
+
+Pattern:
+
+while heap.size() > 1:
+
+    first = largest
+    second = second largest
+
+    smash them
+
+    if difference exists:
+        push difference
+
+
+Recognition clue:
+
+"Repeatedly take two largest"
+
+→ MAX HEAP
+
+
+============================================================
+26. TAKE GIFTS / REPEATED MAXIMUM
+============================================================
+
+If problem repeatedly says:
+
+1. Find largest value.
+2. Modify it.
+3. Put it back.
+4. Repeat K times.
+
+
+Use:
+
+MAX HEAP
+
+
+Example:
+
+largest = pq.top()
+pq.pop()
+
+largest = transformed(largest)
+
+pq.push(largest)
+
+
+Heap automatically gives next maximum.
+
+
+============================================================
+27. REPEATED MINIMUM PATTERN
+============================================================
+
+If problem repeatedly says:
+
+Take smallest
+Modify/combine it
+Put result back
+
+
+Think:
+
+MIN HEAP
+
+
+Examples:
+
+Connect ropes
+Merge sorted structures
+
+
+============================================================
+28. STREAM KTH LARGEST
+============================================================
+
+Numbers arrive ONE BY ONE.
+
+Need Kth largest after each insertion.
+
+
+Maintain:
+
+MIN HEAP of size K
+
+
+For every incoming value:
+
+push(value)
+
+if size > K:
+    pop()
+
+
+If size >= K:
+
+heap.top()
+
+= current Kth largest
+
+
+The important idea:
+
+We do NOT recompute from scratch.
+
+The Heap maintains useful information continuously.
+
+
+============================================================
+29. MEDIAN FROM DATA STREAM
+============================================================
+
+One of the most important two-Heap patterns.
+
+
+Need median as numbers arrive.
+
+
+Use TWO HEAPS:
+
+
+LEFT HALF:
+
+MAX HEAP
+
+contains smaller numbers.
+
+
+RIGHT HALF:
+
+MIN HEAP
+
+contains larger numbers.
+
+
+Example:
+
+LEFT               RIGHT
+
+1 2 3              4 5 6
+  ↑                 ↑
+ max=3             min=4
+
+
+Median:
+
+If equal sizes:
+
+(maxLeft + minRight) / 2
+
+
+If one side has extra element:
+
+top of larger heap
+
+
+RULE:
+
+Keep heap sizes balanced.
+
+Difference should generally be at most 1.
+
+
+WHY TWO HEAPS?
+
+We need quick access to:
+
+largest of smaller half
+
+AND
+
+smallest of larger half.
+
+
+============================================================
+30. TOP K FREQUENT ELEMENTS
+============================================================
+
+Common pattern:
+
+STEP 1:
+
+Build frequency map.
+
+
+STEP 2:
+
+Use Heap based on frequency.
+
+
+Can maintain heap of size K.
+
+
+Heap stores something like:
+
+{frequency, value}
+
+
+This combines:
+
+HASH MAP + HEAP
+
+
+============================================================
+31. K CLOSEST / K BEST ELEMENTS
+============================================================
+
+Another common pattern:
+
+Calculate a SCORE.
+
+Examples:
+
+distance
+difference
+frequency
+cost
+
+
+Then Heap stores:
+
+{score, item}
+
+
+Keep only K useful candidates.
+
+
+General pattern:
+
+for every item:
+
+    calculate score
+
+    push item
+
+    if heap.size() > K:
+        remove worst candidate
+
+
+============================================================
+32. CUSTOM HEAP VALUES
+============================================================
+
+Heap doesn't have to store only:
+
+int
+
+
+Can store:
+
+pair<int,int>
+
+
+Example:
+
+priority_queue<
+    pair<int,int>,
+    vector<pair<int,int>>,
+    greater<pair<int,int>>
+> pq;
+
+
+Useful for:
+
+{distance, node}
+
+{value, row}
+
+{value, {row, col}}
+
+{frequency, value}
+
+
+This becomes extremely important later in:
+
+DIJKSTRA'S ALGORITHM.
+
+
+============================================================
+33. HEAP WITH PAIRS
+============================================================
+
+For pair:
+
+{a,b}
+
+C++ compares first value first.
+
+If tied:
+
+compares second.
+
+
+Example:
+
+{2,5}
+{3,1}
+
+
+{2,5} is smaller because:
+
+2 < 3
+
+
+Useful when first field is:
+
+priority
+distance
+value
+cost
+
+
+============================================================
+34. HEAP SORT
+============================================================
+
+Heap Sort idea:
+
+1. Build MAX HEAP.
+2. Largest element is at root.
+3. Swap root with last element.
+4. Reduce heap size.
+5. Heapify root.
+6. Repeat.
+
+
+Result:
+
+sorted array.
+
+
+TIME:
+
+O(N log N)
+
+
+SPACE:
+
+Can be O(1) auxiliary when done in-place.
+
+
+============================================================
+35. HEAP VS SORTING
+============================================================
+
+If you only need answer ONCE and all data is available:
+
+Sorting may be simpler.
+
+
+If you repeatedly need:
+
+minimum
+maximum
+Top K
+stream updates
+
+
+Heap is often better.
+
+
+SORT:
+
+Usually:
+O(N log N)
+
+
+SIZE-K HEAP:
+
+O(N log K)
+
+
+Especially useful when:
+
+K << N
+
+
+============================================================
+36. HEAP VS BST
+============================================================
+
+HEAP:
+
+Only guarantees parent-child priority.
+
+Fast access to min/max.
+
+Search arbitrary value:
+not efficient.
+
+
+BST:
+
+Maintains ordering between left/root/right.
+
+Can search efficiently if balanced.
+
+
+Heap use case:
+
+"Give me smallest/largest quickly."
+
+
+BST use case:
+
+"Search/order/range relationships."
+
+
+============================================================
+37. HEAP VS QUEUE
+============================================================
+
+Normal Queue:
+
+FIRST IN
+FIRST OUT
+
+
+Priority Queue / Heap:
+
+HIGHEST PRIORITY comes out first.
+
+
+Insertion order doesn't decide removal.
+
+Priority decides removal.
+
+
+============================================================
+38. HEAP VS STACK
+============================================================
+
+STACK:
+
+Last In First Out
+
+
+QUEUE:
+
+First In First Out
+
+
+HEAP:
+
+Highest/lowest priority first
+
+
+============================================================
+39. COMMON HEAP PROBLEM PATTERNS
+============================================================
+
+PATTERN 1:
+
+"Kth largest"
+
+→ Min Heap size K
+
+
+PATTERN 2:
+
+"Kth smallest"
+
+→ Max Heap size K
+
+
+PATTERN 3:
+
+"Repeatedly smallest"
+
+→ Min Heap
+
+
+PATTERN 4:
+
+"Repeatedly largest"
+
+→ Max Heap
+
+
+PATTERN 5:
+
+"Merge K sorted..."
+
+→ Min Heap with one candidate from each source
+
+
+PATTERN 6:
+
+"Running median"
+
+→ Max Heap + Min Heap
+
+
+PATTERN 7:
+
+"Top K based on score"
+
+→ Heap size K
+
+
+PATTERN 8:
+
+"Smallest range from K lists"
+
+→ Min Heap + track maximum
+
+
+PATTERN 9:
+
+"Streaming Kth..."
+
+→ Maintain size-K Heap continuously
+
+
+============================================================
+40. VERY IMPORTANT: CHOOSING MIN OR MAX HEAP
+============================================================
+
+Don't decide based only on the words:
+
+"Largest"
+"Smallest"
+
+
+Ask:
+
+WHAT ELEMENT DO I NEED TO REMOVE QUICKLY?
+
+
+Example:
+
+Kth LARGEST
+
+We keep K largest elements.
+
+When size > K:
+
+Which one should be removed?
+
+SMALLEST among them.
+
+Therefore:
+
+MIN HEAP.
+
+
+Kth SMALLEST:
+
+Keep K smallest.
+
+When size > K:
+
+Remove LARGEST among them.
+
+Therefore:
+
+MAX HEAP.
+
+
+This question is more reliable than memorization:
+
+"What should be sitting at the root?"
+
+
+============================================================
+41. HEAPIFY RECURSION MENTAL MODEL
+============================================================
+
+Example Max Heapify:
+
+heapify(i)
+
+
+At current index:
+
+1. Assume current is largest.
+
+2. Check left child.
+
+3. Check right child.
+
+4. Determine actual largest.
+
+5. If current isn't largest:
+
+       swap
+
+6. After swap:
+
+       the problem moved DOWNWARD
+
+7. Therefore:
+
+       heapify(largest)
+
+
+This is why recursion continues on the swapped child.
+
+
+============================================================
+42. COMMON MISTAKES
+============================================================
+
+1. Mixing Min Heap and Max Heap.
+
+
+2. For Kth Largest, using Max Heap size K without
+   understanding why.
+
+
+3. Forgetting:
+
+if (pq.size() > k)
+    pq.pop();
+
+
+4. Calling pq.top() on empty Heap.
+
+
+5. In heapify, comparing only one child.
+
+
+6. Forgetting array bounds:
+
+left < n
+right < n
+
+
+7. After swapping during heapify, recursing on wrong index.
+
+
+8. Forgetting combined element must be pushed back in
+   problems like Connect Ropes.
+
+
+9. Merge K lists:
+   forgetting to push the popped node's NEXT node.
+
+
+10. Smallest Range:
+    forgetting to track current maximum.
+
+
+11. Confusing array INDEX with array VALUE.
+
+
+12. Forgetting:
+
+last non-leaf = n/2 - 1
+
+
+13. Thinking Build Heap is O(N log N).
+
+It is:
+
+O(N)
+
+
+============================================================
+43. HOW TO APPROACH A NEW HEAP PROBLEM
+============================================================
+
+Ask these questions:
+
+
+QUESTION 1:
+
+Do I repeatedly need smallest/largest?
+
+YES
+→ Heap may help.
+
+
+QUESTION 2:
+
+Do I only care about K elements?
+
+YES
+→ Think size-K Heap.
+
+
+QUESTION 3:
+
+Which element should I remove when I have too many?
+
+Need remove smallest?
+→ Min Heap gives smallest.
+
+Need remove largest?
+→ Max Heap gives largest.
+
+
+QUESTION 4:
+
+Are there K sorted lists/arrays?
+
+YES
+→ Put one candidate from each into Min Heap.
+
+
+QUESTION 5:
+
+Is data arriving continuously?
+
+YES
+→ Think streaming Heap.
+
+
+QUESTION 6:
+
+Do I need a running median?
+
+YES
+→ Two Heaps.
+
+
+============================================================
+44. QUICK COMPLEXITY TABLE
+============================================================
+
+Heap top:
+O(1)
+
+Insert / push:
+O(log N)
+
+Remove root / pop:
+O(log N)
+
+Heapify:
+O(log N)
+
+Build Heap:
+O(N)
+
+Kth using size-K Heap:
+O(N log K)
+
+Merge K sorted lists:
+O(N log K)
+
+Heap Sort:
+O(N log N)
+
+
+============================================================
+45. LEARNING / REVISION ORDER
+============================================================
+
+FOUNDATION:
+
+[ ] Complete Binary Tree
+[ ] Min Heap
+[ ] Max Heap
+[ ] Array representation
+[ ] Parent/child formulas
+
+
+IMPLEMENTATION:
+
+[ ] Insert
+[ ] Heapify Up
+[ ] Delete Root
+[ ] Heapify Down
+[ ] Build Heap
+
+
+STL:
+
+[ ] priority_queue Max Heap
+[ ] priority_queue Min Heap
+[ ] Heap of pairs
+
+
+CORE INTERVIEW PATTERNS:
+
+[ ] Kth Largest
+[ ] Kth Smallest
+[ ] Top K
+[ ] Connect Ropes
+[ ] Last Stone Weight
+[ ] Repeated max/min
+[ ] Stream Kth Largest
+
+
+K-WAY MERGE:
+
+[ ] Merge K Sorted Lists
+[ ] Merge K Sorted Arrays
+[ ] Kth Smallest in Sorted Matrix
+[ ] Smallest Range in K Lists
+
+
+ADVANCED:
+
+[ ] Median from Data Stream
+[ ] Two Heaps
+[ ] Custom comparators
+[ ] Heap Sort
+
+
+============================================================
+46. ONE-LINE REVISION
+============================================================
+
+Heap:
+Complete Binary Tree with priority property.
+
+Max Heap:
+Parent >= children; maximum at root.
+
+Min Heap:
+Parent <= children; minimum at root.
+
+Insert:
+Add at end + Heapify Up.
+
+Delete Root:
+Replace with last + Heapify Down.
+
+Heapify Up:
+Fix violation toward parent.
+
+Heapify Down:
+Fix violation toward children.
+
+Build Heap:
+Heapify from n/2 - 1 down to 0.
+
+priority_queue<int>:
+Max Heap.
+
+priority_queue<int, vector<int>, greater<int>>:
+Min Heap.
+
+Kth Largest:
+Min Heap size K.
+
+Kth Smallest:
+Max Heap size K.
+
+Repeated Minimum:
+Min Heap.
+
+Repeated Maximum:
+Max Heap.
+
+Merge K Sorted:
+Min Heap with one candidate per source.
+
+Running Median:
+Max Heap for left half + Min Heap for right half.
+
+Smallest Range K Lists:
+Min Heap + current maximum.
+
+
+============================================================
+47. FINAL MEMORY MAP
+============================================================
+
+HEAP
+│
+├── Structure
+│   ├── Complete Binary Tree
+│   └── Array Representation
+│
+├── Types
+│   ├── Min Heap
+│   └── Max Heap
+│
+├── Operations
+│   ├── Insert
+│   │   └── Heapify Up
+│   │
+│   ├── Delete Root
+│   │   └── Heapify Down
+│   │
+│   └── Build Heap
+│
+├── STL
+│   └── priority_queue
+│
+├── K Problems
+│   ├── Kth Largest
+│   ├── Kth Smallest
+│   └── Top K
+│
+├── Repeated Priority
+│   ├── Connect Ropes
+│   ├── Last Stone Weight
+│   └── Pick/Modify Maximum
+│
+├── K-Way Merge
+│   ├── Merge K Lists
+│   ├── Merge K Arrays
+│   ├── Matrix Kth Smallest
+│   └── Smallest Range
+│
+└── Two Heaps
+    └── Median from Data Stream
+
+
+============================================================
+MOST IMPORTANT HEAP MEMORY
+============================================================
+
+A Heap is useful when:
+
+"I repeatedly need the BEST candidate."
+
+BEST may mean:
+
+smallest
+largest
+closest
+lowest cost
+highest priority
+
+
+And for K problems:
+
+Don't just ask:
+
+"Is this Kth largest or Kth smallest?"
+
+
+Ask:
+
+"I want to KEEP K useful elements.
+
+When I have K+1 elements,
+which BAD element should I throw away?"
+
+
+Kth Largest:
+
+keep K largest
+throw away smallest
+→ MIN HEAP
+
+
+Kth Smallest:
+
+keep K smallest
+throw away largest
+→ MAX HEAP
+
+
+That idea is more important than memorizing formulas.
+
+============================================================

@@ -1,0 +1,2199 @@
+======================================================================
+GRAPH THEORY BASICS - MUST KNOW BEFORE BFS / DFS
+======================================================================
+
+
+======================================================================
+1. WHAT IS A GRAPH?
+======================================================================
+
+A Graph is a collection of:
+
+VERTICES (nodes)
++
+EDGES (connections)
+
+
+Written mathematically as:
+
+G = (V, E)
+
+V = set of vertices
+E = set of edges
+
+
+Example:
+
+       0
+      / \
+     1---2
+     |
+     3
+
+
+Vertices:
+
+V = {0, 1, 2, 3}
+
+
+Edges:
+
+E = {
+    (0,1),
+    (0,2),
+    (1,2),
+    (1,3)
+}
+
+
+Number of vertices:
+
+|V| = 4
+
+
+Number of edges:
+
+|E| = 4
+
+
+In coding questions:
+
+V = number of vertices
+E = number of edges
+
+
+======================================================================
+2. GRAPH TERMINOLOGY
+======================================================================
+
+VERTEX / NODE:
+
+An individual point in the graph.
+
+
+EDGE:
+
+Connection between two vertices.
+
+
+ADJACENT NODES / NEIGHBORS:
+
+Two vertices are adjacent if an edge connects them.
+
+Example:
+
+0 --- 1
+
+0 and 1 are neighbors.
+
+
+DEGREE:
+
+Number of edges connected to a vertex.
+
+
+PATH:
+
+Sequence of vertices connected by edges.
+
+Example:
+
+0 -> 1 -> 3 -> 5
+
+
+CYCLE:
+
+A path that eventually comes back to its starting vertex.
+
+Example:
+
+0 -> 1 -> 2 -> 0
+
+
+CONNECTED:
+
+There is a path between vertices.
+
+
+CONNECTED COMPONENT:
+
+A separate connected part of a graph.
+
+
+======================================================================
+3. DIRECTED GRAPH
+======================================================================
+
+Edges have DIRECTION.
+
+Example:
+
+A ---> B
+
+
+This means:
+
+A can go to B.
+
+It does NOT automatically mean:
+
+B can go to A.
+
+
+Represented as:
+
+(A, B)
+
+
+Example:
+
+0 ---> 1
+      /
+     v
+     2
+
+
+Common examples:
+
+Instagram/Twitter follow relationship
+Course prerequisites
+Web page links
+Dependencies
+
+
+======================================================================
+4. UNDIRECTED GRAPH
+======================================================================
+
+Edges have NO direction.
+
+Example:
+
+A ----- B
+
+
+Connection works both ways:
+
+A -> B
+B -> A
+
+
+An edge is written:
+
+{A, B}
+
+
+Examples:
+
+Friendship network
+Road connections (if both directions allowed)
+Computer network connections
+
+
+======================================================================
+5. DIRECTED VS UNDIRECTED
+======================================================================
+
+UNDIRECTED:
+
+A ----- B
+
+means both are connected.
+
+
+DIRECTED:
+
+A ----> B
+
+only means A points to B.
+
+
+Adjacency list:
+
+Undirected edge:
+
+u -- v
+
+must usually add:
+
+adj[u].push_back(v);
+adj[v].push_back(u);
+
+
+Directed edge:
+
+u -> v
+
+only:
+
+adj[u].push_back(v);
+
+
+======================================================================
+6. WEIGHTED GRAPH
+======================================================================
+
+Edges have some VALUE / COST / WEIGHT.
+
+
+Example:
+
+A ----5---- B
+ \
+  10
+   \
+    C
+
+
+5 and 10 may represent:
+
+distance
+cost
+time
+price
+latency
+
+
+Common algorithms:
+
+Dijkstra
+Bellman-Ford
+Prim
+Kruskal
+
+
+======================================================================
+7. UNWEIGHTED GRAPH
+======================================================================
+
+Edges don't have explicit costs.
+
+Example:
+
+A ----- B
+|
+C
+
+
+Usually each edge can conceptually be treated as equal cost.
+
+
+For shortest path in an unweighted graph:
+
+BFS is extremely important.
+
+
+======================================================================
+8. SIMPLE GRAPH
+======================================================================
+
+A SIMPLE GRAPH normally means:
+
+1. No self-loops
+2. No multiple/parallel edges between same pair of vertices
+
+
+Example:
+
+A ----- B
+
+Only one edge between A and B.
+
+
+NOT:
+
+A ===== B
+
+with several separate edges between the same pair.
+
+
+And NOT:
+
+A
+↺
+
+a self-loop.
+
+
+======================================================================
+9. MULTIGRAPH
+======================================================================
+
+A graph that can have MULTIPLE edges between the same pair of nodes.
+
+
+Example:
+
+A ===== B
+
+There could be:
+
+edge 1
+edge 2
+edge 3
+
+
+Useful when two entities may have multiple different connections.
+
+
+======================================================================
+10. SELF LOOP
+======================================================================
+
+An edge from a vertex back to itself.
+
+Example:
+
+A ----> A
+
+
+Written:
+
+(A, A)
+
+
+Simple graphs normally do not allow self-loops.
+
+
+======================================================================
+11. COMPLETE GRAPH
+======================================================================
+
+VERY IMPORTANT.
+
+
+A COMPLETE GRAPH means:
+
+EVERY PAIR of different vertices has an edge.
+
+
+Example with 3 vertices:
+
+       A
+      / \
+     B---C
+
+
+Every vertex is connected to every other vertex.
+
+
+Complete graph is written:
+
+Kₙ
+
+
+Examples:
+
+K3 = complete graph with 3 vertices.
+
+K4 = complete graph with 4 vertices.
+
+
+======================================================================
+12. WHAT IS nC2?
+======================================================================
+
+This is the formula you heard about.
+
+
+nC2 means:
+
+"Choose 2 vertices from n vertices."
+
+
+Formula:
+
+        n!
+nC2 = -------
+       2!(n-2)!
+
+
+This simplifies to:
+
+n(n-1)
+-------
+   2
+
+
+So:
+
+nC2 = n * (n - 1) / 2
+
+
+WHY DO WE USE IT IN GRAPHS?
+
+
+Because an UNDIRECTED edge connects a PAIR of vertices.
+
+
+Suppose we have:
+
+A
+B
+C
+D
+
+
+How many different PAIRS can we make?
+
+
+AB
+AC
+AD
+BC
+BD
+CD
+
+
+Total:
+
+6
+
+
+Formula:
+
+n = 4
+
+
+4C2
+
+= 4 * 3 / 2
+
+= 6
+
+
+Therefore:
+
+Maximum number of edges in a SIMPLE UNDIRECTED graph:
+
+             n(n-1)
+MAX EDGES = --------
+                2
+
+
+or simply:
+
+nC2
+
+
+======================================================================
+13. WHY DIVIDE BY 2?
+======================================================================
+
+Suppose there are 4 nodes.
+
+
+Each node could connect to:
+
+n - 1 = 3
+
+other nodes.
+
+
+So initially:
+
+4 * 3 = 12
+
+
+But we counted every edge TWICE.
+
+
+AB
+
+and
+
+BA
+
+
+are the SAME edge in an UNDIRECTED graph.
+
+
+Therefore:
+
+12 / 2 = 6
+
+
+General formula:
+
+n(n-1) / 2
+
+
+This is exactly:
+
+nC2
+
+
+======================================================================
+14. COMPLETE UNDIRECTED GRAPH - EXAMPLES
+======================================================================
+
+n = 1
+
+Edges:
+
+0
+
+
+n = 2
+
+A --- B
+
+Edges:
+
+1
+
+
+Formula:
+
+2 * 1 / 2 = 1
+
+
+--------------------------------------------------
+
+
+n = 3
+
+Every pair connected.
+
+Edges:
+
+3
+
+
+Formula:
+
+3 * 2 / 2 = 3
+
+
+--------------------------------------------------
+
+
+n = 4
+
+Edges:
+
+6
+
+
+Formula:
+
+4 * 3 / 2 = 6
+
+
+--------------------------------------------------
+
+
+n = 5
+
+Edges:
+
+5 * 4 / 2
+
+= 10
+
+
+--------------------------------------------------
+
+
+n = 10
+
+Edges:
+
+10 * 9 / 2
+
+= 45
+
+
+======================================================================
+15. MAXIMUM EDGES - DIRECTED GRAPH
+======================================================================
+
+Now suppose edges have direction.
+
+
+A -> B
+
+and
+
+B -> A
+
+
+are TWO DIFFERENT directed edges.
+
+
+Therefore we DON'T divide by 2.
+
+
+For every node:
+
+it can point to:
+
+n - 1
+
+other nodes.
+
+
+Maximum edges in a simple DIRECTED graph
+without self-loops:
+
+n(n - 1)
+
+
+Example:
+
+n = 3
+
+
+Possible directed edges:
+
+A -> B
+A -> C
+
+B -> A
+B -> C
+
+C -> A
+C -> B
+
+
+Total:
+
+6
+
+
+Formula:
+
+3 * 2 = 6
+
+
+======================================================================
+16. MAXIMUM EDGE FORMULAS - REMEMBER
+======================================================================
+
+SIMPLE UNDIRECTED GRAPH:
+
+Maximum edges:
+
+n(n-1)
+-------
+   2
+
+= nC2
+
+
+SIMPLE DIRECTED GRAPH:
+
+Maximum edges:
+
+n(n-1)
+
+
+Why difference?
+
+
+UNDIRECTED:
+
+A--B and B--A are SAME connection.
+
+
+DIRECTED:
+
+A->B and B->A are DIFFERENT connections.
+
+
+======================================================================
+17. WHAT IF SELF LOOPS ARE ALLOWED?
+======================================================================
+
+Without self-loops, a node cannot connect to itself.
+
+
+Directed graph without self-loops:
+
+n(n-1)
+
+
+If self-loops ARE allowed:
+
+each node can also connect to itself.
+
+
+Maximum directed edges:
+
+n²
+
+
+Example:
+
+n = 3
+
+Each of 3 nodes can point to all 3 nodes:
+
+3 * 3 = 9
+
+
+Always check the exact graph definition in the question.
+
+
+======================================================================
+18. DEGREE - UNDIRECTED GRAPH
+======================================================================
+
+Degree of a vertex:
+
+Number of edges touching that vertex.
+
+
+Example:
+
+       B
+       |
+A -----C----- D
+
+
+degree(C) = 3
+
+degree(A) = 1
+
+degree(B) = 1
+
+degree(D) = 1
+
+
+======================================================================
+19. HANDSHAKING LEMMA
+======================================================================
+
+VERY USEFUL GRAPH FACT.
+
+
+For an UNDIRECTED graph:
+
+SUM OF DEGREES OF ALL VERTICES = 2E
+
+
+Why?
+
+
+Every edge touches TWO vertices.
+
+
+Example:
+
+A ----- B
+
+
+degree(A) = 1
+degree(B) = 1
+
+
+Sum:
+
+2
+
+
+Edges:
+
+E = 1
+
+
+2E = 2
+
+
+Therefore:
+
+Σ degree(v) = 2E
+
+
+======================================================================
+20. COMPLETE GRAPH DEGREE
+======================================================================
+
+In complete undirected graph Kₙ:
+
+Every vertex connects to every OTHER vertex.
+
+
+Therefore:
+
+degree of every vertex = n - 1
+
+
+Example:
+
+K5
+
+Each vertex has degree:
+
+4
+
+
+Total degree:
+
+5 * 4 = 20
+
+
+Using:
+
+sum degree = 2E
+
+
+20 = 2E
+
+E = 10
+
+
+Same result:
+
+5C2 = 10
+
+
+======================================================================
+21. INDEGREE AND OUTDEGREE - DIRECTED GRAPH
+======================================================================
+
+For directed graphs we have TWO kinds of degree.
+
+
+INDEGREE:
+
+Number of edges coming INTO node.
+
+
+OUTDEGREE:
+
+Number of edges going OUT of node.
+
+
+Example:
+
+A ---> B ---> C
+      ^
+      |
+      D
+
+
+For B:
+
+incoming:
+
+A -> B
+D -> B
+
+indegree(B) = 2
+
+
+outgoing:
+
+B -> C
+
+outdegree(B) = 1
+
+
+======================================================================
+22. DIRECTED GRAPH DEGREE FACT
+======================================================================
+
+For a directed graph:
+
+SUM OF ALL INDEGREES = E
+
+and
+
+SUM OF ALL OUTDEGREES = E
+
+
+Therefore:
+
+SUM(indegree)
+=
+SUM(outdegree)
+=
+number of edges
+
+
+Why?
+
+Every directed edge:
+
+u -> v
+
+
+adds:
+
+1 to outdegree(u)
+
+and
+
+1 to indegree(v)
+
+
+======================================================================
+23. PATH
+======================================================================
+
+A path is a sequence of connected vertices.
+
+
+Example:
+
+A -- B -- C -- D
+
+
+A -> B -> C -> D
+
+is a path.
+
+
+Path length is commonly measured by:
+
+NUMBER OF EDGES
+
+
+So:
+
+A -> B -> C -> D
+
+has:
+
+3 edges
+
+Therefore path length = 3
+
+
+======================================================================
+24. SIMPLE PATH
+======================================================================
+
+A path where no vertex repeats.
+
+
+Example:
+
+A -> B -> C -> D
+
+
+No repeated node.
+
+
+======================================================================
+25. CYCLE
+======================================================================
+
+A cycle is a path that returns to its starting vertex.
+
+
+Example:
+
+A --- B
+|     |
+D --- C
+
+
+A -> B -> C -> D -> A
+
+
+is a cycle.
+
+
+Cycle detection becomes an important graph topic later.
+
+
+======================================================================
+26. ACYCLIC GRAPH
+======================================================================
+
+A graph with NO cycles.
+
+
+Examples:
+
+Trees are acyclic.
+
+DAG is a directed acyclic graph.
+
+
+======================================================================
+27. CONNECTED GRAPH
+======================================================================
+
+In an UNDIRECTED graph:
+
+A graph is connected if every vertex can reach every other vertex.
+
+
+Example:
+
+A --- B --- C
+      |
+      D
+
+
+Everything belongs to one connected component.
+
+
+======================================================================
+28. DISCONNECTED GRAPH
+======================================================================
+
+Example:
+
+A --- B
+
+
+C --- D
+
+
+There is no path from:
+
+A to C
+
+
+Therefore graph is disconnected.
+
+
+It contains:
+
+2 connected components.
+
+
+======================================================================
+29. CONNECTED COMPONENT
+======================================================================
+
+A connected component is a maximal connected section of the graph.
+
+
+Example:
+
+A -- B        D -- E
+|
+C             F -- G
+
+
+Components:
+
+{A,B,C}
+
+{D,E}
+
+{F,G}
+
+
+Total:
+
+3 connected components
+
+
+This is why graph BFS/DFS often has:
+
+for every vertex:
+
+    if not visited:
+        BFS/DFS(vertex)
+
+
+Each new DFS/BFS starts another component.
+
+
+======================================================================
+30. TREE AS A SPECIAL GRAPH
+======================================================================
+
+A TREE is also a graph.
+
+
+A tree is:
+
+CONNECTED
++
+ACYCLIC
+
+
+Important property:
+
+If a tree has:
+
+V vertices
+
+
+then:
+
+E = V - 1
+
+
+Example:
+
+5 nodes
+
+Tree must have:
+
+4 edges
+
+
+VERY IMPORTANT INTERVIEW FACT.
+
+
+======================================================================
+31. TREE GRAPH PROPERTIES
+======================================================================
+
+For an undirected tree:
+
+1. Connected
+
+2. No cycles
+
+3. E = V - 1
+
+4. Exactly ONE simple path exists between any two vertices.
+
+
+Useful fact:
+
+For an undirected graph:
+
+If it is connected
+AND
+E = V - 1
+
+then it is a Tree.
+
+
+======================================================================
+32. FOREST
+======================================================================
+
+A FOREST is a collection of trees.
+
+
+In graph terms:
+
+An acyclic undirected graph that may be disconnected.
+
+
+Example:
+
+A--B       D--E
+   |
+   C
+
+
+Two separate trees:
+
+Together they form a forest.
+
+
+======================================================================
+33. DAG
+======================================================================
+
+DAG:
+
+DIRECTED ACYCLIC GRAPH
+
+
+Meaning:
+
+Directed graph with NO directed cycles.
+
+
+Example:
+
+A ---> B ---> D
+ \
+  ---> C ---> D
+
+
+No way to follow directions and return to starting node.
+
+
+DAGs are extremely important for:
+
+Topological Sort
+Course Schedule
+Dependencies
+Scheduling
+Shortest Path in DAG
+Dynamic Programming on graphs
+
+
+======================================================================
+34. CYCLIC DIRECTED GRAPH
+======================================================================
+
+Example:
+
+A -> B
+^    |
+|    v
+D <- C
+
+
+A -> B -> C -> D -> A
+
+
+This contains a directed cycle.
+
+
+======================================================================
+35. BIPARTITE GRAPH
+======================================================================
+
+A graph is bipartite if vertices can be divided into TWO groups
+such that:
+
+No edge connects two vertices belonging to the SAME group.
+
+
+Example:
+
+GROUP A:
+
+1, 2
+
+
+GROUP B:
+
+3, 4
+
+
+Edges only go:
+
+A-group <----> B-group
+
+
+Another way to think:
+
+Can we color graph using only:
+
+2 colors
+
+such that neighboring nodes have different colors?
+
+
+If yes:
+
+BIPARTITE.
+
+
+======================================================================
+36. IMPORTANT BIPARTITE FACT
+======================================================================
+
+An undirected graph is bipartite if and only if it contains:
+
+NO ODD-LENGTH CYCLE.
+
+
+Examples:
+
+
+Cycle length 4:
+
+A-B-C-D-A
+
+EVEN
+
+Can be bipartite.
+
+
+Triangle:
+
+A-B-C-A
+
+length = 3
+
+ODD
+
+Cannot be bipartite.
+
+
+======================================================================
+37. SPARSE GRAPH
+======================================================================
+
+A graph with relatively FEW edges compared with the maximum possible.
+
+
+Example:
+
+1000 vertices
+1200 edges
+
+
+Likely sparse.
+
+
+Adjacency List is excellent for sparse graphs.
+
+
+======================================================================
+38. DENSE GRAPH
+======================================================================
+
+A graph with many edges, closer to maximum possible.
+
+
+For undirected graph maximum:
+
+V(V-1)/2
+
+
+If actual E is close to this:
+
+graph is dense.
+
+
+Adjacency Matrix may sometimes be useful for dense graphs.
+
+
+======================================================================
+39. REGULAR GRAPH
+======================================================================
+
+A graph where every vertex has the SAME degree.
+
+
+Example:
+
+Cycle:
+
+A -- B
+|    |
+D -- C
+
+
+Every vertex has degree:
+
+2
+
+
+Therefore this is a:
+
+2-regular graph.
+
+
+======================================================================
+40. NULL / EMPTY GRAPH
+======================================================================
+
+Terminology can vary by source.
+
+A graph may contain vertices but no edges.
+
+
+Example:
+
+A   B   C   D
+
+
+E = 0
+
+
+Every vertex is isolated.
+
+
+======================================================================
+41. ISOLATED VERTEX
+======================================================================
+
+A vertex having:
+
+degree = 0
+
+
+Example:
+
+A --- B       C
+
+
+C is isolated.
+
+
+======================================================================
+42. PENDANT / LEAF VERTEX
+======================================================================
+
+In an undirected graph:
+
+A vertex having degree 1.
+
+
+Example:
+
+A --- B --- C
+
+
+A and C have degree 1.
+
+
+In Trees we usually call them:
+
+LEAF nodes.
+
+
+======================================================================
+43. ADJACENCY MATRIX
+======================================================================
+
+Graph with V vertices.
+
+
+Create:
+
+V x V matrix
+
+
+Example:
+
+0 --- 1
+|
+2
+
+
+Matrix:
+
+    0 1 2
+
+0   0 1 1
+1   1 0 0
+2   1 0 0
+
+
+If edge exists:
+
+matrix[u][v] = 1
+
+
+For weighted graph:
+
+matrix[u][v] = weight
+
+
+SPACE:
+
+O(V²)
+
+
+Checking whether edge exists:
+
+O(1)
+
+
+======================================================================
+44. UNDIRECTED ADJACENCY MATRIX
+======================================================================
+
+For:
+
+u -- v
+
+
+Set:
+
+matrix[u][v] = 1
+matrix[v][u] = 1
+
+
+Therefore matrix is symmetric across diagonal.
+
+
+======================================================================
+45. DIRECTED ADJACENCY MATRIX
+======================================================================
+
+For:
+
+u -> v
+
+
+Only:
+
+matrix[u][v] = 1
+
+
+Do NOT automatically set:
+
+matrix[v][u]
+
+
+Therefore directed adjacency matrix is not necessarily symmetric.
+
+
+======================================================================
+46. ADJACENCY LIST
+======================================================================
+
+Most commonly used graph representation in DSA.
+
+
+Example:
+
+0 --- 1
+|
+2
+
+
+Adjacency list:
+
+0 -> 1, 2
+1 -> 0
+2 -> 0
+
+
+C++:
+
+vector<vector<int>> adj(V);
+
+
+For undirected edge:
+
+adj[u].push_back(v);
+adj[v].push_back(u);
+
+
+SPACE:
+
+O(V + E)
+
+
+Excellent for sparse graphs.
+
+
+======================================================================
+47. WEIGHTED ADJACENCY LIST
+======================================================================
+
+Need to store:
+
+neighbor
++
+weight
+
+
+Example:
+
+u ----5---- v
+
+
+Store:
+
+{v, 5}
+
+
+C++:
+
+vector<vector<pair<int,int>>> adj;
+
+
+Example:
+
+adj[u].push_back({v, weight});
+
+
+Later you'll see this heavily in:
+
+Dijkstra
+Prim
+
+
+======================================================================
+48. MATRIX VS LIST
+======================================================================
+
+ADJACENCY MATRIX:
+
+Space:
+O(V²)
+
+Check whether edge u-v exists:
+O(1)
+
+Good when graph is dense or direct edge lookup matters.
+
+
+ADJACENCY LIST:
+
+Space:
+O(V + E)
+
+Iterate neighbors efficiently.
+
+Most common representation in DSA problems.
+
+
+INTERVIEW DEFAULT:
+
+Usually think:
+
+ADJACENCY LIST
+
+
+======================================================================
+49. BFS
+======================================================================
+
+Breadth First Search.
+
+
+Explores graph:
+
+LEVEL BY LEVEL / DISTANCE BY DISTANCE.
+
+
+Uses:
+
+QUEUE
+
+
+Need:
+
+visited[]
+
+
+Basic idea:
+
+queue<int> q;
+
+visited[start] = true;
+q.push(start);
+
+while (!q.empty()) {
+
+    int node = q.front();
+    q.pop();
+
+    for (int neighbor : adj[node]) {
+
+        if (!visited[neighbor]) {
+
+            visited[neighbor] = true;
+            q.push(neighbor);
+        }
+    }
+}
+
+
+Important:
+
+Usually mark visited WHEN PUSHING into queue.
+
+This prevents adding same node multiple times.
+
+
+======================================================================
+50. DFS
+======================================================================
+
+Depth First Search.
+
+
+Go as deep as possible before returning.
+
+
+Usually uses:
+
+RECURSION
+
+or explicit:
+
+STACK
+
+
+Recursive pattern:
+
+void dfs(int node) {
+
+    visited[node] = true;
+
+    for (int neighbor : adj[node]) {
+
+        if (!visited[neighbor]) {
+
+            dfs(neighbor);
+        }
+    }
+}
+
+
+This will feel similar to Tree DFS.
+
+
+Major difference:
+
+GRAPH CAN HAVE CYCLES.
+
+Therefore:
+
+visited[] is essential.
+
+
+======================================================================
+51. TREE DFS VS GRAPH DFS
+======================================================================
+
+TREE:
+
+Normally no cycle.
+
+Going:
+
+left
+right
+
+doesn't bring you back to parent through another edge.
+
+
+GRAPH:
+
+Could have:
+
+0 -- 1
+|    |
+3 -- 2
+
+
+Without visited[]:
+
+0 -> 1 -> 2 -> 3 -> 0 -> 1...
+
+infinite traversal.
+
+
+Therefore remember:
+
+GRAPH DFS
+=
+TREE-LIKE RECURSION
++
+VISITED ARRAY
+
+
+======================================================================
+52. BFS / DFS COMPLEXITY
+======================================================================
+
+Using adjacency list:
+
+TIME:
+
+O(V + E)
+
+
+Why?
+
+Every vertex visited.
+
+Every edge examined.
+
+
+SPACE:
+
+O(V)
+
+for:
+
+visited
+queue / recursion stack
+
+
+======================================================================
+53. WHY UNDIRECTED EDGE MAY APPEAR TWICE IN ADJ LIST
+======================================================================
+
+Edge:
+
+0 -- 1
+
+
+Adjacency list:
+
+0 -> 1
+
+1 -> 0
+
+
+So one physical undirected edge is stored twice.
+
+
+Still complexity is written:
+
+O(V + E)
+
+
+Technically traversal examines approximately:
+
+V + 2E
+
+
+Big-O:
+
+O(V + E)
+
+
+======================================================================
+54. GRAPH TYPE MASTER MAP
+======================================================================
+
+GRAPH
+│
+├── Direction
+│   ├── Undirected
+│   └── Directed
+│
+├── Weight
+│   ├── Weighted
+│   └── Unweighted
+│
+├── Edge Rules
+│   ├── Simple Graph
+│   ├── Multigraph
+│   └── Self-loops
+│
+├── Connectivity
+│   ├── Connected
+│   └── Disconnected
+│       └── Connected Components
+│
+├── Cycles
+│   ├── Cyclic
+│   └── Acyclic
+│       ├── Tree (undirected)
+│       └── DAG (directed)
+│
+├── Edge Density
+│   ├── Sparse
+│   └── Dense
+│
+├── Special Graphs
+│   ├── Complete Graph
+│   ├── Bipartite Graph
+│   ├── Regular Graph
+│   ├── Tree
+│   ├── Forest
+│   └── DAG
+│
+└── Representation
+    ├── Adjacency Matrix
+    └── Adjacency List
+
+
+======================================================================
+55. MUST-KNOW GRAPH FORMULAS
+======================================================================
+
+Let:
+
+V = number of vertices
+E = number of edges
+
+
+--------------------------------------------------
+SIMPLE UNDIRECTED GRAPH
+--------------------------------------------------
+
+Maximum edges:
+
+V(V-1) / 2
+
+= VC2
+
+
+--------------------------------------------------
+SIMPLE DIRECTED GRAPH
+--------------------------------------------------
+
+Maximum edges without self-loops:
+
+V(V-1)
+
+
+--------------------------------------------------
+DIRECTED GRAPH WITH SELF LOOPS ALLOWED
+--------------------------------------------------
+
+Maximum edges:
+
+V²
+
+
+--------------------------------------------------
+UNDIRECTED GRAPH
+--------------------------------------------------
+
+Sum of all degrees:
+
+2E
+
+
+--------------------------------------------------
+DIRECTED GRAPH
+--------------------------------------------------
+
+Sum of indegrees:
+
+E
+
+
+Sum of outdegrees:
+
+E
+
+
+--------------------------------------------------
+TREE
+--------------------------------------------------
+
+For V vertices:
+
+E = V - 1
+
+
+--------------------------------------------------
+COMPLETE UNDIRECTED GRAPH
+--------------------------------------------------
+
+Degree of every vertex:
+
+V - 1
+
+
+Number of edges:
+
+V(V-1)/2
+
+
+======================================================================
+56. nC2 - FINAL MEMORY TRICK
+======================================================================
+
+Whenever someone says:
+
+"There are n people/nodes.
+How many PAIRS can we make?"
+
+
+Think:
+
+nC2
+
+
+Why?
+
+An undirected edge simply chooses:
+
+2 vertices from n vertices.
+
+
+Example:
+
+5 vertices.
+
+
+Pairs:
+
+AB AC AD AE
+BC BD BE
+CD CE
+DE
+
+
+10 pairs.
+
+
+Formula:
+
+5C2
+
+= 5*4/2
+
+= 10
+
+
+So:
+
+COMPLETE UNDIRECTED GRAPH
+        =
+EVERY POSSIBLE PAIR CONNECTED
+        =
+nC2 EDGES
+
+
+======================================================================
+57. WHAT TO LEARN NEXT AFTER THIS THEORY
+======================================================================
+
+Learn Graphs in this order:
+
+
+1. Graph terminology/types
+
+2. Adjacency Matrix
+
+3. Adjacency List
+
+4. BFS
+
+5. DFS
+
+6. Connected Components
+
+7. Grid BFS/DFS
+
+8. Cycle Detection
+
+9. Bipartite Graph
+
+10. Topological Sort
+
+11. Shortest Paths
+
+12. Minimum Spanning Tree
+
+13. DSU
+
+14. Bridges
+
+15. Articulation Points
+
+16. Strongly Connected Components
+
+
+Do NOT try to memorize all algorithms immediately.
+
+First become extremely comfortable with:
+
+GRAPH
+→ ADJACENCY LIST
+→ VISITED
+→ BFS / DFS
+
+
+======================================================================
+58. 30-SECOND GRAPH THEORY REVISION
+======================================================================
+
+Graph:
+Vertices + Edges.
+
+Undirected:
+u--v works both ways.
+
+Directed:
+u->v has direction.
+
+Weighted:
+Edges have costs.
+
+Unweighted:
+No explicit edge costs.
+
+Simple Graph:
+No parallel edges or self-loops.
+
+Complete Graph:
+Every pair of vertices is connected.
+
+Complete undirected graph max edges:
+nC2 = n(n-1)/2.
+
+Directed graph max edges without self-loops:
+n(n-1).
+
+Degree:
+Number of edges touching a vertex.
+
+Undirected:
+sum of degrees = 2E.
+
+Directed:
+sum indegrees = E.
+sum outdegrees = E.
+
+Connected:
+Every node can reach every other node.
+
+Component:
+One connected section.
+
+Cycle:
+Path returning to starting point.
+
+Tree:
+Connected + acyclic undirected graph.
+E = V - 1.
+
+Forest:
+Collection of trees.
+
+DAG:
+Directed Acyclic Graph.
+
+Bipartite:
+Can divide/color vertices into 2 groups.
+No odd cycle in an undirected graph.
+
+Sparse:
+Few edges.
+
+Dense:
+Many edges.
+
+Adjacency Matrix:
+O(V²) space.
+
+Adjacency List:
+O(V+E) space.
+
+BFS:
+Queue + visited.
+
+DFS:
+Recursion/stack + visited.
+
+BFS/DFS with adjacency list:
+O(V+E).
+
+
+======================================================================
+FINAL MEMORY
+======================================================================
+
+Do not think Graphs are completely different from Trees.
+
+A Tree is actually a SPECIAL TYPE OF GRAPH.
+
+Trees taught you:
+
+DFS
+BFS
+recursion
+queue
+
+
+Graphs add the complications of:
+
+CYCLES
+MULTIPLE PATHS
+DISCONNECTED COMPONENTS
+DIRECTION
+WEIGHTS
+
+
+Therefore the first major change to remember is:
+
+TREE DFS:
+
+dfs(child)
+
+
+GRAPH DFS:
+
+if (!visited[neighbor])
+    dfs(neighbor)
+
+
+That visited[] array becomes extremely important.
+
+======================================================================

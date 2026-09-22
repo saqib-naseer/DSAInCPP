@@ -1,0 +1,2116 @@
+============================================================
+DSA TREES - MASTER QUICK REVISION NOTES
+============================================================
+
+PURPOSE:
+Quick revision after a long gap.
+
+Remember:
+- What is a Tree?
+- How does recursion work on Trees?
+- BFS vs DFS
+- Major Binary Tree patterns
+- What makes a BST special?
+- Common interview problems
+
+
+============================================================
+1. WHAT IS A TREE?
+============================================================
+
+A Tree is a hierarchical data structure made of NODES.
+
+Example:
+
+              10
+             /  \
+            5    15
+           / \   / \
+          3   7 12  20
+
+
+Important terminology:
+
+ROOT:
+Topmost node.
+Example: 10
+
+PARENT:
+A node having children.
+Example: 5 is parent of 3 and 7.
+
+CHILD:
+Node directly below another node.
+Example: 3 is child of 5.
+
+LEAF:
+Node with no children.
+Example: 3, 7, 12, 20
+
+SIBLINGS:
+Nodes having same parent.
+Example: 3 and 7.
+
+SUBTREE:
+A node together with all its descendants.
+
+ANCESTOR:
+Any node above another node.
+
+DESCENDANT:
+Any node below another node.
+
+
+============================================================
+2. BINARY TREE
+============================================================
+
+A Binary Tree is a tree where every node has AT MOST:
+
+2 children
+
+called:
+
+LEFT child
+RIGHT child
+
+
+Typical C++ node:
+
+struct TreeNode {
+
+    int val;
+
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int x) {
+        val = x;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+
+IMPORTANT:
+
+Binary Tree does NOT mean:
+
+left < root < right
+
+That property belongs specifically to a BST.
+
+
+============================================================
+3. TREE RECURSION - MOST IMPORTANT FOUNDATION
+============================================================
+
+Trees naturally contain smaller trees.
+
+For:
+
+              10
+             /  \
+            5    15
+
+The left child 5 is itself the root of a subtree.
+
+The right child 15 is itself the root of another subtree.
+
+Therefore recursion fits Trees naturally.
+
+
+GENERAL TEMPLATE:
+
+ReturnType solve(TreeNode* root) {
+
+    if (root == nullptr)
+        return BASE_VALUE;
+
+    // solve left subtree
+    auto left = solve(root->left);
+
+    // solve right subtree
+    auto right = solve(root->right);
+
+    // combine answers
+    return something;
+}
+
+
+MENTAL MODEL:
+
+At every node ask:
+
+1. What do I need from LEFT subtree?
+2. What do I need from RIGHT subtree?
+3. How do I combine them with CURRENT node?
+
+
+============================================================
+4. BASE CASE
+============================================================
+
+Most Tree recursion starts with:
+
+if (!root)
+    return ...;
+
+
+Meaning:
+
+"I reached beyond a leaf."
+
+
+The return value depends on the problem.
+
+Examples:
+
+Count nodes:
+
+if (!root)
+    return 0;
+
+
+Height:
+
+if (!root)
+    return 0;
+
+
+Search returning pointer:
+
+if (!root)
+    return nullptr;
+
+
+Boolean check:
+
+if (!root)
+    return true;
+
+
+Do NOT blindly memorize the base value.
+
+Ask:
+
+"What should an empty tree contribute to my answer?"
+
+
+============================================================
+5. HOW RECURSIVE RETURNS PROPAGATE
+============================================================
+
+Very important.
+
+Suppose:
+
+TreeNode* left = search(root->left);
+
+if (left)
+    return left;
+
+
+If a deep recursive call finds a node and returns its pointer:
+
+FOUND NODE
+    ↓
+returns pointer to parent
+    ↓
+parent returns same pointer
+    ↓
+next parent returns same pointer
+    ↓
+...
+    ↓
+original caller receives pointer
+
+
+Each recursive call has its OWN:
+
+- parameters
+- local variables
+- return value
+- stack frame
+
+
+============================================================
+6. DFS TREE TRAVERSALS
+============================================================
+
+Three fundamental traversals:
+
+1. PREORDER
+2. INORDER
+3. POSTORDER
+
+
+------------------------------------------------------------
+PREORDER
+------------------------------------------------------------
+
+ROOT
+LEFT
+RIGHT
+
+Code:
+
+void preorder(TreeNode* root) {
+
+    if (!root)
+        return;
+
+    visit(root);
+
+    preorder(root->left);
+    preorder(root->right);
+}
+
+
+Example:
+
+        1
+       / \
+      2   3
+
+Preorder:
+
+1 2 3
+
+
+Think:
+
+PROCESS NODE BEFORE CHILDREN.
+
+
+Useful for:
+- Serialization
+- Copying tree
+- Constructing BST from preorder
+- Problems where parent must be processed first
+
+
+------------------------------------------------------------
+INORDER
+------------------------------------------------------------
+
+LEFT
+ROOT
+RIGHT
+
+Code:
+
+void inorder(TreeNode* root) {
+
+    if (!root)
+        return;
+
+    inorder(root->left);
+
+    visit(root);
+
+    inorder(root->right);
+}
+
+
+VERY IMPORTANT BST PROPERTY:
+
+Inorder traversal of a BST gives:
+
+SORTED ORDER
+
+
+------------------------------------------------------------
+POSTORDER
+------------------------------------------------------------
+
+LEFT
+RIGHT
+ROOT
+
+Code:
+
+void postorder(TreeNode* root) {
+
+    if (!root)
+        return;
+
+    postorder(root->left);
+    postorder(root->right);
+
+    visit(root);
+}
+
+
+Think:
+
+CHILDREN FIRST
+PARENT LAST
+
+
+Very useful when parent's answer depends on children.
+
+Examples:
+- Height
+- Diameter
+- Balanced Tree
+- Maximum Path Sum
+- Delete/free tree
+- Many bottom-up problems
+
+
+============================================================
+7. BFS / LEVEL ORDER TRAVERSAL
+============================================================
+
+BFS explores Tree LEVEL BY LEVEL.
+
+Uses:
+
+QUEUE
+
+
+Example:
+
+              1
+             / \
+            2   3
+           / \
+          4   5
+
+BFS:
+
+1
+2 3
+4 5
+
+
+Basic code:
+
+queue<TreeNode*> q;
+
+q.push(root);
+
+while (!q.empty()) {
+
+    TreeNode* node = q.front();
+    q.pop();
+
+    if (node->left)
+        q.push(node->left);
+
+    if (node->right)
+        q.push(node->right);
+}
+
+
+============================================================
+8. LEVEL-BY-LEVEL BFS
+============================================================
+
+If we need separate levels:
+
+while (!q.empty()) {
+
+    int size = q.size();
+
+    for (int i = 0; i < size; i++) {
+
+        TreeNode* node = q.front();
+        q.pop();
+
+        ...
+
+        if (node->left)
+            q.push(node->left);
+
+        if (node->right)
+            q.push(node->right);
+    }
+}
+
+
+IMPORTANT:
+
+size = q.size()
+
+must be captured BEFORE processing that level.
+
+New children are added for the NEXT level.
+
+
+Useful for:
+
+- Level Order
+- Zigzag/Spiral traversal
+- Right/Left view
+- Width
+- Level-based calculations
+
+
+============================================================
+9. HEIGHT OF TREE
+============================================================
+
+Core recursion:
+
+height(root) =
+1 + max(
+        height(left),
+        height(right)
+    )
+
+
+Code:
+
+int height(TreeNode* root) {
+
+    if (!root)
+        return 0;
+
+    int left = height(root->left);
+    int right = height(root->right);
+
+    return 1 + max(left, right);
+}
+
+
+Mental model:
+
+Ask left:
+"How tall are you?"
+
+Ask right:
+"How tall are you?"
+
+Take taller side + current node.
+
+
+NOTE:
+Some questions define height using EDGES instead of NODES.
+Always check definition.
+
+
+============================================================
+10. COUNT NODES
+============================================================
+
+Classic recursion:
+
+int countNodes(TreeNode* root) {
+
+    if (!root)
+        return 0;
+
+    return 1
+         + countNodes(root->left)
+         + countNodes(root->right);
+}
+
+
+Meaning:
+
+1 = current node
+
++ all nodes on left
+
++ all nodes on right
+
+
+============================================================
+11. BALANCED BINARY TREE
+============================================================
+
+A tree is height-balanced when, for every node:
+
+abs(leftHeight - rightHeight) <= 1
+
+
+Naive method:
+
+For every node:
+    calculate left height
+    calculate right height
+
+Can become O(N^2).
+
+
+Optimized pattern:
+
+Return height normally.
+
+If subtree is unbalanced:
+    return special value such as -1.
+
+
+This combines:
+
+CHECK BALANCE + CALCULATE HEIGHT
+
+in one traversal.
+
+
+============================================================
+12. DIAMETER OF BINARY TREE
+============================================================
+
+Diameter:
+
+Longest path between ANY two nodes.
+
+The path does NOT necessarily pass through root.
+
+
+At each node:
+
+possible diameter through node =
+
+leftHeight + rightHeight
+
+
+But recursion returns:
+
+height to parent
+
+
+IMPORTANT PATTERN:
+
+RETURN ONE THING
+UPDATE ANOTHER THING
+
+
+Example:
+
+recursive function returns:
+HEIGHT
+
+global/reference variable stores:
+MAX DIAMETER
+
+
+This pattern appears often in Tree problems.
+
+
+============================================================
+13. MAXIMUM PATH SUM
+============================================================
+
+Similar pattern to Diameter.
+
+At a node:
+
+Best complete path through node:
+
+leftGain + root->val + rightGain
+
+
+But what can be returned to parent?
+
+Only ONE branch:
+
+root->val + max(leftGain, rightGain)
+
+
+Why?
+
+A parent cannot receive a forked path.
+
+
+VERY IMPORTANT PATTERN:
+
+UPDATE answer using:
+LEFT + NODE + RIGHT
+
+RETURN upward:
+NODE + max(LEFT, RIGHT)
+
+
+============================================================
+14. SAME TREE / MIRROR TREE
+============================================================
+
+Same Tree:
+
+Compare:
+
+- current values
+- left with left
+- right with right
+
+
+Mirror / Symmetric:
+
+Compare:
+
+left subtree's LEFT
+with
+right subtree's RIGHT
+
+and
+
+left subtree's RIGHT
+with
+right subtree's LEFT
+
+
+============================================================
+15. ROOT-TO-LEAF PATH / BACKTRACKING
+============================================================
+
+Typical pattern:
+
+path.push_back(root->val);
+
+explore children...
+
+path.pop_back();
+
+
+Why pop?
+
+Because after returning from one branch, we must restore the path before exploring another branch.
+
+
+Pattern:
+
+DO
+↓
+RECURSE
+↓
+UNDO
+
+
+This is BACKTRACKING.
+
+
+============================================================
+16. LOWEST COMMON ANCESTOR - BINARY TREE
+============================================================
+
+LCA of two nodes:
+
+Lowest node having both nodes in its subtree.
+
+
+Classic recursion:
+
+if (!root)
+    return nullptr;
+
+if (root == p || root == q)
+    return root;
+
+left = LCA(root->left);
+right = LCA(root->right);
+
+if (left && right)
+    return root;
+
+if (left)
+    return left;
+
+return right;
+
+
+Key understanding:
+
+If one target comes from LEFT
+and one comes from RIGHT:
+
+CURRENT NODE is LCA.
+
+
+============================================================
+17. NODES AT DISTANCE K
+============================================================
+
+Problem:
+
+Find nodes K edges away from target.
+
+
+Problem:
+
+Trees naturally only have:
+
+parent -> child links
+
+but distance may require moving UPWARD.
+
+
+Common technique:
+
+1. Build parent mapping.
+2. Start BFS from target.
+3. Neighbors become:
+
+   left
+   right
+   parent
+
+4. Use visited set.
+5. Stop at distance K.
+
+
+This effectively turns Tree into an undirected Graph.
+
+
+============================================================
+18. BURNING TREE
+============================================================
+
+Very similar to Distance K.
+
+Fire spreads from target to:
+
+left child
+right child
+parent
+
+
+Typical solution:
+
+1. Build parent map.
+2. BFS from target.
+3. Spread level-by-level.
+4. Number of BFS levels gives time.
+
+
+This is an important Tree -> Graph transformation pattern.
+
+
+============================================================
+19. LEFT / RIGHT VIEW
+============================================================
+
+View means nodes visible from one side.
+
+
+BFS approach:
+
+Process level by level.
+
+LEFT VIEW:
+First node of each level.
+
+RIGHT VIEW:
+Last node of each level.
+
+
+DFS can also be used by tracking depth.
+
+
+============================================================
+20. TOP VIEW
+============================================================
+
+Use:
+
+Horizontal Distance (HD)
+
+
+Root:
+
+HD = 0
+
+Left child:
+
+HD - 1
+
+Right child:
+
+HD + 1
+
+
+Use BFS.
+
+For each HD:
+
+Store FIRST node encountered.
+
+
+Why first?
+
+Top view sees the highest/earliest node for that horizontal distance.
+
+
+============================================================
+21. BOTTOM VIEW
+============================================================
+
+Same horizontal-distance concept.
+
+Difference:
+
+For each HD:
+
+Keep updating value.
+
+
+The LAST node encountered at that HD becomes visible from bottom.
+
+
+Quick memory:
+
+TOP VIEW:
+first value at HD
+
+BOTTOM VIEW:
+last value at HD
+
+
+============================================================
+22. VERTICAL TRAVERSAL
+============================================================
+
+Usually track:
+
+row / level
+column / horizontal distance
+
+
+Root:
+
+row = 0
+col = 0
+
+
+Left:
+
+row + 1
+col - 1
+
+
+Right:
+
+row + 1
+col + 1
+
+
+Then organize nodes according to column and required ordering.
+
+
+============================================================
+23. MAXIMUM WIDTH
+============================================================
+
+Often solved with BFS + conceptual indexes.
+
+
+Assign:
+
+root index = 0
+
+left:
+2*i + 1
+
+right:
+2*i + 2
+
+
+Width:
+
+lastIndex - firstIndex + 1
+
+
+For deep trees, normalize indexes at each level to avoid overflow.
+
+
+============================================================
+24. SERIALIZE / DESERIALIZE
+============================================================
+
+SERIALIZE:
+
+Tree -> String
+
+
+DESERIALIZE:
+
+String -> Tree
+
+
+Must preserve NULL positions.
+
+Example:
+
+        1
+       / \
+      2   3
+
+could conceptually serialize as:
+
+1,2,3,#,#,#,#
+
+
+Without null markers, tree structure may be lost.
+
+
+Common approaches:
+
+- BFS
+- Preorder DFS
+
+
+============================================================
+25. BUILD TREE FROM PREORDER + INORDER
+============================================================
+
+Remember:
+
+PREORDER:
+
+ROOT LEFT RIGHT
+
+Therefore:
+
+first preorder element = ROOT
+
+
+INORDER:
+
+LEFT ROOT RIGHT
+
+Root's position in inorder divides:
+
+LEFT SUBTREE
+RIGHT SUBTREE
+
+
+Pattern:
+
+1. Pick root from preorder.
+2. Find root in inorder.
+3. Elements left of it belong to left subtree.
+4. Elements right belong to right subtree.
+5. Recurse.
+
+
+Use hashmap for inorder indexes to avoid repeated searching.
+
+
+============================================================
+26. BUILD TREE FROM POSTORDER + INORDER
+============================================================
+
+POSTORDER:
+
+LEFT RIGHT ROOT
+
+Therefore:
+
+last postorder element = ROOT
+
+
+Again:
+
+Find root in inorder.
+
+Split into left/right subtree.
+
+IMPORTANT:
+
+When processing postorder backwards:
+
+usually build RIGHT subtree BEFORE LEFT subtree.
+
+
+Why?
+
+Reverse postorder behaves like:
+
+ROOT RIGHT LEFT
+
+
+============================================================
+27. COMPLETE BINARY TREE
+============================================================
+
+Complete Binary Tree:
+
+All levels are completely filled except possibly last level.
+
+Last level is filled from LEFT to RIGHT.
+
+
+Useful optimization:
+
+Count nodes in complete tree.
+
+
+If:
+
+leftmost height == rightmost height
+
+then tree is PERFECT.
+
+
+Nodes in perfect tree:
+
+2^height - 1
+
+
+Otherwise recursively count left and right.
+
+
+============================================================
+28. FULL VS COMPLETE VS PERFECT
+============================================================
+
+FULL BINARY TREE:
+
+Every node has either:
+
+0 children
+OR
+2 children
+
+
+COMPLETE BINARY TREE:
+
+All levels filled except maybe last.
+Last filled left-to-right.
+
+
+PERFECT BINARY TREE:
+
+Every internal node has 2 children
+AND
+all leaves are at same level.
+
+
+============================================================
+29. BINARY SEARCH TREE - BST
+============================================================
+
+BST is a Binary Tree with ordering property:
+
+For every node:
+
+LEFT values < NODE value
+RIGHT values > NODE value
+
+(Exact duplicate rules depend on problem.)
+
+
+Example:
+
+              8
+             / \
+            3   10
+           / \    \
+          1   6    14
+
+
+IMPORTANT:
+
+Inorder traversal of BST is SORTED.
+
+
+============================================================
+30. BST SEARCH
+============================================================
+
+Unlike normal Binary Tree, we don't need to search both sides.
+
+
+If:
+
+key == root->val
+    FOUND
+
+key < root->val
+    go LEFT
+
+key > root->val
+    go RIGHT
+
+
+Average:
+
+O(log N)
+
+Worst skewed BST:
+
+O(N)
+
+
+============================================================
+31. BST INSERT
+============================================================
+
+Search for correct empty position.
+
+If value smaller:
+
+go left.
+
+If larger:
+
+go right.
+
+When nullptr reached:
+
+create node.
+
+
+============================================================
+32. BST DELETE
+============================================================
+
+Three cases.
+
+
+CASE 1:
+Node has NO children.
+
+Delete node.
+
+
+CASE 2:
+Node has ONE child.
+
+Replace node with its child.
+
+
+CASE 3:
+Node has TWO children.
+
+Common approach:
+
+Find inorder successor:
+
+smallest value in RIGHT subtree.
+
+Copy successor value.
+
+Then delete successor from right subtree.
+
+
+Could also use inorder predecessor.
+
+
+============================================================
+33. VALIDATE BST
+============================================================
+
+Common mistake:
+
+Only checking:
+
+left < root
+right > root
+
+is NOT enough.
+
+
+A descendant can violate an ancestor's constraint.
+
+
+Correct pattern:
+
+Carry allowed range:
+
+(minAllowed, maxAllowed)
+
+
+For current node:
+
+minAllowed < node->val < maxAllowed
+
+
+Left subtree:
+
+(minAllowed, node->val)
+
+
+Right subtree:
+
+(node->val, maxAllowed)
+
+
+Alternative:
+
+Inorder must be strictly increasing.
+
+
+============================================================
+34. KTH SMALLEST IN BST
+============================================================
+
+BST inorder is sorted.
+
+Therefore:
+
+inorder traversal:
+
+1st visited = smallest
+2nd visited = second smallest
+...
+kth visited = kth smallest
+
+
+Can:
+
+- store inorder array
+OR
+- maintain counter during traversal.
+
+
+============================================================
+35. MINIMUM ABSOLUTE DIFFERENCE IN BST
+============================================================
+
+Because inorder is sorted:
+
+Only compare ADJACENT inorder values.
+
+
+Example:
+
+1 4 7 10
+
+Minimum difference must occur between neighboring sorted values.
+
+
+Track:
+
+previous node/value.
+
+
+============================================================
+36. SORTED ARRAY -> BALANCED BST
+============================================================
+
+To keep BST balanced:
+
+Pick middle element as root.
+
+
+Example:
+
+[1,2,3,4,5,6,7]
+
+root = 4
+
+left half:
+[1,2,3]
+
+right half:
+[5,6,7]
+
+
+Recursively repeat.
+
+
+============================================================
+37. SORTED LINKED LIST -> BST
+============================================================
+
+Simple approach:
+
+Linked List
+    ↓
+Array
+    ↓
+Middle recursively
+    ↓
+Balanced BST
+
+
+Time:
+O(N)
+
+Extra space:
+O(N)
+
+
+Advanced approach can construct directly using inorder simulation.
+
+Know the simple approach first.
+
+
+============================================================
+38. BST FROM PREORDER
+============================================================
+
+Can construct using BST bounds.
+
+Preorder gives:
+
+ROOT first.
+
+Maintain:
+
+upper/lower constraints
+
+and preorder index.
+
+
+Another simpler approach:
+
+Insert preorder elements one-by-one into BST.
+
+But this can be slower.
+
+
+============================================================
+39. PREDECESSOR & SUCCESSOR
+============================================================
+
+PREDECESSOR:
+
+Largest value SMALLER than key.
+
+
+SUCCESSOR:
+
+Smallest value GREATER than key.
+
+
+BST ordering lets us find these without storing full inorder.
+
+
+While traversing:
+
+If current < key:
+
+current can be predecessor
+move RIGHT
+
+
+If current > key:
+
+current can be successor
+move LEFT
+
+
+============================================================
+40. LCA IN BST
+============================================================
+
+Much easier than general Binary Tree LCA.
+
+
+If both values < root:
+
+go LEFT.
+
+
+If both values > root:
+
+go RIGHT.
+
+
+Otherwise:
+
+current root is the split point
+
+→ LCA.
+
+
+============================================================
+41. TWO SUM IN BST
+============================================================
+
+Simple approach:
+
+Inorder -> sorted array
+
+Then use:
+
+two pointers.
+
+
+left = 0
+right = n-1
+
+
+If sum too small:
+left++
+
+If sum too large:
+right--
+
+
+Advanced approach:
+
+BST iterators from both directions.
+
+
+============================================================
+42. MERGE TWO BSTs
+============================================================
+
+Simple approach:
+
+1. Inorder BST1 -> sorted array A
+2. Inorder BST2 -> sorted array B
+3. Merge two sorted arrays
+
+
+If required, construct balanced BST from merged sorted array.
+
+
+============================================================
+43. BST ITERATOR
+============================================================
+
+Goal:
+
+Return BST values in sorted order without storing entire inorder.
+
+
+Common idea:
+
+Use STACK.
+
+
+Initially:
+
+push all LEFT nodes.
+
+
+next():
+
+1. Pop top.
+2. Save value.
+3. If node has right child:
+   push all left nodes from right subtree.
+4. Return value.
+
+
+This performs inorder lazily.
+
+
+============================================================
+44. RECOVER BST
+============================================================
+
+Two nodes were swapped accidentally.
+
+Important property:
+
+BST inorder should be SORTED.
+
+
+During inorder:
+
+Find places where:
+
+previous->val > current->val
+
+
+Identify swapped nodes.
+
+Swap their values.
+
+
+Can use:
+
+- recursion + extra stack
+- Morris Traversal for O(1) auxiliary space
+
+
+============================================================
+45. MORRIS TRAVERSAL
+============================================================
+
+Traversal without:
+
+recursion
+explicit stack
+
+
+Uses temporary threaded links in Tree.
+
+
+Main idea:
+
+If current has no left:
+    process current
+    go right
+
+Otherwise:
+    find inorder predecessor
+
+    if predecessor->right is null:
+        connect predecessor->right = current
+        go left
+
+    else:
+        remove temporary connection
+        process current
+        go right
+
+
+Advanced technique.
+
+Understand normal recursion/stack traversal first.
+
+
+============================================================
+46. MAXIMUM SUM BST IN BINARY TREE
+============================================================
+
+Important bottom-up recursion pattern.
+
+For each subtree we may need to return:
+
+- Is this subtree BST?
+- Sum of subtree
+- Minimum value
+- Maximum value
+
+
+Parent uses information returned from LEFT and RIGHT.
+
+
+Current subtree is BST if:
+
+left is BST
+AND
+right is BST
+AND
+left.max < root->val
+AND
+root->val < right.min
+
+
+Then:
+
+sum =
+left.sum + right.sum + root->val
+
+
+Update global maximum.
+
+
+IMPORTANT PATTERN:
+
+Sometimes recursion needs to return MULTIPLE pieces of information.
+
+Use:
+
+struct / class / tuple
+
+
+============================================================
+47. TREE RECURSION PATTERNS
+============================================================
+
+PATTERN 1:
+Return answer directly.
+
+Example:
+
+countNodes(root)
+
+return:
+1 + left + right
+
+
+PATTERN 2:
+Return one thing, update another.
+
+Example:
+
+Diameter:
+
+return height
+update diameter
+
+
+Maximum Path Sum:
+
+return best downward path
+update complete path
+
+
+PATTERN 3:
+Return pointer.
+
+Example:
+
+Search / LCA.
+
+A found pointer propagates upward.
+
+
+PATTERN 4:
+Pass state downward.
+
+Example:
+
+Root-to-leaf paths:
+
+pass current path.
+
+
+PATTERN 5:
+Return multiple properties.
+
+Example:
+
+Maximum Sum BST:
+
+return:
+isBST
+sum
+min
+max
+
+
+PATTERN 6:
+Tree -> Graph.
+
+Example:
+
+Distance K
+Burning Tree
+
+Create parent links and use BFS + visited.
+
+
+============================================================
+48. HOW TO APPROACH A NEW TREE PROBLEM
+============================================================
+
+STEP 1:
+
+Ask:
+
+Do I need DFS or BFS?
+
+
+STEP 2:
+
+If recursion:
+
+"What should my function RETURN to its parent?"
+
+
+This is one of the MOST IMPORTANT questions.
+
+
+STEP 3:
+
+Ask:
+
+What do I need from LEFT subtree?
+
+What do I need from RIGHT subtree?
+
+
+STEP 4:
+
+Ask:
+
+How do I combine them at CURRENT node?
+
+
+STEP 5:
+
+Decide base case.
+
+
+STEP 6:
+
+Ask whether I need:
+
+- global/reference answer
+- path/vector
+- parent mapping
+- horizontal distance
+- level number
+- extra struct containing multiple values
+
+
+============================================================
+49. WHEN TO THINK BFS
+============================================================
+
+Think BFS when problem mentions:
+
+- Levels
+- Level order
+- Minimum distance from target
+- Nodes at distance K
+- Burning Tree
+- Left/right view
+- Width
+- Level-by-level processing
+
+
+============================================================
+50. WHEN TO THINK DFS / RECURSION
+============================================================
+
+Think DFS when problem asks:
+
+- Height
+- Count
+- Diameter
+- Path Sum
+- Balanced Tree
+- LCA
+- Subtree properties
+- Build Tree
+- Validate BST
+- Recursive structural comparison
+
+
+============================================================
+51. COMMON TREE MISTAKES
+============================================================
+
+1. Forgetting:
+
+if (!root)
+
+
+2. Confusing NODE with NODE POINTER.
+
+Usually queue should be:
+
+queue<TreeNode*>
+
+not:
+
+queue<TreeNode>
+
+
+3. Forgetting to return recursive result.
+
+
+4. Calling recursion but ignoring returned value.
+
+
+5. Changing root pointer when you only needed a temporary pointer.
+
+
+6. Returning too early before exploring required branches.
+
+
+7. Confusing:
+
+return left
+
+with:
+
+return root->left
+
+
+"left" may contain an answer returned from deep inside the subtree.
+
+
+8. Forgetting backtracking:
+
+path.push_back(...)
+...
+path.pop_back()
+
+
+9. Assuming Binary Tree is BST.
+
+
+10. Using BST ordering logic on normal Binary Tree.
+
+
+11. Forgetting inorder of BST is sorted.
+
+
+12. For BFS levels, using changing q.size() directly instead of saving level size first.
+
+
+============================================================
+52. COMPLEXITIES
+============================================================
+
+Most full Binary Tree traversals:
+
+TIME:
+O(N)
+
+because each node is visited once.
+
+
+DFS recursion space:
+
+O(H)
+
+H = tree height
+
+
+Balanced tree:
+
+H ≈ log N
+
+
+Skewed tree:
+
+H ≈ N
+
+
+BFS space:
+
+O(W)
+
+W = maximum width of tree.
+
+
+BST search/insert/delete:
+
+Average:
+O(log N)
+
+Worst skewed:
+O(N)
+
+
+============================================================
+53. QUICK PROBLEM PATTERN MAP
+============================================================
+
+Height
+→ postorder recursion
+
+
+Balanced Tree
+→ return height + detect invalid
+
+
+Diameter
+→ return height, update diameter
+
+
+Maximum Path Sum
+→ return one branch, update full path
+
+
+Level Order
+→ BFS
+
+
+Zigzag
+→ BFS + direction
+
+
+Left/Right View
+→ level processing
+
+
+Top View
+→ BFS + horizontal distance + first
+
+
+Bottom View
+→ BFS + horizontal distance + last
+
+
+Vertical Traversal
+→ row + column
+
+
+LCA Binary Tree
+→ answers coming from left/right
+
+
+Distance K
+→ parent map + BFS
+
+
+Burning Tree
+→ parent map + BFS
+
+
+Serialize
+→ DFS/BFS + null markers
+
+
+Build from Preorder + Inorder
+→ preorder gives root, inorder splits tree
+
+
+Build from Postorder + Inorder
+→ postorder gives root, inorder splits tree
+
+
+BST Search
+→ compare and choose one side
+
+
+Validate BST
+→ bounds OR inorder
+
+
+Kth Smallest
+→ inorder
+
+
+Min Difference BST
+→ adjacent inorder values
+
+
+Sorted Array -> BST
+→ middle element
+
+
+LCA BST
+→ use ordering
+
+
+Two Sum BST
+→ inorder + two pointers
+
+
+Recover BST
+→ detect inversions in inorder
+
+
+Max Sum BST
+→ return multiple subtree properties
+
+
+============================================================
+54. BINARY TREE VS BST - FINAL REMINDER
+============================================================
+
+BINARY TREE:
+
+No ordering guarantee.
+
+Searching may require:
+
+LEFT + RIGHT
+
+Worst case:
+O(N)
+
+
+BST:
+
+LEFT < ROOT < RIGHT
+
+Searching chooses ONE direction.
+
+Average:
+O(log N)
+
+
+Most powerful BST fact:
+
+INORDER = SORTED VALUES
+
+
+============================================================
+55. CORE RECURSION MEMORY
+============================================================
+
+When stuck, write:
+
+solve(root):
+
+    if root is null:
+        return base
+
+    left = solve(root->left)
+
+    right = solve(root->right)
+
+    answerForCurrentNode =
+        combine(left, right, root)
+
+    return answerForCurrentNode
+
+
+Then ask:
+
+"What exactly should LEFT return to me?"
+
+"What exactly should RIGHT return to me?"
+
+"What exactly should I return to MY parent?"
+
+
+============================================================
+56. FINAL TREE MEMORY MAP
+============================================================
+
+TREES
+│
+├── Binary Tree
+│   │
+│   ├── DFS
+│   │   ├── Preorder
+│   │   ├── Inorder
+│   │   └── Postorder
+│   │
+│   ├── BFS
+│   │   └── Level Order
+│   │
+│   ├── Structural Problems
+│   │   ├── Height
+│   │   ├── Balanced
+│   │   ├── Diameter
+│   │   ├── Maximum Path Sum
+│   │   └── Mirror
+│   │
+│   ├── Path Problems
+│   │   ├── Root-to-Leaf
+│   │   ├── LCA
+│   │   ├── Distance K
+│   │   └── Burning Tree
+│   │
+│   ├── Views
+│   │   ├── Left / Right
+│   │   ├── Top / Bottom
+│   │   └── Vertical
+│   │
+│   └── Construction
+│       ├── Preorder + Inorder
+│       ├── Postorder + Inorder
+│       └── Serialize / Deserialize
+│
+└── BST
+    │
+    ├── Search
+    ├── Insert
+    ├── Delete
+    ├── Validate
+    ├── Kth Smallest
+    ├── Min Difference
+    ├── LCA
+    ├── Predecessor / Successor
+    ├── Sorted Array/List -> BST
+    ├── BST from Preorder
+    ├── Two Sum
+    ├── Merge BSTs
+    ├── Iterator
+    ├── Recover BST
+    └── Maximum Sum BST
+
+
+============================================================
+THE MOST IMPORTANT THING TO REMEMBER ABOUT TREES
+============================================================
+
+For recursive Tree problems:
+
+DON'T immediately think about the whole tree.
+
+Stand at ONE node and ask:
+
+"What answer do I need from my left child?"
+
+"What answer do I need from my right child?"
+
+"How do I use those answers at this node?"
+
+"What should I return to my parent?"
+
+Every recursive call solves its own subtree.
+
+The returned answers then flow upward through the call stack.
+
+============================================================
