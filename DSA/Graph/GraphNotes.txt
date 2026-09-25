@@ -421,6 +421,32 @@ O(V + E)
 SPACE:
 O(V)
 
+===================== EDGE LIST
+EDGE LIST
+edges = {{0,1}, {0,2}, {1,2}}
+
+Good at:
+"Give me all edges"
+
+Not convenient at:
+"Give me all neighbours of node 0"
+
+
+So for that we prefer ADJACENCY LIST
+adj[0] = {1,2}
+adj[1] = {0,2}
+adj[2] = {0,1}
+
+Good at:
+"Give me all neighbours of node X"
+
+But don't develop the rule:    "Whenever I see an edge list, I MUST convert it."    That's false.
+  Some algorithms naturally operate directly on edge lists. A very important one you'll learn later is Kruskal's MST algorithm. Bellman-Ford also naturally iterates over edges.
+
+Instead, develop this rule:
+  If my algorithm repeatedly needs "give me the neighbours of this node", adjacency list is usually the natural representation.
+
+For BFS/DFS → yes, adjacency list is usually what you want.
 
 ============================================================
 5. CONNECTED COMPONENTS
@@ -573,7 +599,11 @@ MULTI-SOURCE BFS.
 
 ============================================================
 7. CYCLE DETECTION - UNDIRECTED GRAPH
+
+For BFS/DFS, think of parent as:
+"Which node did I come from to reach this node?"
 ============================================================
+
 
 Important problem:
 
