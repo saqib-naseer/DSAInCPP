@@ -1,0 +1,1208 @@
+MINIMUM SPANNING TREE (MST)
+Pattern: Weighted Undirected Graph + Greedy
+
+
+==================================================
+1. WHAT IS A MINIMUM SPANNING TREE?
+==================================================
+
+MST = Minimum Spanning Tree
+
+It is the minimum-cost way to connect ALL vertices of a
+weighted undirected graph without creating cycles.
+
+
+Break the name:
+
+MINIMUM
+    -> minimum total edge weight / cost
+
+SPANNING
+    -> includes ALL vertices
+
+TREE
+    -> connected and contains NO cycle
+
+
+MEMORY:
+
+    MST = Cheapest way to connect ALL nodes
+          without unnecessary cycles.
+
+
+==================================================
+2. SIMPLE REAL-WORLD EXAMPLE
+==================================================
+
+Imagine cities need fiber cables.
+
+Every possible cable has a construction cost.
+
+Example:
+
+    A --2-- B
+    |       |
+    5       3
+    |       |
+    C --1-- D
+
+
+We want:
+
+    Every city connected
+    +
+    Minimum total cable cost
+
+
+We do NOT need every city directly connected to every
+other city.
+
+Indirect connectivity is enough.
+
+Example:
+
+    A -- B -- D -- C
+
+A can still communicate with C through:
+
+    A -> B -> D -> C
+
+
+==================================================
+3. WHAT IS A SPANNING TREE?
+==================================================
+
+A spanning tree:
+
+1. Includes ALL vertices.
+2. Is connected.
+3. Contains NO cycle.
+
+
+Example:
+
+    A ----- B
+            |
+            C ----- D
+
+All vertices included      -> YES
+Everything connected       -> YES
+Cycle                      -> NO
+
+Therefore this is a spanning tree.
+
+
+==================================================
+4. VERY IMPORTANT PROPERTY: V - 1 EDGES
+==================================================
+
+A tree containing V vertices always contains:
+
+    V - 1 edges
+
+
+Examples:
+
+    Vertices       Tree Edges
+
+       1               0
+       2               1
+       3               2
+       4               3
+       5               4
+      10               9
+
+
+Therefore if:
+
+    V = 5
+
+an MST will contain:
+
+    4 edges
+
+
+MEMORY:
+
+    MST edges = V - 1
+
+
+==================================================
+5. WHY NO CYCLES?
+==================================================
+
+Suppose:
+
+    A ----- B
+    |       |
+    |       |
+    C ----- D
+
+
+There is a cycle:
+
+    A -> B -> D -> C -> A
+
+
+One edge can be removed while the vertices can still
+remain connected.
+
+Therefore one connection is unnecessary.
+
+Since MST wants MINIMUM cost, unnecessary cycle edges
+should not be included.
+
+
+Important:
+
+    Tree = connected + no cycle
+
+
+==================================================
+6. THERE CAN BE MANY SPANNING TREES
+==================================================
+
+A graph can have many different spanning trees.
+
+Example costs:
+
+    Spanning Tree #1 = cost 15
+    Spanning Tree #2 = cost 10
+    Spanning Tree #3 = cost 7
+
+
+All may:
+
+    connect every vertex
+    have no cycle
+    contain V-1 edges
+
+
+But MST chooses:
+
+    minimum total cost = 7
+
+
+So:
+
+    Every MST is a spanning tree.
+
+But:
+
+    Every spanning tree is NOT necessarily minimum.
+
+
+==================================================
+7. MST MINIMIZES TOTAL NETWORK COST
+==================================================
+
+Very important:
+
+MST does NOT try to minimize the distance between
+one particular pair of vertices.
+
+It minimizes:
+
+    SUM OF ALL SELECTED EDGE WEIGHTS
+
+
+Example selected MST edges:
+
+    weight 2
+    weight 4
+    weight 1
+
+MST cost:
+
+    2 + 4 + 1 = 7
+
+
+==================================================
+8. MST VS SHORTEST PATH
+==================================================
+
+DO NOT CONFUSE THESE.
+
+
+SHORTEST PATH:
+
+Question:
+
+    What is the cheapest/shortest path
+    from source A to destination B?
+
+
+Focus:
+
+    One route / source-to-destination distances
+
+
+Examples:
+
+    BFS
+    Dijkstra
+    Bellman-Ford
+
+
+--------------------------------------------------
+
+
+MINIMUM SPANNING TREE:
+
+Question:
+
+    What is the cheapest way to connect
+    ALL vertices together?
+
+
+Focus:
+
+    Cost of the entire network
+
+
+Algorithms:
+
+    Prim's
+    Kruskal's
+
+
+MEMORY:
+
+    Shortest Path = cheapest ROUTE
+
+    MST = cheapest NETWORK
+
+
+==================================================
+9. MST VS CONNECTED COMPONENTS
+==================================================
+
+CONNECTED COMPONENTS:
+
+Question:
+
+    How many separate groups are there?
+
+Example:
+
+    Number of Provinces
+
+Usually:
+
+    DFS / BFS
+
+
+MST:
+
+Question:
+
+    How can I connect ALL nodes with
+    minimum total cost?
+
+Usually:
+
+    Prim / Kruskal
+
+
+MEMORY:
+
+    Components -> count groups
+
+    MST -> cheapest connection of all nodes
+
+
+==================================================
+10. MST IS A GREEDY PROBLEM
+==================================================
+
+Both famous MST algorithms use greedy thinking.
+
+Greedy means:
+
+    Make the best useful choice available now.
+
+
+But we cannot blindly take cheap edges.
+
+We must make sure the selected edges can form a valid
+spanning tree.
+
+Important concerns:
+
+    connect all vertices
+    avoid unnecessary cycles
+    minimize total weight
+
+
+==================================================
+11. TWO MAIN MST ALGORITHMS
+==================================================
+
+There are two famous MST algorithms:
+
+    1. Prim's Algorithm
+    2. Kruskal's Algorithm
+
+
+Both produce an MST.
+
+But their thinking is different.
+
+
+==================================================
+12. PRIM'S ALGORITHM - MAIN IDEA
+==================================================
+
+Prim's:
+
+    Start from ONE vertex.
+
+Then repeatedly:
+
+    choose the cheapest edge that connects
+    our current tree to a vertex outside the tree.
+
+
+The tree keeps growing:
+
+        A
+
+        ↓
+
+        A -- B
+
+        ↓
+
+        A -- B
+             |
+             C
+
+        ↓
+
+        A -- B
+             |
+             C -- D
+
+
+MEMORY:
+
+    PRIM = GROW ONE TREE
+
+
+Prim commonly uses:
+
+    Min Heap / Priority Queue
+    +
+    visited[]
+
+
+Useful mental picture:
+
+    One tree starts small and keeps expanding.
+
+
+==================================================
+13. KRUSKAL'S ALGORITHM - MAIN IDEA
+==================================================
+
+Kruskal focuses on EDGES.
+
+Basic idea:
+
+    1. Sort all edges by weight.
+    2. Start from the cheapest edge.
+    3. Add an edge if it does NOT create a cycle.
+    4. Continue until V-1 edges are selected.
+
+
+Example:
+
+    A-B = 1
+    C-D = 2
+    B-C = 3
+    A-D = 8
+
+
+Already sorted:
+
+    1, 2, 3, 8
+
+
+Take:
+
+    A-B
+    C-D
+    B-C
+
+
+Now everything becomes connected.
+
+
+MEMORY:
+
+    KRUSKAL = SORT EDGES + AVOID CYCLES
+
+
+Kruskal commonly uses:
+
+    Disjoint Set Union (DSU)
+    / Union-Find
+
+
+==================================================
+14. PRIM VS KRUSKAL
+==================================================
+
+PRIM:
+
+    Starts from a vertex.
+
+    Grows ONE connected tree.
+
+    Chooses cheapest edge from current tree
+    toward an outside vertex.
+
+    Common data structure:
+        Min Heap / Priority Queue
+
+    Think:
+        "Grow my tree."
+
+
+KRUSKAL:
+
+    Does not need to grow from one starting vertex.
+
+    Sorts ALL edges globally by weight.
+
+    Adds cheapest safe edges.
+
+    Must detect whether an edge creates a cycle.
+
+    Common data structure:
+        DSU / Union-Find
+
+    Think:
+        "Sort edges and join groups."
+
+
+SHORT MEMORY:
+
+    Prim    -> vertex/tree focused
+    Kruskal -> edge focused
+
+
+==================================================
+15. VISUAL DIFFERENCE: PRIM VS KRUSKAL
+==================================================
+
+PRIM:
+
+Start:
+
+    A
+
+Grow:
+
+    A -- B
+
+Grow:
+
+    A -- B -- C
+
+Grow:
+
+    A -- B -- C -- D
+
+
+Always growing one connected structure.
+
+
+--------------------------------------------------
+
+
+KRUSKAL:
+
+Initially we might select cheap edges in separate places:
+
+    A -- B
+
+    C -- D
+
+    E -- F
+
+
+Then gradually connect those groups:
+
+    A -- B ----- C -- D ----- E -- F
+
+
+So Kruskal can temporarily have multiple components.
+
+Eventually they become one tree.
+
+
+==================================================
+16. WHY KRUSKAL NEEDS CYCLE DETECTION
+==================================================
+
+Suppose we already selected:
+
+    A -- B
+    |    /
+    |   /
+    C
+
+
+If:
+
+    A-B
+    B-C
+
+are already selected,
+
+and we add:
+
+    C-A
+
+we create:
+
+    A -> B -> C -> A
+
+
+That is a cycle.
+
+We don't want that in MST.
+
+
+Kruskal therefore asks before taking an edge:
+
+    Are these two vertices already in the
+    same connected component?
+
+
+If YES:
+
+    adding edge creates cycle
+    -> SKIP
+
+
+If NO:
+
+    connect them
+    -> TAKE
+
+
+DSU/Union-Find makes this check efficient.
+
+
+==================================================
+17. MST INPUT TYPE
+==================================================
+
+Standard MST problems generally involve:
+
+    Weighted
+    Undirected
+    Connected
+    Graph
+
+
+WEIGHTED:
+
+    because we need some cost to minimize.
+
+
+UNDIRECTED:
+
+    standard MST is defined for undirected graphs.
+
+
+CONNECTED:
+
+    because a spanning tree must reach every vertex.
+
+
+==================================================
+18. WHAT IF GRAPH IS DISCONNECTED?
+==================================================
+
+Example:
+
+    A -- B
+
+
+    C -- D
+
+
+There is no edge connecting the two groups.
+
+Therefore:
+
+    one spanning tree containing A,B,C,D
+    cannot exist.
+
+
+If we find minimum spanning trees separately for
+the disconnected components, the result is called:
+
+    Minimum Spanning Forest
+
+
+==================================================
+19. MST CAN HAVE NEGATIVE EDGE WEIGHTS
+==================================================
+
+Negative weights do not fundamentally break MST.
+
+Example:
+
+    A --(-5)-- B
+
+
+A negative edge may simply be very attractive because
+we are minimizing total cost.
+
+This is different from some shortest-path algorithms
+where negative edges can cause special problems.
+
+
+==================================================
+20. MST MAY NOT BE UNIQUE
+==================================================
+
+A graph can sometimes have multiple different MSTs
+with the SAME minimum total cost.
+
+
+Example:
+
+Different sets of edges may both have:
+
+    total cost = 10
+
+
+Both can be valid MSTs.
+
+
+Therefore:
+
+    MST structure may not always be unique.
+
+
+Important:
+
+If all edge weights are distinct, the MST is unique.
+
+
+==================================================
+21. MST DOES NOT MEAN TAKE THE V-1 CHEAPEST EDGES
+==================================================
+
+Common mistake:
+
+    "MST has V-1 edges, so just take the
+     V-1 cheapest edges."
+
+
+WRONG.
+
+
+Those edges may:
+
+    create a cycle
+
+or:
+
+    fail to connect all vertices.
+
+
+Example:
+
+Three very cheap edges might all exist inside
+one small part of the graph.
+
+So we need an MST algorithm:
+
+    Prim
+
+or:
+
+    Kruskal
+
+
+==================================================
+22. IMPORTANT GREEDY INTUITION
+==================================================
+
+MST algorithms prefer cheap edges, BUT:
+
+    cheap edge must also be useful.
+
+
+Kruskal:
+
+    cheapest edge that doesn't create a cycle
+
+
+Prim:
+
+    cheapest edge that expands current tree
+    to an unvisited vertex
+
+
+So don't memorize MST as simply:
+
+    "Take smallest weights."
+
+
+Think:
+
+    "Take cheapest SAFE/USEFUL connections."
+
+
+==================================================
+23. IMPORTANT TREE PROPERTIES
+==================================================
+
+For a tree:
+
+    Connected + No Cycle
+
+
+Also:
+
+    V vertices -> V-1 edges
+
+
+And another useful fact:
+
+If a connected graph with V vertices has exactly
+V-1 edges, it is a tree.
+
+
+For MST:
+
+    All vertices included
+    Connected
+    No cycle
+    V-1 selected edges
+    Minimum total weight
+
+
+==================================================
+24. HOW TO RECOGNIZE AN MST PROBLEM
+==================================================
+
+Look for wording like:
+
+    "minimum cost to connect all cities"
+
+    "minimum cost to connect all computers"
+
+    "connect all points with minimum cost"
+
+    "minimum cost network"
+
+    "minimum cable required"
+
+    "minimum cost to connect all nodes"
+
+    "minimum cost to make all locations reachable"
+
+
+Key combination:
+
+    CONNECT ALL
+        +
+    MINIMUM TOTAL COST
+
+
+Think:
+
+    MST
+
+
+==================================================
+25. WHEN IT IS PROBABLY NOT MST
+==================================================
+
+If question says:
+
+    shortest path from A to B
+
+Think:
+
+    shortest-path algorithm
+
+
+If question says:
+
+    shortest distance from source to every node
+
+Think:
+
+    Dijkstra / BFS / etc.
+
+
+If question says:
+
+    how many separate groups exist
+
+Think:
+
+    connected components
+
+
+If question says:
+
+    connect ALL nodes with minimum TOTAL cost
+
+Think:
+
+    MST
+
+
+==================================================
+26. MST VS DIJKSTRA
+==================================================
+
+Very common interview/exam confusion.
+
+
+DIJKSTRA:
+
+    Finds shortest distances from a source.
+
+Goal:
+
+    source -> other vertices
+
+
+MST:
+
+    Finds minimum total-cost network connecting
+    all vertices.
+
+Goal:
+
+    connect everyone as cheaply as possible
+
+
+A Dijkstra shortest-path tree is NOT necessarily
+an MST.
+
+
+MEMORY:
+
+    Dijkstra:
+        "How cheaply can I reach nodes FROM HERE?"
+
+
+    MST:
+        "How cheaply can I connect EVERYONE?"
+
+
+==================================================
+27. PRIM AND DIJKSTRA MAY LOOK SIMILAR
+==================================================
+
+Both can use:
+
+    priority_queue / min heap
+    visited-like processing
+
+
+But what the stored value MEANS is different.
+
+
+DIJKSTRA:
+
+    heap value represents shortest known distance
+    from the SOURCE.
+
+
+PRIM:
+
+    heap value represents edge cost for attaching
+    a vertex to the MST.
+
+
+So similar-looking code does NOT mean same algorithm.
+
+
+==================================================
+28. KRUSKAL AND DSU CONNECTION
+==================================================
+
+Kruskal needs to repeatedly answer:
+
+    "If I connect u and v,
+     will this create a cycle?"
+
+
+DSU helps answer:
+
+    find(u) == find(v)
+
+means:
+
+    u and v are already in the same component.
+
+Therefore adding u-v would create a cycle.
+
+
+If:
+
+    find(u) != find(v)
+
+they are in different components.
+
+We can safely connect them and then:
+
+    union(u, v)
+
+
+So remember:
+
+    Kruskal + DSU
+
+
+==================================================
+29. PRIM AND HEAP CONNECTION
+==================================================
+
+Prim repeatedly wants:
+
+    cheapest available edge
+
+
+This is exactly what a min heap is useful for.
+
+Min heap quickly gives:
+
+    minimum-weight candidate
+
+
+So remember:
+
+    Prim + Min Heap
+
+
+==================================================
+30. COMPLEXITY - HIGH LEVEL
+==================================================
+
+Efficient Prim using adjacency list + min heap:
+
+    O(E log V)
+
+
+Kruskal:
+
+Sorting edges:
+
+    O(E log E)
+
+DSU operations are nearly constant in practice.
+
+So overall Kruskal is approximately:
+
+    O(E log E)
+
+
+You don't need to memorize the detailed DSU complexity
+until learning DSU properly.
+
+
+==================================================
+31. COMMON MISTAKES
+==================================================
+
+1. Confusing MST with shortest path.
+
+2. Thinking MST minimizes every individual path.
+
+3. Forgetting that ALL vertices must be included.
+
+4. Allowing cycles.
+
+5. Forgetting MST contains V-1 edges.
+
+6. Simply choosing V-1 smallest edges.
+
+7. Forgetting MST is normally for weighted
+   undirected graphs.
+
+8. Thinking Prim and Kruskal solve different problems.
+   Both find MST.
+
+9. Thinking MST must always be unique.
+   Multiple MSTs can have the same minimum cost.
+
+10. Confusing number of edges with total weight.
+
+    MST minimizes:
+
+        SUM OF EDGE WEIGHTS
+
+    not:
+
+        number of edges
+
+    Every spanning tree already has V-1 edges.
+
+
+==================================================
+32. SUPER IMPORTANT COMPARISON
+==================================================
+
+CONNECTED COMPONENTS:
+
+    Goal:
+        Find separate groups.
+
+    Main tools:
+        DFS / BFS
+
+
+SHORTEST PATH:
+
+    Goal:
+        Find cheapest path/distance between nodes.
+
+    Main tools:
+        BFS / Dijkstra / Bellman-Ford etc.
+
+
+MST:
+
+    Goal:
+        Connect ALL nodes with minimum TOTAL cost.
+
+    Main tools:
+        Prim / Kruskal
+
+
+==================================================
+33. QUICK REVISION TABLE IN TEXT
+==================================================
+
+MST:
+
+    Weighted graph?          YES
+
+    Usually undirected?      YES
+
+    Connect all vertices?    YES
+
+    Cycles allowed?          NO
+
+    Edges selected?          V-1
+
+    Minimize what?           Total edge weight
+
+    Greedy?                  YES
+
+    Main algorithms?         Prim, Kruskal
+
+    Prim uses?               Min Heap
+
+    Kruskal uses?            Sorting + DSU
+
+    Disconnected graph?      Minimum Spanning Forest
+
+
+==================================================
+34. FINAL MEMORY MAP
+==================================================
+
+Question says:
+
+    "Connect ALL vertices with MINIMUM cost"
+
+                    ↓
+
+                   MST
+
+             /             \
+
+          PRIM             KRUSKAL
+
+            ↓                 ↓
+
+      Grow one tree      Sort all edges
+
+            ↓                 ↓
+
+        Min Heap        Avoid cycles
+
+                              ↓
+
+                             DSU
+
+
+==================================================
+35. FINAL ONE-LINE MEMORY TRICKS
+==================================================
+
+MST:
+
+    Cheapest network connecting everyone.
+
+
+Spanning:
+
+    Include every vertex.
+
+
+Tree:
+
+    Connected + no cycle.
+
+
+MST edge count:
+
+    V - 1
+
+
+Prim:
+
+    Grow ONE tree using cheapest available connection.
+
+
+Kruskal:
+
+    Sort edges and take cheapest ones without cycles.
+
+
+Prim:
+
+    Think MIN HEAP.
+
+
+Kruskal:
+
+    Think DSU.
+
+
+Shortest Path:
+
+    Cheapest ROUTE.
+
+
+MST:
+
+    Cheapest NETWORK.
+
+
+Connected Components:
+
+    How many GROUPS?
+
+
+ULTIMATE RECOGNITION:
+
+    "Connect all + minimum total cost"
+                =
+               MST
