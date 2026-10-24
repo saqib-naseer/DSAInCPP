@@ -1,0 +1,103 @@
+GRAPH - BRIDGES / CRITICAL CONNECTIONS (LC 1192)
+
+ALGORITHM: Tarjan's Bridge-Finding Algorithm
+
+1. WHAT IS A BRIDGE?
+An edge whose removal increases the number of connected components.
+Example: Triangle 0-1-2-0 with tail 2-3.
+Only edge 2-3 is a bridge because the triangle has alternate paths.
+
+2. WHY DFS?
+Brute force: Remove each edge and check connectivity again.
+Optimized: One DFS finds all bridges using discovery time and low-link values.
+
+3. THREE IMPORTANT ARRAYS
+vis[node] = Has DFS visited this node?
+tin[node] = Discovery time (when DFS first visits it).
+low[node] = Earliest discovery time reachable from this node or its DFS subtree using tree edges downward and at most one back edge upward.
+
+Easy memory:
+TIN = When did I arrive?
+LOW = How far back can my subtree reach?
+
+4. INITIALIZATION
+int timer = 0;
+vis[node] = true;
+tin[node] = low[node] = timer++;
+
+Pass timer by reference so each visited node receives a unique timestamp.
+
+5. DFS NEIGHBOR CASES
+CASE A: neighbour == parent
+Skip the parent edge used to enter this node.
+
+CASE B: neighbour already visited
+This is a back edge to an ancestor.
+low[node] = min(low[node], tin[neighbour]);
+Use tin[neighbour], NOT low[neighbour].
+
+CASE C: neighbour not visited
+Run dfs(neighbour, node).
+When it returns:
+low[node] = min(low[node], low[neighbour]);
+Then test whether the DFS tree edge is a bridge.
+
+6. BRIDGE CONDITION
+if (low[child] > tin[parent])
+    edge parent-child is a bridge.
+
+WHY?
+The child's subtree cannot reach the parent or an earlier ancestor through another route. Removing their connecting edge disconnects the subtree.
+
+WHY STRICT >?
+If low[child] == tin[parent], a back edge reaches the parent, so the tree edge is not a bridge.
+
+7. MOST IMPORTANT DIFFERENCE
+Already visited neighbor -> use tin[neighbor].
+After returning from DFS child -> use low[child].
+
+8. RECURSION FLOW
+Enter node -> mark visited -> assign tin/low.
+Explore unvisited child -> return from child.
+Update parent's low using child's low.
+Check whether parent-child edge is a bridge.
+Return to caller.
+
+9. COMMON MISTAKES
+- Using low[neighbor] instead of tin[neighbor] for visited neighbors.
+- Forgetting to skip the DFS parent edge.
+- Checking bridge condition before child DFS returns.
+- Using >= instead of >.
+- Not sharing/incrementing the timer correctly.
+- Running only DFS(0) for a graph that may be disconnected.
+- For multigraphs, skip the parent edge ID rather than every occurrence of the parent vertex.
+
+10. COMPLEXITY
+Time: O(V + E).
+Space: O(V + E) including adjacency list and recursion.
+Auxiliary space excluding graph storage: O(V).
+
+11. QUICK RECALL CODE
+vis[node] = true;
+tin[node] = low[node] = timer++;
+
+for (int neighbour : adj[node]) {
+    if (neighbour == parent) continue;
+
+    if (vis[neighbour]) {
+        low[node] = min(low[node], tin[neighbour]);
+    } else {
+        dfs(neighbour, node);
+        low[node] = min(low[node], low[neighbour]);
+
+        if (low[neighbour] > tin[node]) {
+            bridges.push_back({node, neighbour});
+        }
+    }
+}
+
+FINAL MEMORY TRICK:
+A bridge is an edge with no alternate route.
+TIN tells when a node was discovered.
+LOW tells how far back its subtree can reach.
+If LOW(child) > TIN(parent), the edge is a BRIDGE.
