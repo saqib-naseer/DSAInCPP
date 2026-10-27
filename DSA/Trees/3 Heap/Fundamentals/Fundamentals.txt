@@ -1,0 +1,191 @@
+HEAP — FUNDAMENTALS
+
+1. Heap
+   - A heap is a Complete Binary Tree that follows the heap property.
+   - Mainly used when we repeatedly need the minimum or maximum element.
+
+2. Complete Binary Tree Property
+   - All levels are completely filled except possibly the last level.
+   - Last level is filled from left to right.
+   - Because of this structure, a heap can be efficiently stored in an array.
+
+3. Types of Heap
+
+   Min Heap:
+   - Parent <= its children.
+   - Root contains the minimum element.
+
+   Max Heap:
+   - Parent >= its children.
+   - Root contains the maximum element.
+
+4. Important Heap Property
+   - Heap only guarantees ordering between parent and children.
+   - A heap is NOT completely sorted.
+   - Left child does not have to be smaller/greater than right child.
+
+5. Array Representation
+
+   For 0-based indexing:
+
+   Parent:
+       (i - 1) / 2
+
+   Left Child:
+       2 * i + 1
+
+   Right Child:
+       2 * i + 2
+
+6. Heap Height
+   - Heap is a Complete Binary Tree.
+   - Height is O(log N).
+
+7. Heap Insertion
+   - Insert new element at the end.
+   - Compare it with its parent.
+   - Swap upward while heap property is violated.
+   - Called Heapify Up / Bubble Up / Sift Up.
+   - Time: O(log N)
+
+8. Get Minimum / Maximum
+   - Min Heap → minimum is at root.
+   - Max Heap → maximum is at root.
+   - Accessing root: O(1)
+
+9. Delete / Extract Root
+   - Save the root.
+   - Move last element to root.
+   - Remove last element.
+   - Move root downward until heap property is restored.
+   - Called Heapify Down / Sift Down.
+   - Time: O(log N)
+
+10. Heapify
+    - Process of restoring the heap property.
+    - Heapify Up is commonly used after insertion.
+    - Heapify Down is commonly used after deleting/extracting root.
+
+11. Build Heap
+    - Converts an unsorted array into a valid heap.
+    - Start heapifying from the last non-leaf node toward the root.
+    - Last non-leaf index for 0-based array:
+          N / 2 - 1
+    - Time: O(N)
+
+12. Priority Queue
+    - C++ priority_queue is implemented using a heap.
+
+    Max Heap:
+        priority_queue<int> pq;
+
+    Min Heap:
+        priority_queue<int,
+                       vector<int>,
+                       greater<int>> pq;
+
+13. Important Priority Queue Operations
+
+    pq.push(x)
+        - Insert element.
+        - O(log N)
+
+    pq.top()
+        - Get min/max element.
+        - O(1)
+
+    pq.pop()
+        - Remove root element.
+        - O(log N)
+
+    pq.size()
+        - Number of elements.
+
+    pq.empty()
+        - Checks whether heap is empty.
+
+14. Heap Sort
+    - Uses heap to sort elements.
+    - Build heap.
+    - Repeatedly extract/swap the root.
+    - Time: O(N log N)
+    - In-place implementation can use O(1) extra space.
+
+15. Heap vs BST
+    - Heap only guarantees parent-child ordering.
+    - BST guarantees:
+          Left < Node < Right
+    - Heap is best for quickly getting min/max.
+    - BST is better when searching for arbitrary values is required.
+
+16. Heap vs Sorted Array
+    - Heap is NOT fully sorted.
+    - Only the root is guaranteed to be minimum/maximum.
+    - Finding an arbitrary element in a heap can take O(N).
+
+17. Time Complexities
+
+    Get Min/Max:
+        O(1)
+
+    Insert:
+        O(log N)
+
+    Delete/Extract Root:
+        O(log N)
+
+    Heapify:
+        O(log N)
+
+    Build Heap:
+        O(N)
+
+    Search arbitrary element:
+        O(N)
+
+    Heap Sort:
+        O(N log N)
+
+
+QUICK MEMORY:
+
+Heap:
+    Complete Binary Tree + Heap Property
+
+Min Heap:
+    Parent <= Children
+    Root = Minimum
+
+Max Heap:
+    Parent >= Children
+    Root = Maximum
+
+Array Index:
+
+    Parent = (i - 1) / 2
+    Left   = 2*i + 1
+    Right  = 2*i + 2
+
+Insertion:
+    Add at end
+    → Heapify UP
+
+Delete Root:
+    Replace root with last
+    → Remove last
+    → Heapify DOWN
+
+Build Heap:
+    Start from N/2 - 1
+    → Move toward root
+    → O(N)
+
+Priority Queue:
+    Max Heap by default in C++
+
+Most Important:
+    Heap is NOT sorted.
+    Only parent-child ordering is guaranteed.
+    Root gives Min/Max in O(1).
+    Insert/Delete = O(log N).
+    Build Heap = O(N).

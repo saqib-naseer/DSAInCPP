@@ -1,0 +1,541 @@
+ARRAYS — FUNDAMENTALS
+
+1. Array
+   - Stores multiple elements of the same type.
+   - Elements are stored in contiguous memory.
+   - Indexing starts from 0.
+   - For size N, valid indexes are 0 to N-1.
+
+2. C++ Vector
+   - Dynamic array whose size can grow or shrink.
+
+   Declaration:
+       vector<int> arr;
+
+   With size:
+       vector<int> arr(n);
+
+   With default value:
+       vector<int> arr(n, 0);
+
+3. Basic Vector Operations
+
+   arr[i]
+       → access element
+
+   arr.size()
+       → number of elements
+
+   arr.push_back(x)
+       → add at end
+
+   arr.pop_back()
+       → remove last element
+
+   arr.front()
+       → first element
+
+   arr.back()
+       → last element
+
+   arr.empty()
+       → check if empty
+
+   arr.clear()
+       → remove all elements
+
+4. Traversing an Array
+
+   Index based:
+
+       for(int i = 0; i < arr.size(); i++)
+
+   Range based:
+
+       for(int x : arr)
+
+5. Array Indexing
+
+   First element:
+       arr[0]
+
+   Last element:
+       arr[n - 1]
+
+   Be careful:
+       arr[n] is OUT OF BOUNDS.
+
+6. Passing Vector to Function
+
+   By reference:
+
+       void solve(vector<int>& arr)
+
+   const reference when not modifying:
+
+       void solve(const vector<int>& arr)
+
+   Passing by reference avoids copying the whole vector.
+
+7. Sorting
+
+   Ascending:
+
+       sort(arr.begin(), arr.end());
+
+   Descending:
+
+       sort(arr.rbegin(), arr.rend());
+
+   Time:
+       O(N log N)
+
+8. Reverse
+
+       reverse(arr.begin(), arr.end());
+
+   Time:
+       O(N)
+
+9. Min and Max
+
+       *min_element(arr.begin(), arr.end());
+
+       *max_element(arr.begin(), arr.end());
+
+10. Two Pointers
+
+    Common setup:
+
+       int left = 0;
+       int right = n - 1;
+
+    Move pointers depending on the required condition.
+
+    Common with:
+       - Sorted arrays
+       - Reversal
+       - Pair processing
+
+11. Prefix Sum
+
+    Stores cumulative sums.
+
+       prefix[i] = prefix[i - 1] + arr[i];
+
+    Useful for quickly calculating range sums.
+
+    Range L to R:
+
+       prefix[R] - prefix[L - 1]
+
+    Handle L = 0 separately.
+
+12. Sliding Window
+
+    Used mainly for contiguous subarrays.
+
+    Maintain:
+       left
+       right
+
+    Expand right.
+    Shrink left when required.
+
+13. Frequency Array
+
+    Used when values have a manageable known range.
+
+       freq[arr[i]]++;
+
+    Useful for counting occurrences.
+
+14. Hashing with Arrays
+
+    unordered_map can be used when values are large
+    or cannot directly be used as array indexes.
+
+       unordered_map<int, int> freq;
+
+15. Subarray vs Subsequence
+
+    Subarray:
+       - Continuous part of array.
+
+    Subsequence:
+       - Maintains order.
+       - Does NOT need to be continuous.
+
+    Subset:
+       - Elements can be selected without maintaining positions/order.
+
+16. Time Complexity Basics
+
+    Access by index:
+       O(1)
+
+    Traverse:
+       O(N)
+
+    Linear search:
+       O(N)
+
+    Sorting:
+       O(N log N)
+
+    Insert/remove at end of vector:
+       Usually O(1) amortized
+
+    Insert/remove near beginning/middle:
+       O(N)
+
+
+==================================================
+2D ARRAYS / MATRICES
+==================================================
+
+17. 2D Array
+
+    A 2D array can be thought of as:
+
+       rows × columns
+
+    C++ vector:
+
+       vector<vector<int>> matrix;
+
+18. Creating a 2D Vector
+
+    Rows and columns:
+
+       int rows = 3;
+       int cols = 4;
+
+       vector<vector<int>> matrix(
+           rows,
+           vector<int>(cols)
+       );
+
+    Initialize everything with 0:
+
+       vector<vector<int>> matrix(
+           rows,
+           vector<int>(cols, 0)
+       );
+
+19. Rows and Columns
+
+    Number of rows:
+
+       int rows = matrix.size();
+
+    Number of columns:
+
+       int cols = matrix[0].size();
+
+    Always make sure matrix is not empty before using matrix[0].
+
+20. Accessing Matrix Elements
+
+       matrix[row][col]
+
+    First index:
+       row
+
+    Second index:
+       column
+
+    Memory:
+
+       matrix[i][j]
+
+       i = row
+       j = column
+
+21. Traversing Entire Matrix
+
+       for(int i = 0; i < rows; i++) {
+
+           for(int j = 0; j < cols; j++) {
+
+               // matrix[i][j]
+           }
+       }
+
+    Outer loop:
+       rows
+
+    Inner loop:
+       columns
+
+22. Row Traversal
+
+    To traverse row r:
+
+       for(int j = 0; j < cols; j++) {
+           // matrix[r][j]
+       }
+
+    Row stays fixed.
+    Column changes.
+
+23. Column Traversal
+
+    To traverse column c:
+
+       for(int i = 0; i < rows; i++) {
+           // matrix[i][c]
+       }
+
+    Column stays fixed.
+    Row changes.
+
+24. Matrix Boundary Check
+
+    Before accessing:
+
+       matrix[i][j]
+
+    make sure:
+
+       i >= 0
+       i < rows
+       j >= 0
+       j < cols
+
+    Common function:
+
+       bool isValid(int i, int j) {
+
+           return i >= 0 &&
+                  i < rows &&
+                  j >= 0 &&
+                  j < cols;
+       }
+
+25. Four-Direction Movement
+
+    Common in grid problems:
+
+       Up
+       Down
+       Left
+       Right
+
+    Direction arrays:
+
+       int dr[4] = {-1, 1, 0, 0};
+       int dc[4] = {0, 0, -1, 1};
+
+    New position:
+
+       newRow = row + dr[k];
+       newCol = col + dc[k];
+
+26. Eight-Direction Movement
+
+    Includes diagonals:
+
+       int dr[8] = {
+           -1, -1, -1,
+            0,       0,
+            1,  1,  1
+       };
+
+       int dc[8] = {
+           -1, 0, 1,
+           -1,    1,
+           -1, 0, 1
+       };
+
+27. Matrix Neighbors
+
+    For cell:
+
+       matrix[i][j]
+
+    Four common neighbors:
+
+       matrix[i-1][j]     → Up
+       matrix[i+1][j]     → Down
+       matrix[i][j-1]     → Left
+       matrix[i][j+1]     → Right
+
+    Always check boundaries first.
+
+28. Main Diagonal
+
+    Main diagonal elements satisfy:
+
+       row == column
+
+    Example access:
+
+       matrix[i][i]
+
+29. Secondary Diagonal
+
+    For N × N matrix:
+
+       row + column == N - 1
+
+    Access:
+
+       matrix[i][n - 1 - i]
+
+30. Matrix Transpose
+
+    Transpose means:
+
+       rows become columns
+       columns become rows
+
+    Concept:
+
+       matrix[i][j]
+           becomes
+       matrix[j][i]
+
+    For square matrix, elements can be swapped across
+    the main diagonal.
+
+31. Matrix Complexity
+
+    For:
+
+       rows = R
+       columns = C
+
+    Traversing entire matrix:
+
+       O(R × C)
+
+    For N × N matrix:
+
+       O(N²)
+
+    Accessing one element:
+
+       O(1)
+
+32. Visited Matrix
+
+    Common when traversing grids:
+
+       vector<vector<bool>> visited(
+           rows,
+           vector<bool>(cols, false)
+       );
+
+    Mark:
+
+       visited[i][j] = true;
+
+    Check:
+
+       if(!visited[i][j])
+
+33. Queue with Matrix Coordinates
+
+    Common BFS representation:
+
+       queue<pair<int,int>> q;
+
+    Add cell:
+
+       q.push({row, col});
+
+    Read:
+
+       int row = q.front().first;
+       int col = q.front().second;
+
+34. Important Matrix Memory
+
+    matrix[i][j]
+
+       i → ROW
+       j → COLUMN
+
+    rows:
+       matrix.size()
+
+    columns:
+       matrix[0].size()
+
+    Valid cell:
+
+       0 <= row < rows
+       0 <= col < cols
+
+    Entire traversal:
+
+       O(rows × columns)
+
+
+==================================================
+QUICK MEMORY
+==================================================
+
+1D ARRAY:
+
+    Index:
+       0 to N-1
+
+    First:
+       arr[0]
+
+    Last:
+       arr[n-1]
+
+    Traversal:
+       O(N)
+
+    Important techniques:
+       Two Pointers
+       Prefix Sum
+       Sliding Window
+       Frequency / Hashing
+
+
+2D ARRAY:
+
+    matrix[row][col]
+
+    First index:
+       ROW
+
+    Second index:
+       COLUMN
+
+    Rows:
+       matrix.size()
+
+    Columns:
+       matrix[0].size()
+
+    Traverse:
+       Outer loop → Rows
+       Inner loop → Columns
+
+    Valid:
+       row >= 0 && row < rows
+       col >= 0 && col < cols
+
+    4 Directions:
+       Up    = (-1, 0)
+       Down  = ( 1, 0)
+       Left  = ( 0,-1)
+       Right = ( 0, 1)
+
+    Main Diagonal:
+       row == col
+
+    Secondary Diagonal:
+       row + col == n - 1
+
+    Transpose:
+       [i][j] → [j][i]
+
+    Full Matrix Traversal:
+       O(R × C)

@@ -1,0 +1,65 @@
+BINARY SEARCH TREE (BST) — FUNDAMENTALS
+
+1. Binary Search Tree (BST)
+   - A binary tree where nodes follow a specific ordering.
+   - Each node has at most two children.
+
+2. BST Property
+   - Left subtree contains smaller values.
+   - Right subtree contains greater values.
+   - This rule applies to every node and its entire subtree.
+
+3. BST Node
+   - Contains a value.
+   - Pointer to left child.
+   - Pointer to right child.
+
+4. Search in BST
+   - If target == node → found.
+   - If target < node → search left.
+   - If target > node → search right.
+
+5. Insert in BST
+   - Smaller value → move left.
+   - Greater value → move right.
+   - Insert when a NULL position is reached.
+
+6. Delete in BST
+   - 0 children → simply remove node.
+   - 1 child → replace node with its child.
+   - 2 children → usually replace with inorder successor, then delete successor.
+
+7. Minimum and Maximum
+   - Minimum = leftmost node.
+   - Maximum = rightmost node.
+
+8. Inorder Traversal
+   - Order: Left → Node → Right.
+   - Inorder traversal of a BST gives values in sorted order.
+
+9. Inorder Successor
+   - Next greater value.
+   - Usually minimum value in the right subtree.
+
+10. Inorder Predecessor
+    - Previous smaller value.
+    - Usually maximum value in the left subtree.
+
+11. Balanced vs Skewed BST
+    - Balanced BST → height is approximately log N.
+    - Skewed BST → can behave like a linked list with height N.
+
+12. Time Complexity
+    - Search: O(H)
+    - Insert: O(H)
+    - Delete: O(H)
+    - H = height of tree.
+    - Balanced BST: O(log N)
+    - Worst-case skewed BST: O(N)
+
+QUICK MEMORY:
+    Left < Node < Right
+    Search/Insert/Delete depend on height.
+    Minimum → keep going left.
+    Maximum → keep going right.
+    BST + Inorder → Sorted.

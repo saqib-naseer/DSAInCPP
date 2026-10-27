@@ -1,0 +1,112 @@
+BINARY TREE — FUNDAMENTALS
+
+1. Binary Tree
+   - A tree where each node can have at most 2 children.
+   - Children are called left child and right child.
+
+2. Basic Terminology
+   - Root → topmost node.
+   - Parent → node directly above another node.
+   - Child → node directly below another node.
+   - Leaf → node with no children.
+   - Subtree → tree formed from a node and its descendants.
+
+3. Depth
+   - Number of edges from root to a node.
+   - Root has depth 0.
+
+4. Height
+   - Number of edges in the longest path from a node to a leaf.
+   - Height of tree = height of root.
+
+5. Binary Tree Node
+   - Contains a value.
+   - Pointer to left child.
+   - Pointer to right child.
+
+6. DFS Traversals
+
+   Preorder:
+   - Node → Left → Right
+
+   Inorder:
+   - Left → Node → Right
+
+   Postorder:
+   - Left → Right → Node
+
+7. Level Order Traversal
+   - BFS traversal of a tree.
+   - Visits nodes level by level.
+   - Uses a queue.
+
+8. Recursive Traversal
+   - Uses recursion.
+   - Recursion call stack stores nodes while traversing.
+
+9. Iterative Traversal
+   - DFS traversals can be implemented using a stack.
+   - Level order uses a queue.
+
+10. Morris Traversal
+    - Traverses tree without recursion or stack.
+    - Uses temporary links/threading in the tree.
+    - Restores the tree after traversal.
+    - Most commonly used for Inorder.
+    - Can also be used for Preorder.
+    - Time: O(N)
+    - Auxiliary Space: O(1)
+
+11. Full Binary Tree
+    - Every node has either 0 or 2 children.
+
+12. Complete Binary Tree
+    - All levels are completely filled except possibly the last.
+    - Last level is filled from left to right.
+
+13. Perfect Binary Tree
+    - Every internal node has 2 children.
+    - All leaf nodes are at the same level.
+
+14. Balanced Binary Tree
+    - Left and right subtree heights remain approximately balanced.
+    - Common condition: height difference <= 1.
+
+15. Skewed Binary Tree
+    - Nodes mostly have only one child.
+    - Can behave like a linked list.
+
+16. Basic Complexity
+    - Traversing all nodes → O(N)
+    - DFS recursion space → O(H)
+    - H = height of tree.
+    - Balanced tree height → O(log N)
+    - Skewed tree height → O(N)
+
+
+QUICK MEMORY:
+
+Preorder:
+    Node → Left → Right
+
+Inorder:
+    Left → Node → Right
+
+Postorder:
+    Left → Right → Node
+
+Level Order:
+    BFS → Queue
+
+DFS Iterative:
+    Stack
+
+Morris:
+    No Stack + No Recursion
+    O(1) Auxiliary Space
+
+Depth:
+    Root → Node
+
+Height:
+    Node → Deepest Leaf

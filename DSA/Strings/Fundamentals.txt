@@ -1,0 +1,290 @@
+STRINGS — FUNDAMENTALS
+
+1. String
+   - A string is a sequence of characters.
+   - In C++, std::string is used to store and manipulate strings.
+
+2. String Declaration
+
+   string s = "hello";
+
+   Empty string:
+       string s = "";
+
+3. Character Access
+   - Characters are accessed using indexes.
+   - Indexing starts from 0.
+
+   s[i]
+   s.front()     → first character
+   s.back()      → last character
+
+4. String Length
+
+   s.length()
+   s.size()
+
+   - Both return the number of characters.
+   - Time: O(1)
+
+5. Traversing a String
+
+   Index based:
+       for(int i = 0; i < s.size(); i++)
+
+   Range based:
+       for(char ch : s)
+
+6. Modifying Characters
+   - Individual characters can be changed using their index.
+
+   s[i] = 'a';
+
+7. Adding Characters / Strings
+
+   s.push_back('a')
+       → add character at end
+
+   s += 'a'
+       → add character
+
+   s += anotherString
+       → concatenate strings
+
+8. Removing Character
+
+   s.pop_back()
+       → removes last character
+
+9. String Concatenation
+
+   string c = a + b;
+
+   - Joins two strings together.
+
+10. Substring
+
+    s.substr(start, length)
+
+    - Creates a substring starting from given index.
+
+    Example:
+        s.substr(2, 3)
+
+        Start at index 2
+        Take 3 characters
+
+11. Finding in String
+
+    s.find("abc")
+
+    - Returns starting index if found.
+    - Returns string::npos if not found.
+
+12. Comparing Strings
+
+    s1 == s2
+        → equal
+
+    s1 != s2
+        → not equal
+
+    s1 < s2
+    s1 > s2
+        → lexicographical comparison
+
+13. Lexicographical Order
+    - Strings are compared character by character.
+    - Similar to dictionary ordering.
+    - Character values determine the comparison.
+
+14. ASCII / Character Basics
+
+    'a' to 'z'
+    'A' to 'Z'
+    '0' to '9'
+
+    Character to integer digit:
+
+        int digit = ch - '0';
+
+    Digit to character:
+
+        char ch = digit + '0';
+
+15. Character Checking
+
+    isalpha(ch)
+        → alphabet?
+
+    isdigit(ch)
+        → digit?
+
+    isalnum(ch)
+        → alphabet or digit?
+
+    islower(ch)
+        → lowercase?
+
+    isupper(ch)
+        → uppercase?
+
+16. Character Case Conversion
+
+    tolower(ch)
+        → lowercase
+
+    toupper(ch)
+        → uppercase
+
+17. Character Frequency
+    - Frequency arrays are commonly used with strings.
+
+    Lowercase letters:
+
+        vector<int> freq(26);
+
+        freq[ch - 'a']++;
+
+    Index mapping:
+
+        'a' → 0
+        'b' → 1
+        ...
+        'z' → 25
+
+18. Reverse a String
+
+    reverse(s.begin(), s.end());
+
+    - Time: O(N)
+
+19. Sorting a String
+
+    sort(s.begin(), s.end());
+
+    - Sorts characters.
+    - Time: O(N log N)
+
+20. String Input
+
+    cin >> s;
+        → reads until whitespace
+
+    getline(cin, s);
+        → reads complete line including spaces
+
+21. String and Number Conversion
+
+    String to integer:
+        stoi(s)
+
+    String to long long:
+        stoll(s)
+
+    Number to string:
+        to_string(num)
+
+22. Two-Pointer Technique
+    - Very common with strings.
+    - Usually one pointer starts from left and another from right.
+
+    left = 0
+    right = n - 1
+
+    Commonly useful for:
+        comparing characters
+        reversing
+        palindrome-style processing
+
+23. Sliding Window
+    - Used for processing contiguous portions of a string.
+    - Maintain a window using left and right pointers.
+    - Expand or shrink the window depending on the condition.
+
+24. Prefix / Suffix
+
+    Prefix:
+        Characters starting from the beginning.
+
+    Suffix:
+        Characters ending at the last character.
+
+    Substring:
+        Continuous sequence of characters.
+
+    Subsequence:
+        Characters remain in order but do NOT need to be continuous.
+
+25. String Immutability in C++
+    - std::string is mutable.
+    - Characters can be changed directly.
+    - Characters can be added or removed.
+
+
+QUICK MEMORY:
+
+String:
+    Sequence of characters
+
+Index:
+    Starts from 0
+
+Length:
+    s.size()
+    s.length()
+
+Character:
+    s[i]
+
+Add:
+    push_back()
+    +=
+
+Remove last:
+    pop_back()
+
+Substring:
+    substr()
+
+Find:
+    find()
+
+Not Found:
+    string::npos
+
+Full-line input:
+    getline()
+
+Reverse:
+    reverse()
+
+Sort:
+    sort()
+
+Character Frequency:
+    freq[ch - 'a']
+
+Digit Character → Number:
+    ch - '0'
+
+Number → Digit Character:
+    digit + '0'
+
+Prefix:
+    Starts from beginning
+
+Suffix:
+    Ends at end
+
+Substring:
+    Continuous
+
+Subsequence:
+    Order maintained, not necessarily continuous
+
+Important String Techniques:
+    Frequency Array
+    Two Pointers
+    Sliding Window
+    Prefix / Suffix

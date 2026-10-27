@@ -1,0 +1,589 @@
+===========================
+GRAPH FUNDAMENTALS REVISION
+===========================
+
+
+1. Graph Representation
+-----------------------
+- Graph = Vertices (nodes) + Edges (connections).
+- Can be Directed / Undirected and Weighted / Unweighted.
+- Adjacency Matrix: matrix[u][v] tells whether an edge exists.
+- Adjacency List: adj[u] stores neighbors of u.
+- Adjacency List is usually preferred because it uses O(V + E) space.
+- Weighted adjacency list usually stores: {neighbor, weight}.
+
+
+2. BFS
+------
+- Breadth First Search explores LEVEL BY LEVEL.
+- Uses a QUEUE.
+- Mark visited when adding a node to the queue.
+- In an unweighted graph, BFS gives the shortest path in number of edges.
+- Queue means: node discovered now, process it later.
+
+Memory:
+BFS = Queue = Level by Level = Unweighted Shortest Path
+
+
+3. DFS
+------
+- Depth First Search goes as DEEP as possible before coming back.
+- Usually implemented using recursion or a stack.
+- Mark node visited, then recursively visit its unvisited neighbors.
+- Useful for components, cycles, connectivity, grids, SCC, bridges, etc.
+
+Memory:
+DFS = Go Deep → Finish → Backtrack
+
+
+4. Connected Components
+-----------------------
+- A connected component is a group of vertices connected to each other.
+- Loop through every vertex.
+- If a vertex is unvisited, start BFS/DFS from it.
+- Every fresh BFS/DFS means we discovered ONE new component.
+
+Memory:
+Fresh DFS/BFS start = New Component
+
+
+5. Cycle Detection in Undirected Graph - BFS
+---------------------------------------------
+- Use BFS and store {node, parent}.
+- If a neighbor is unvisited → visit it.
+- If a neighbor is already visited AND neighbor != parent → cycle exists.
+- Parent is ignored because the edge back to parent is normal in an undirected graph.
+
+Memory:
+Visited Neighbor + Not Parent = Cycle
+
+
+6. Cycle Detection in Undirected Graph - DFS
+---------------------------------------------
+- DFS carries the parent node.
+- Visit all unvisited neighbors recursively.
+- If we see an already visited neighbor that is NOT the parent → cycle.
+- Same logic as BFS; only traversal method changes.
+
+Memory:
+Visited Neighbor != Parent → Cycle
+
+
+7. Cycle Detection in Directed Graph - DFS
+-------------------------------------------
+- Normal visited[] alone is not enough.
+- Maintain:
+  visited[]
+  pathVisited[] / recursionStack[]
+- pathVisited means node belongs to the CURRENT DFS path.
+- If we reach a neighbor already in the current DFS path → cycle.
+- Remove node from current path when its DFS finishes.
+
+Memory:
+Directed Cycle = Edge back into CURRENT DFS path
+
+
+8. Bipartite Graph - BFS and DFS
+--------------------------------
+- Try to color every vertex using only 2 colors.
+- Adjacent vertices must have different colors.
+- Give neighbor the opposite color.
+- If two connected vertices require the same color → NOT bipartite.
+- Can be implemented using BFS or DFS.
+- An odd-length cycle makes a graph non-bipartite.
+
+Memory:
+2 Colors + No Same-Color Neighbors
+
+
+9. Topological Sort - DFS
+-------------------------
+- Only works for Directed Acyclic Graphs (DAG).
+- For edge u → v, u must appear before v.
+- DFS first explores all dependencies.
+- Add node to stack AFTER its DFS finishes.
+- Reverse finishing order gives topological ordering.
+
+Memory:
+DFS → Finish Node → Push to Stack
+
+
+10. Kahn's Algorithm - BFS Topological Sort
+-------------------------------------------
+- BFS version of Topological Sort.
+- Calculate indegree of every vertex.
+- Put all vertices with indegree 0 into queue.
+- Remove one, add it to answer, and reduce neighbors' indegrees.
+- If neighbor's indegree becomes 0 → push it.
+- If processed nodes < V → directed graph contains a cycle.
+
+Memory:
+Indegree 0 = Ready to Process
+
+
+11. Shortest Path in Unweighted Graph - BFS
+-------------------------------------------
+- Use BFS when every edge has equal cost / no weight.
+- BFS explores nodes level by level.
+- First time we reach a node gives its shortest distance.
+- Usually:
+  distance[neighbor] = distance[node] + 1
+
+Memory:
+Unweighted Shortest Path = BFS
+
+
+12. Shortest Path in DAG
+------------------------
+- Used for weighted Directed Acyclic Graphs.
+- First find a topological ordering.
+- Process vertices in topological order.
+- Relax outgoing edges:
+  dist[v] = min(dist[v], dist[u] + weight)
+- DAG shortest path can handle negative edge weights because there are no cycles.
+
+Memory:
+DAG Shortest Path = Topological Sort + Relax Edges
+
+
+13. Dijkstra's Algorithm
+------------------------
+- Finds shortest distance from ONE source.
+- Used when edge weights are NON-NEGATIVE.
+- Uses a min heap:
+  {distance, node}
+- Pop smallest known distance.
+- Relax all neighboring edges.
+- If a shorter distance is found → update and push again.
+- Stale heap entries may exist and can be skipped.
+
+Memory:
+Non-Negative Weighted Graph = Dijkstra
+
+Relaxation:
+if dist[u] + weight < dist[v]
+    update dist[v]
+
+
+14. Bellman-Ford Algorithm
+--------------------------
+- Single-source shortest path algorithm.
+- Can handle NEGATIVE edge weights.
+- Relax EVERY edge V - 1 times.
+- Do one extra relaxation pass:
+  if any distance can still improve → negative cycle exists.
+- Slower than Dijkstra.
+
+Memory:
+Negative Weights = Bellman-Ford
+V - 1 Relaxations + 1 Cycle Check
+
+
+15. Floyd-Warshall Algorithm
+----------------------------
+- Finds shortest paths between ALL PAIRS of vertices.
+- Dynamic programming approach.
+- Try every vertex k as an intermediate vertex.
+
+Formula:
+dist[i][j] =
+min(dist[i][j],
+    dist[i][k] + dist[k][j])
+
+- Time complexity: O(V^3).
+- Useful when graph is relatively small and all-pairs distances are required.
+
+Memory:
+All-Pairs Shortest Path = Floyd-Warshall
+
+
+16. Disjoint Set Union - DSU
+----------------------------
+- DSU keeps track of connected groups/components.
+- Main operations:
+  findParent()
+  union()
+- Same root → nodes already belong to same component.
+- Different roots → different components.
+
+Path Compression:
+- During find(), make nodes point closer/directly to root.
+
+Union by Rank/Size:
+- Attach smaller/shorter DSU tree under larger/taller one.
+
+Important:
+DSU's parent tree is only bookkeeping.
+It is NOT the actual graph or MST.
+
+Memory:
+find = Which group?
+union = Combine groups
+same root = Already connected
+
+
+17. Prim's Algorithm - MST
+--------------------------
+- Finds Minimum Spanning Tree.
+- Grows ONE connected tree.
+- Uses min heap + isMST/visited.
+- Start from any vertex with weight 0.
+- Heap contains candidate connections.
+- Push = candidate only.
+- Pop cheapest unvisited vertex = accept it into MST.
+- Mark isMST when accepting/popping, NOT when pushing.
+
+Important:
+Same vertex may appear multiple times in heap.
+Later expensive/stale offers are skipped.
+
+Memory:
+Prim = Grow One Tree
+Push = Offer
+Pop Cheapest Unvisited = Accept
+
+
+18. Kruskal's Algorithm - MST
+-----------------------------
+- Finds Minimum Spanning Tree.
+- Looks at ALL edges globally.
+- Process edges from smallest weight to largest.
+- Uses DSU to prevent cycles.
+
+For edge (u, v):
+  rootU = find(u)
+  rootV = find(v)
+
+If roots are same:
+  skip edge → cycle
+
+If roots are different:
+  take edge
+  add weight
+  union groups
+
+- MST contains exactly V - 1 accepted edges.
+
+Memory:
+Kruskal = Cheapest Safe Edge
+Same Root = Skip
+Different Root = Take + Union
+
+
+19. Bridges in Graph - Tarjan's Algorithm
+-----------------------------------------
+- Bridge = edge whose removal increases number of connected components.
+- Use DFS with:
+  tin[] = discovery time
+  low[] = earliest discovery time reachable
+- For DFS tree edge u → v:
+
+If:
+low[v] > tin[u]
+
+Then:
+u-v is a BRIDGE.
+
+Important:
+For an already visited back-edge, use tin[neighbor], NOT low[neighbor].
+
+Memory:
+Bridge:
+low[child] > tin[parent]
+
+
+20. Articulation Points
+-----------------------
+- Articulation Point = vertex whose removal disconnects the graph.
+- Uses DFS with tin[] and low[].
+
+For NON-ROOT node u:
+
+If:
+low[child] >= tin[u]
+
+Then:
+u is an articulation point.
+
+Special ROOT rule:
+- DFS root is articulation point only if it has MORE THAN ONE DFS child.
+
+Important difference:
+
+Bridge:
+low[child] > tin[parent]
+
+Articulation:
+low[child] >= tin[parent]
+
+Memory:
+Bridge = >
+Articulation = >=
+Root = More Than 1 Child
+
+
+21. Strongly Connected Components - Kosaraju's Algorithm
+---------------------------------------------------------
+- SCC exists in a directed graph.
+- Inside an SCC, every vertex can reach every other vertex.
+
+Kosaraju:
+
+1. DFS and store vertices by finishing time.
+2. Reverse/transposed all graph edges.
+3. Process vertices in reverse finishing order.
+4. Every new DFS gives one SCC.
+
+Memory:
+DFS Finish Order
+→ Reverse Graph
+→ DFS Again
+
+
+22. Strongly Connected Components - Tarjan's Algorithm
+-------------------------------------------------------
+- Finds SCCs using ONE DFS.
+- Uses:
+  tin[]
+  low[]
+  stack
+  inStack[]
+- Nodes remain on stack while their SCC is being explored.
+- When:
+  low[node] == tin[node]
+  node is the root of an SCC.
+- Pop nodes from stack until this node is reached.
+
+Memory:
+Tarjan SCC = DFS + Low Link + Stack
+
+
+23. Euler Path and Euler Circuit
+--------------------------------
+- Euler means using every EDGE exactly once.
+
+Undirected Graph:
+
+Euler Circuit:
+- All non-zero-degree vertices connected.
+- 0 vertices have odd degree.
+
+Euler Path:
+- All non-zero-degree vertices connected.
+- Exactly 2 vertices have odd degree.
+
+Neither:
+- More than 2 odd-degree vertices.
+
+Important:
+Ignore isolated degree-0 vertices when checking connectivity.
+
+Memory:
+Euler = EDGES
+
+0 odd → Circuit
+2 odd → Path
+>2 odd → Neither
+
+
+24. Hamiltonian Path and Hamiltonian Cycle
+------------------------------------------
+- Hamiltonian means visiting every VERTEX exactly once.
+
+Hamiltonian Path:
+- Visits every vertex exactly once.
+
+Hamiltonian Cycle:
+- Visits every vertex exactly once and returns to start.
+
+Unlike Euler, there is no simple degree rule that solves the general problem.
+Often solved using backtracking for small graphs.
+
+Important distinction:
+
+Euler:
+Use every EDGE once.
+
+Hamiltonian:
+Visit every VERTEX once.
+
+Memory:
+Euler = Edges
+Hamiltonian = Houses/Vertices
+
+
+25. 0-1 BFS
+-----------
+- Special shortest-path algorithm.
+- Used when every edge weight is ONLY 0 or 1.
+- Uses deque instead of normal queue/min heap.
+
+If edge weight = 0:
+  push_front()
+
+If edge weight = 1:
+  push_back()
+
+Why?
+- Weight 0 should be processed earlier.
+- Weight 1 should be processed later.
+
+Memory:
+Only 0/1 Weights = 0-1 BFS
+0 → Front
+1 → Back
+
+
+================================
+QUICK GRAPH ALGORITHM SELECTION
+================================
+
+Traversal:
+BFS / DFS
+
+Count connected groups:
+Connected Components
+
+Unweighted shortest path:
+BFS
+
+Weighted shortest path, no negative edges:
+Dijkstra
+
+Negative edges:
+Bellman-Ford
+
+All-pairs shortest paths:
+Floyd-Warshall
+
+Weighted DAG shortest path:
+Topological Sort + Relaxation
+
+Only 0/1 edge weights:
+0-1 BFS
+
+Dependencies / ordering:
+Topological Sort / Kahn's Algorithm
+
+Minimum cost to connect ALL vertices:
+MST
+
+MST by growing one tree:
+Prim
+
+MST by globally cheapest safe edges:
+Kruskal + DSU
+
+Dynamic connectivity / same group:
+DSU
+
+Critical edge:
+Bridge
+
+Critical vertex:
+Articulation Point
+
+Strongly connected groups in directed graph:
+Kosaraju / Tarjan
+
+Use every edge exactly once:
+Euler Path / Circuit
+
+Visit every vertex exactly once:
+Hamiltonian Path / Cycle
+
+
+=========================
+ULTRA-SHORT MEMORY MAP
+=========================
+
+BFS
+= Queue
+= Level by Level
+
+DFS
+= Recursion
+= Go Deep
+
+Components
+= Fresh DFS/BFS = New Component
+
+Undirected Cycle
+= Visited Neighbor != Parent
+
+Directed Cycle
+= Back Edge to Current DFS Path
+
+Bipartite
+= 2 Colors
+
+Topological Sort
+= Dependencies / DAG
+
+Kahn
+= Indegree + Queue
+
+Dijkstra
+= Non-Negative Shortest Path
+
+Bellman-Ford
+= Negative Weights
+
+Floyd-Warshall
+= All Pairs
+
+DSU
+= Find Group + Union Groups
+
+Prim
+= Grow One MST
+
+Kruskal
+= Cheapest Safe Edge + DSU
+
+Bridge
+= low[child] > tin[parent]
+
+Articulation
+= low[child] >= tin[parent]
+
+SCC
+= Strongly Connected Directed Components
+
+Euler
+= Every EDGE Once
+
+Hamiltonian
+= Every VERTEX Once
+
+0-1 BFS
+= 0 Front, 1 Back
+
+
+============================================================================================
+STEP 1
+Review Graph Representation
+
+STEP 2
+Review BFS + DFS + Components
+
+STEP 3
+Review Cycle + Bipartite
+
+STEP 4
+Review Topological Sort
+
+STEP 5
+Review Shortest Path algorithms
+
+STEP 6
+Review DSU + Prim + Kruskal
+
+STEP 7
+Review Bridges + Articulation + SCC
+
+STEP 8
+Review Euler + Hamiltonian
+
+STEP 9
+Jump directly into interview problems

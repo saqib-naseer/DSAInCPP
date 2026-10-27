@@ -1,0 +1,156 @@
+GREEDY ALGORITHMS — FUNDAMENTALS
+
+1. Greedy Algorithm
+   - Builds the solution step by step.
+   - At each step, chooses the best option available at that moment.
+   - Once a choice is made, it usually does not go back and change it.
+
+2. Core Greedy Idea
+   - Make the locally best choice.
+   - Hope that these local choices lead to the globally optimal solution.
+   - Greedy does NOT work for every problem.
+
+3. Local Optimum vs Global Optimum
+   - Local optimum → best choice at the current step.
+   - Global optimum → best final answer overall.
+   - A greedy algorithm is valid only when local choices can produce the global optimum.
+
+4. Greedy Choice Property
+   - A globally optimal solution can be reached by making a locally optimal choice.
+   - This is the main property required for a greedy solution.
+
+5. Optimal Substructure
+   - After making a greedy choice, the remaining problem should still contain an optimal solution.
+   - The optimal solution can be built from optimal solutions of smaller parts.
+
+6. Basic Greedy Pattern
+   - Identify what choice should be considered "best".
+   - Often sort the data first.
+   - Process elements in greedy order.
+   - Take an element if it satisfies the required condition.
+   - Never reconsider accepted choices unless the algorithm specifically requires it.
+
+7. Sorting in Greedy
+   - Sorting is extremely common in greedy algorithms.
+   - We may sort by:
+       - Increasing value
+       - Decreasing value
+       - Start time
+       - End time
+       - Weight
+       - Profit
+       - Ratio
+   - The important part is deciding WHY that sorting order gives the best choice.
+
+8. Greedy with Min Heap / Max Heap
+   - Priority queues are commonly combined with greedy algorithms.
+   - Min Heap → repeatedly choose smallest/best candidate.
+   - Max Heap → repeatedly choose largest/best candidate.
+   - Heap is useful when the best available choice changes dynamically.
+
+9. Greedy with Intervals
+   - Many interval problems use greedy decisions.
+   - Common idea:
+       - Sort intervals using some important property.
+       - Process them in that order.
+       - Keep or reject intervals based on the current state.
+
+10. Greedy with Graphs
+    - Some important graph algorithms are greedy.
+
+    Prim's Algorithm:
+       - Repeatedly chooses the cheapest edge that expands the MST.
+
+    Kruskal's Algorithm:
+       - Processes edges from smallest weight to largest.
+       - Adds an edge if it does not create a cycle.
+
+    Dijkstra's Algorithm:
+       - Greedily finalizes the currently smallest known distance.
+       - Requires non-negative edge weights.
+
+11. Greedy vs Dynamic Programming
+
+    Greedy:
+       - Makes the best current choice.
+       - Usually does not reconsider previous choices.
+       - Usually faster and uses less memory.
+
+    Dynamic Programming:
+       - Considers multiple possibilities/subproblems.
+       - Stores previous results.
+       - Used when greedy choices cannot guarantee the optimal answer.
+
+12. Greedy vs Backtracking
+
+    Greedy:
+       - Choose best option.
+       - Move forward.
+       - Usually no undo.
+
+    Backtracking:
+       - Try a choice.
+       - Explore.
+       - If it fails, undo the choice.
+       - Try another option.
+
+13. How to Recognize a Possible Greedy Problem
+    - Problem asks for minimum or maximum result.
+    - A best choice can be made at each step.
+    - Sorting seems useful.
+    - Choosing something now reduces the remaining problem.
+    - Previous choices do not need to be reconsidered.
+    - Local optimal choices can be proven to give global optimum.
+
+14. Greedy Correctness
+    - Do not use greedy only because it "looks greedy".
+    - You must be able to justify why the chosen local decision cannot hurt the final optimal answer.
+    - Greedy correctness is usually based on:
+       - Greedy Choice Property
+       - Optimal Substructure
+
+15. Time Complexity
+    - Depends on implementation.
+    - Sorting-based greedy is commonly O(N log N).
+    - Heap-based greedy is commonly O(N log N).
+    - Simple one-pass greedy can be O(N).
+
+
+QUICK MEMORY:
+
+Greedy:
+    Best choice RIGHT NOW
+        → Move forward
+        → Usually no backtracking
+
+Main Requirements:
+    Greedy Choice Property
+    Optimal Substructure
+
+Common Tools:
+    Sorting
+    Min Heap
+    Max Heap
+    Priority Queue
+
+Common Areas:
+    Intervals
+    Scheduling
+    MST
+    Shortest Path
+    Resource selection
+
+Greedy vs DP:
+    Greedy → choose one best option now.
+    DP → explore/store multiple possibilities.
+
+Greedy vs Backtracking:
+    Greedy → choose and move forward.
+    Backtracking → choose, fail, undo, try again.
+
+Most Important:
+    A locally best choice does NOT always give
+    the globally best answer.
+
+    Greedy should only be used when we can justify
+    that the greedy choice leads to an optimal solution.
