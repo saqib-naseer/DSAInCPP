@@ -235,3 +235,89 @@ int kosaraju(vector<vector<int>>& adj) {
 
         DFS → STACK → REVERSE → DFS → COUNT SCCs
 */
+
+
+
+/*
+
+// =========================================== With SCC Actual Nodes also
+
+class Solution {
+  public:
+  
+  void topoSort(int node,vector<vector<int>> &adj, stack<int>& st,
+    vector<bool>& vis){
+
+        vis[node]=1;
+
+        for(int i=0;i<adj[node].size();i++){
+            if(!vis[adj[node][i]])
+                topoSort(adj[node][i],adj,st,vis);
+
+        }
+
+        st.push(node);
+    }    
+    
+    void dfsHelper(int node,vector<vector<int>>& adj, vector<bool> &vis,
+    vector<int> &temp){
+
+            vis[node]=true;
+            temp.push_back(node);
+            for(int i=0;i<adj[node].size();i++){
+                if(!vis[adj[node][i]])
+                dfsHelper(adj[node][i],adj,vis,temp);
+
+            }
+
+        }
+        
+    vector<vector<int>> findSCC(vector<vector<int>>& adj) {
+        // code here
+               // Step  1 : Topological Sort
+               vector<bool> vis(adj.size(),0);
+               
+               vector<vector<int>> ans;
+               
+               stack<int> st;
+
+               for(int i=0;i<adj.size();i++){
+                   if(!vis[i])
+                    topoSort(i,adj,st,vis);
+               }
+
+
+               // reverse edgse
+               vector<vector<int>> revAdj(adj.size());
+
+               for(int i=0;i<adj.size();i++){
+                   for(int j=0;j<adj[i].size();j++){
+                       revAdj[adj[i][j]].push_back(i);
+                   }
+               }
+
+               int count=0;
+
+               vector<bool> vis2(adj.size(),0);
+
+               while(!st.empty()){
+                   int node = st.top();
+                   st.pop();
+
+                   if(!vis2[node])
+                   {   
+                       vector<int> temp;
+                     
+                       dfsHelper(node,revAdj,vis2,temp);
+                         sort(temp.begin(),temp.end());
+                         ans.push_back(temp);
+                   }
+               }
+              sort(ans.begin(),ans.end());
+               return ans;
+        
+    }
+};
+
+
+*/
