@@ -131,6 +131,29 @@
     Including adjacency list: O(V + E)
 */
 
+
+/* -- Another Note: (From SCC Topic)
+Remember Tarjan SCC like a conversation
+
+Parent:
+"Child, go explore."
+
+        ↓ DFS
+
+Child:
+"I'm back. The earliest node my side
+can reach is low[child]."
+
+        ↑
+
+Parent:
+"Okay, then I can reach that too."
+
+low[parent] = min(low[parent], low[child])
+
+
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
