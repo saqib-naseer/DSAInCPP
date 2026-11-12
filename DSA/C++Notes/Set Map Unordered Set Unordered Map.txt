@@ -1,0 +1,1015 @@
+============================================================
+C++ SET, UNORDERED_SET, MAP, UNORDERED_MAP - QUICK REVISION
+============================================================
+
+These 4 containers are very common in DSA:
+
+1. set
+2. unordered_set
+3. map
+4. unordered_map
+
+
+============================================================
+1. FIRST REMEMBER: SET vs MAP
+============================================================
+
+SET
+---
+Stores VALUES only.
+
+Example:
+
+set<int> s;
+
+s.insert(10);
+s.insert(20);
+s.insert(30);
+
+Think:
+
+{10, 20, 30}
+
+
+MAP
+---
+Stores KEY -> VALUE pairs.
+
+Example:
+
+map<int, int> mp;
+
+mp[1] = 100;
+mp[2] = 200;
+
+Think:
+
+1 -> 100
+2 -> 200
+
+
+EASY MEMORY:
+
+SET = values only
+
+MAP = key -> value
+
+
+============================================================
+2. set
+============================================================
+
+Syntax:
+
+set<int> s;
+
+
+Main properties:
+
+- Stores UNIQUE values.
+- Automatically keeps values SORTED.
+- Duplicate values are NOT stored.
+- Usually implemented using a balanced tree.
+- Insert/Search/Delete = O(log N)
+
+
+Example:
+
+set<int> s;
+
+s.insert(30);
+s.insert(10);
+s.insert(20);
+s.insert(10);
+
+
+Result:
+
+{10, 20, 30}
+
+
+Notice:
+
+10 was inserted twice but appears only once.
+
+Also values became sorted automatically.
+
+
+COMMON OPERATIONS:
+
+s.insert(10);
+
+s.erase(10);
+
+s.count(10);
+
+s.find(10);
+
+s.size();
+
+s.empty();
+
+
+Check if value exists:
+
+if (s.find(10) != s.end()) {
+    // 10 exists
+}
+
+
+Or simply:
+
+if (s.count(10)) {
+    // 10 exists
+}
+
+
+Loop:
+
+for (int x : s) {
+    cout << x << " ";
+}
+
+
+============================================================
+3. unordered_set
+============================================================
+
+Syntax:
+
+unordered_set<int> s;
+
+
+Main properties:
+
+- Stores UNIQUE values.
+- NOT sorted.
+- Duplicate values are NOT stored.
+- Uses hashing.
+- Average Insert/Search/Delete = O(1)
+- Worst case = O(N)
+
+
+Example:
+
+unordered_set<int> s;
+
+s.insert(30);
+s.insert(10);
+s.insert(20);
+s.insert(10);
+
+
+Contains:
+
+10, 20, 30
+
+BUT iteration order is NOT guaranteed.
+
+
+IMPORTANT:
+
+set
+    UNIQUE + SORTED
+
+unordered_set
+    UNIQUE + NOT SORTED
+
+
+Use unordered_set when:
+
+"I only need unique values and don't care about order."
+
+
+Example from Making A Large Island:
+
+unordered_set<int> neighboringIslands;
+
+neighboringIslands.insert(2);
+neighboringIslands.insert(2);
+neighboringIslands.insert(3);
+neighboringIslands.insert(2);
+
+
+Result conceptually:
+
+{2, 3}
+
+
+This is useful because the same island ID should only
+be counted once.
+
+
+============================================================
+4. map
+============================================================
+
+Syntax:
+
+map<int, int> mp;
+
+
+Stores:
+
+KEY -> VALUE
+
+
+Main properties:
+
+- Keys are UNIQUE.
+- Keys are automatically SORTED.
+- Each key has a value.
+- Insert/Search/Delete = O(log N)
+
+
+Example:
+
+map<int, int> mp;
+
+mp[3] = 300;
+mp[1] = 100;
+mp[2] = 200;
+
+
+Conceptually stored as:
+
+1 -> 100
+2 -> 200
+3 -> 300
+
+
+Keys are sorted.
+
+
+IMPORTANT:
+
+The KEY is unique.
+
+Example:
+
+mp[2] = 200;
+
+mp[2] = 500;
+
+
+Now:
+
+2 -> 500
+
+
+It does NOT create another key 2.
+
+It updates the value belonging to key 2.
+
+
+ACCESS VALUE:
+
+cout << mp[2];
+
+
+LOOP:
+
+for (auto x : mp) {
+    cout << x.first << " " << x.second;
+}
+
+
+x.first  = key
+x.second = value
+
+
+Better:
+
+for (auto& [key, value] : mp) {
+    cout << key << " " << value;
+}
+
+
+============================================================
+5. unordered_map
+============================================================
+
+Syntax:
+
+unordered_map<int, int> mp;
+
+
+Stores:
+
+KEY -> VALUE
+
+
+Main properties:
+
+- Keys are UNIQUE.
+- Keys are NOT sorted.
+- Uses hashing.
+- Average Insert/Search/Delete = O(1)
+- Worst case = O(N)
+
+
+Example:
+
+unordered_map<int, int> mp;
+
+mp[10] = 100;
+mp[5] = 50;
+mp[20] = 200;
+
+
+Conceptually:
+
+10 -> 100
+5  -> 50
+20 -> 200
+
+
+Order is NOT guaranteed.
+
+
+IMPORTANT:
+
+map
+    UNIQUE KEYS + SORTED KEYS
+
+unordered_map
+    UNIQUE KEYS + NOT SORTED
+
+
+============================================================
+6. VERY IMPORTANT DIFFERENCE
+============================================================
+
+SET:
+
+set<int>
+
+Stores:
+
+value
+
+Example:
+
+{10, 20, 30}
+
+
+------------------------------------------------------------
+
+UNORDERED_SET:
+
+unordered_set<int>
+
+Stores:
+
+value
+
+Example:
+
+{10, 20, 30}
+
+Unique but NOT sorted.
+
+
+------------------------------------------------------------
+
+MAP:
+
+map<int, int>
+
+Stores:
+
+key -> value
+
+Example:
+
+1 -> 100
+2 -> 200
+3 -> 300
+
+Keys are UNIQUE and SORTED.
+
+
+------------------------------------------------------------
+
+UNORDERED_MAP:
+
+unordered_map<int, int>
+
+Stores:
+
+key -> value
+
+Example:
+
+1 -> 100
+2 -> 200
+3 -> 300
+
+Keys are UNIQUE but NOT sorted.
+
+
+============================================================
+7. BEST MEMORY TRICK
+============================================================
+
+First remove the word "unordered".
+
+
+set
+    = UNIQUE values
+
+map
+    = UNIQUE keys with values
+
+
+Now add "unordered".
+
+
+unordered_set
+    = set WITHOUT sorting
+
+unordered_map
+    = map WITHOUT sorting
+
+
+So:
+
+
+SET
+    UNIQUE VALUES
+    SORTED
+
+
+UNORDERED_SET
+    UNIQUE VALUES
+    NOT SORTED
+
+
+MAP
+    UNIQUE KEYS
+    KEY -> VALUE
+    SORTED BY KEY
+
+
+UNORDERED_MAP
+    UNIQUE KEYS
+    KEY -> VALUE
+    NOT SORTED
+
+
+============================================================
+8. ORDERED vs UNORDERED
+============================================================
+
+Think:
+
+ORDERED
+    = sorted
+
+
+UNORDERED
+    = no guaranteed order
+
+
+Example values:
+
+30, 10, 20
+
+
+set:
+
+10 20 30
+
+
+unordered_set:
+
+Could appear as:
+
+30 10 20
+
+or
+
+20 30 10
+
+etc.
+
+
+Do NOT depend on the iteration order of unordered containers.
+
+
+============================================================
+9. TIME COMPLEXITY - EASY MEMORY
+============================================================
+
+set
+map
+
+Search  = O(log N)
+Insert  = O(log N)
+Delete  = O(log N)
+
+
+Why?
+
+Usually tree-based.
+
+
+------------------------------------------------------------
+
+unordered_set
+unordered_map
+
+Search  = Average O(1)
+Insert  = Average O(1)
+Delete  = Average O(1)
+
+
+Why?
+
+Hashing.
+
+
+Worst case for unordered containers can be O(N).
+
+
+MEMORY:
+
+ORDERED   -> O(log N)
+
+UNORDERED -> Average O(1)
+
+
+============================================================
+10. WHEN SHOULD I USE WHICH?
+============================================================
+
+QUESTION:
+
+Do I only need VALUES?
+
+
+YES
+ |
+ +-- Need unique + sorted?
+ |       |
+ |       YES -> set
+ |
+ +-- Need unique but sorting doesn't matter?
+         |
+         YES -> unordered_set
+
+
+------------------------------------------------------------
+
+
+QUESTION:
+
+Do I need KEY -> VALUE?
+
+
+YES
+ |
+ +-- Need keys sorted?
+ |       |
+ |       YES -> map
+ |
+ +-- Sorting doesn't matter?
+         |
+         YES -> unordered_map
+
+
+============================================================
+11. COMMON DSA USE CASES
+============================================================
+
+set
+
+Use when:
+
+- Need unique values
+- Need them sorted
+- Need smallest/largest ordered values
+
+
+Example:
+
+set<int> numbers;
+
+
+------------------------------------------------------------
+
+unordered_set
+
+Use when:
+
+- Need unique values
+- Need fast lookup
+- Order doesn't matter
+- Detect duplicates
+- Track visited values
+
+
+Example:
+
+unordered_set<int> visited;
+
+
+------------------------------------------------------------
+
+map
+
+Use when:
+
+- Need key -> value
+- Need keys sorted
+
+
+Example:
+
+map<int, int> frequency;
+
+
+------------------------------------------------------------
+
+unordered_map
+
+Use when:
+
+- Need key -> value
+- Need fast lookup
+- Sorting doesn't matter
+- Frequency counting
+- Mapping one thing to another
+
+
+Example:
+
+unordered_map<int, int> frequency;
+
+
+============================================================
+12. FREQUENCY COUNTING
+============================================================
+
+Very common DSA pattern:
+
+vector<int> nums = {1, 2, 2, 3, 3, 3};
+
+unordered_map<int, int> freq;
+
+for (int num : nums) {
+    freq[num]++;
+}
+
+
+Result:
+
+1 -> 1
+2 -> 2
+3 -> 3
+
+
+Meaning:
+
+number -> frequency
+
+
+freq[3]
+
+returns:
+
+3
+
+
+Because number 3 appears 3 times.
+
+
+============================================================
+13. IMPORTANT: mp[key]
+============================================================
+
+For:
+
+unordered_map<int, int> mp;
+
+
+This:
+
+mp[5] = 100;
+
+
+means:
+
+key 5 -> value 100
+
+
+Then:
+
+cout << mp[5];
+
+prints:
+
+100
+
+
+IMPORTANT:
+
+If the key doesn't exist, using:
+
+mp[key]
+
+can CREATE that key with a default value.
+
+
+Example:
+
+unordered_map<int, int> mp;
+
+cout << mp[7];
+
+
+For int values, key 7 gets created with:
+
+7 -> 0
+
+
+So if you ONLY want to check whether a key exists,
+prefer:
+
+mp.find(key)
+
+
+Example:
+
+if (mp.find(7) != mp.end()) {
+    // key exists
+}
+
+
+Or:
+
+if (mp.count(7)) {
+    // key exists
+}
+
+
+============================================================
+14. MAKING A LARGE ISLAND EXAMPLE LeetCode 827
+============================================================
+
+We used:
+
+unordered_map<int, int> islandSize;
+
+
+Why MAP?
+
+Because we need:
+
+ISLAND ID -> ISLAND SIZE
+
+
+Example:
+
+islandSize[2] = 5;
+islandSize[3] = 8;
+islandSize[4] = 3;
+
+
+Think:
+
+2 -> 5
+3 -> 8
+4 -> 3
+
+
+So:
+
+islandSize[3]
+
+means:
+
+"Give me the size of island 3."
+
+Answer:
+
+8
+
+
+------------------------------------------------------------
+
+
+We also used:
+
+unordered_set<int> neighboringIslands;
+
+
+Why SET?
+
+Because we only need IDs:
+
+{2, 3, 4}
+
+
+Why UNORDERED?
+
+We don't care whether they are sorted.
+
+
+Why SET?
+
+We don't want duplicate IDs.
+
+
+Example:
+
+insert 2
+insert 2
+insert 3
+insert 2
+
+
+Set contains:
+
+{2, 3}
+
+
+This prevents us from counting island 2 multiple times.
+
+
+============================================================
+15. PAIR TYPES CAN ALSO BE USED
+============================================================
+
+The types do NOT have to be:
+
+<int, int>
+
+
+Examples:
+
+unordered_map<string, int> age;
+
+"Ali" -> 25
+"Ahmed" -> 30
+
+
+map<int, string> students;
+
+1 -> "Ali"
+2 -> "Ahmed"
+
+
+unordered_set<string> names;
+
+"Ali"
+"Ahmed"
+
+
+set<pair<int, int>> coordinates;
+
+{1,2}
+{2,3}
+{5,7}
+
+
+============================================================
+16. ONE-LINE DIFFERENCE
+============================================================
+
+set
+    Unique values + sorted
+
+
+unordered_set
+    Unique values + not sorted
+
+
+map
+    Unique keys + key/value + sorted by key
+
+
+unordered_map
+    Unique keys + key/value + not sorted
+
+
+============================================================
+17. SUPER SHORT INTERVIEW REVISION
+============================================================
+
+                  UNIQUE?        SORTED?       DATA
+
+set              YES            YES           values
+
+unordered_set    YES            NO            values
+
+map              KEYS           YES           key -> value
+
+unordered_map    KEYS           NO            key -> value
+
+
+Complexity:
+
+set / map
+    O(log N)
+
+unordered_set / unordered_map
+    Average O(1)
+
+
+============================================================
+18. FINAL MEMORY TRICK
+============================================================
+
+SET = "I need unique THINGS."
+
+MAP = "I need THING -> INFORMATION."
+
+
+Examples:
+
+Unique numbers?
+
+    set / unordered_set
+
+
+Person -> Age?
+
+    map / unordered_map
+
+
+Number -> Frequency?
+
+    map / unordered_map
+
+
+Island ID -> Island Size?
+
+    map / unordered_map
+
+
+Unique neighboring Island IDs?
+
+    set / unordered_set
+
+
+Then ask ONE more question:
+
+"Do I need sorted order?"
+
+
+YES
+    set / map
+
+
+NO
+    unordered_set / unordered_map
+
+
+============================================================
+19. 10-SECOND REVISION
+============================================================
+
+SET:
+    unique values
+
+MAP:
+    unique keys -> values
+
+ORDERED:
+    sorted
+    O(log N)
+
+UNORDERED:
+    not sorted
+    average O(1)
+
+
+Therefore:
+
+set
+    unique + sorted values
+
+unordered_set
+    unique + unsorted values
+
+map
+    unique + sorted keys -> values
+
+unordered_map
+    unique + unsorted keys -> values
+
+
+GOLDEN RULE:
+
+Need only unique items?
+    -> SET
+
+Need key -> value relation?
+    -> MAP
+
+Need sorting?
+    -> normal set/map
+
+Don't need sorting?
+    -> unordered_set/unordered_map

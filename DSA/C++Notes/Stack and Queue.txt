@@ -1,0 +1,73 @@
+========================================
+STACK & QUEUE - QUICK REVISION
+========================================
+
+STACK
+
+LIFO
+
+Last In, First Out
+
+
+Example:
+
+stack<int> st;
+
+st.push(10);
+st.push(20);
+
+st.top();     // 20
+st.pop();
+st.empty();
+st.size();
+
+
+Think:
+
+Plates stacked on each other.
+
+
+Common DSA:
+
+DFS iterative
+Monotonic stack
+Parentheses
+
+
+----------------------------------------
+
+QUEUE
+
+FIFO
+
+First In, First Out
+
+
+queue<int> q;
+
+q.push(10);
+q.push(20);
+
+q.front();    // 10
+q.pop();
+q.empty();
+q.size();
+
+
+Think:
+
+People standing in a line.
+
+
+Common DSA:
+
+BFS
+Level order traversal
+Grid shortest distance
+
+
+MEMORY:
+
+STACK = LIFO
+
+QUEUE = FIFO

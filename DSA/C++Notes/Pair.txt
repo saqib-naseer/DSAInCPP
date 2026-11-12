@@ -1,0 +1,65 @@
+========================================
+PAIR - QUICK REVISION
+========================================
+
+Pair stores TWO things together.
+
+
+CREATE:
+
+pair<int,int> p = {10, 20};
+
+
+Access:
+
+p.first
+p.second
+
+
+So:
+
+p.first  = 10
+p.second = 20
+
+
+----------------------------------------
+
+VERY COMMON IN GRIDS
+
+queue<pair<int,int>> q;
+
+q.push({row, col});
+
+
+Read:
+
+int r = q.front().first;
+int c = q.front().second;
+
+
+----------------------------------------
+
+NESTED PAIR
+
+pair<int, pair<int,int>>
+
+Can represent:
+
+{distance, {row, col}}
+
+
+Access:
+
+p.first
+    = distance
+
+p.second.first
+    = row
+
+p.second.second
+    = column
+
+
+MEMORY:
+
+pair = keep two related values together

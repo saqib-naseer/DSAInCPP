@@ -1,0 +1,97 @@
+========================================
+RECURSION & PASSING DATA
+========================================
+
+Recursion:
+
+Function calls itself.
+
+
+Example:
+
+void dfs(int node) {
+
+    for (int neighbor : adj[node]) {
+        dfs(neighbor);
+    }
+}
+
+
+----------------------------------------
+
+BASE CASE
+
+Stops recursion.
+
+Example:
+
+if (node == nullptr)
+    return;
+
+
+----------------------------------------
+
+PASS BY VALUE
+
+void solve(vector<int> nums)
+
+nums is COPIED.
+
+Changes do not affect original.
+
+
+----------------------------------------
+
+PASS BY REFERENCE
+
+void solve(vector<int>& nums)
+
+Uses ORIGINAL vector.
+
+Changes affect original.
+
+
+----------------------------------------
+
+WHY & IS COMMON IN DSA
+
+Vectors/grids can be large.
+
+Instead of copying:
+
+vector<vector<int>> grid
+
+use:
+
+vector<vector<int>>& grid
+
+
+----------------------------------------
+
+BACKTRACKING
+
+Do something
+
+Recurse
+
+Undo it
+
+
+Example:
+
+path.push_back(x);
+
+dfs(...);
+
+path.pop_back();
+
+
+MEMORY:
+
+Recursion = function calls itself
+
+Base case = stop
+
+& = use original data
+
+Backtracking = DO -> RECURSE -> UNDO

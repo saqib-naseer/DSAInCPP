@@ -1,0 +1,81 @@
+========================================
+BIT MANIPULATION - QUICK REVISION
+========================================
+
+&   AND
+
+|   OR
+
+^   XOR
+
+~   NOT
+
+<<  LEFT SHIFT
+
+>>  RIGHT SHIFT
+
+
+----------------------------------------
+
+LEFT SHIFT
+
+1 << i
+
+Moves bit 1 left by i positions.
+
+1 << 0 = 1
+1 << 1 = 2
+1 << 2 = 4
+1 << 3 = 8
+
+
+Think:
+
+1 << i = 2^i
+
+
+----------------------------------------
+
+CHECK i-th BIT
+
+num & (1 << i)
+
+
+----------------------------------------
+
+SET i-th BIT
+
+num | (1 << i)
+
+
+----------------------------------------
+
+CLEAR i-th BIT
+
+num & ~(1 << i)
+
+
+----------------------------------------
+
+XOR RULES
+
+x ^ x = 0
+
+x ^ 0 = x
+
+
+Useful for:
+
+Single Number
+XOR problems
+
+
+MEMORY:
+
+& = check
+
+| = set
+
+^ = different bits / cancel equal numbers
+
+1 << i = bit at position i

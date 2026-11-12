@@ -1,0 +1,144 @@
+========================================
+POINTERS & REFERENCES - QUICK REVISION
+========================================
+
+1. NORMAL VARIABLE
+
+int x = 10;
+
+x stores the actual value 10.
+
+
+2. REFERENCE &
+
+int x = 10;
+int& ref = x;
+
+ref is another name for x.
+
+ref = 20;
+
+Now:
+x = 20
+
+
+MEMORY:
+
+& = SAME ORIGINAL VARIABLE
+
+
+Very common in DSA:
+
+void dfs(vector<int>& nums)
+
+& means nums is NOT copied.
+The original vector is used.
+
+
+Without &:
+
+void dfs(vector<int> nums)
+
+A copy is created.
+
+
+----------------------------------------
+
+3. POINTER *
+
+int x = 10;
+
+int* ptr = &x;
+
+ptr stores the ADDRESS of x.
+
+
+&x
+= address of x
+
+ptr
+= stores address
+
+*ptr
+= value at that address
+
+
+Example:
+
+*ptr = 20;
+
+Now x becomes 20.
+
+
+MEMORY:
+
+&x   = address of x
+
+ptr  = stores address
+
+*ptr = go to address and get value
+
+
+----------------------------------------
+
+4. -> WITH POINTERS
+
+TreeNode* node;
+
+node->val
+
+means:
+
+Access val through the node pointer.
+
+
+Same as:
+
+(*node).val
+
+
+Common:
+
+node->left
+node->right
+head->next
+
+
+----------------------------------------
+
+5. nullptr
+
+TreeNode* node = nullptr;
+
+Means:
+
+Pointer currently points to nothing.
+
+
+Check:
+
+if (node == nullptr)
+
+or:
+
+if (!node)
+
+
+----------------------------------------
+
+6. DSA MEMORY
+
+vector<int>& nums
+    = use original vector
+
+Node* node
+    = pointer to Node
+
+node->val
+    = access Node data
+
+node->next
+    = access next pointer
+
+nullptr
+    = points to nothing

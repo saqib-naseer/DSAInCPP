@@ -1,0 +1,88 @@
+========================================
+STRINGS - QUICK REVISION
+========================================
+
+string s = "hello";
+
+
+s.size();
+
+s[i];
+
+s.empty();
+
+
+----------------------------------------
+
+ADD
+
+s.push_back('a');
+
+s += "abc";
+
+
+----------------------------------------
+
+SUBSTRING
+
+s.substr(start, length);
+
+
+Example:
+
+string s = "abcdef";
+
+s.substr(2, 3)
+
+returns:
+
+"cde"
+
+
+----------------------------------------
+
+FIND
+
+s.find("abc");
+
+
+If not found:
+
+s.find("abc") == string::npos
+
+
+----------------------------------------
+
+CONVERSIONS
+
+stoi("123")
+    -> 123
+
+
+to_string(123)
+    -> "123"
+
+
+----------------------------------------
+
+FULL LINE INPUT
+
+getline(cin, s);
+
+
+----------------------------------------
+
+COMMON
+
+reverse(s.begin(), s.end());
+
+sort(s.begin(), s.end());
+
+
+MEMORY:
+
+substr = extract part
+
+find = search
+
+npos = not found

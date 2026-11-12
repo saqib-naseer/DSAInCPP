@@ -1,0 +1,72 @@
+========================================
+SORTING & COMPARATORS - QUICK REVISION
+========================================
+
+ASCENDING:
+
+sort(nums.begin(), nums.end());
+
+
+Example:
+
+3 1 2
+
+becomes:
+
+1 2 3
+
+
+----------------------------------------
+
+DESCENDING:
+
+sort(nums.begin(), nums.end(), greater<int>());
+
+
+Result:
+
+3 2 1
+
+
+----------------------------------------
+
+CUSTOM SORT
+
+Example pairs:
+
+{start, end}
+
+
+Sort by second value:
+
+sort(v.begin(), v.end(),
+    [](auto& a, auto& b) {
+        return a.second < b.second;
+    });
+
+
+Read:
+
+a should come before b
+if a.second is smaller.
+
+
+----------------------------------------
+
+IMPORTANT RULE
+
+return a < b
+
+means ascending.
+
+
+return a > b
+
+means descending.
+
+
+MEMORY:
+
+Comparator answers:
+
+"Should a come before b?"

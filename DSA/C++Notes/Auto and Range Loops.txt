@@ -1,0 +1,78 @@
+========================================
+AUTO & RANGE LOOPS - QUICK REVISION
+========================================
+
+auto lets C++ figure out the type.
+
+
+Example:
+
+auto x = 10;
+
+C++ understands:
+
+x is int.
+
+
+----------------------------------------
+
+RANGE LOOP
+
+for (int x : nums)
+
+x is a COPY.
+
+
+for (int& x : nums)
+
+x refers to ORIGINAL element.
+
+
+If you modify:
+
+for (int& x : nums)
+    x++;
+
+
+Original vector changes.
+
+
+----------------------------------------
+
+AUTO IN STL
+
+for (auto x : nums)
+
+Copy each element.
+
+
+for (auto& x : nums)
+
+Use original elements.
+
+
+----------------------------------------
+
+MAP
+
+for (auto& [key, value] : mp) {
+
+}
+
+
+Very easy way to access:
+
+key
+value
+
+
+MEMORY:
+
+auto
+    = compiler figures out type
+
+auto x
+    = copy
+
+auto& x
+    = original

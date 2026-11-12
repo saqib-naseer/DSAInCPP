@@ -1,0 +1,85 @@
+========================================
+CLASS, STRUCT & CONSTRUCTOR
+========================================
+
+Very common in:
+
+Linked Lists
+Trees
+Graphs
+Tries
+
+
+Example:
+
+class Node {
+public:
+
+    int val;
+    Node* next;
+
+    Node(int x) {
+        val = x;
+        next = nullptr;
+    }
+};
+
+
+----------------------------------------
+
+CREATE OBJECT
+
+Node* node = new Node(10);
+
+
+Now:
+
+node->val = 10
+
+node->next = nullptr
+
+
+----------------------------------------
+
+CONSTRUCTOR
+
+Node(int x)
+
+runs automatically when:
+
+new Node(10)
+
+
+Its job is usually to initialize data.
+
+
+----------------------------------------
+
+STRUCT
+
+struct Node {
+    int val;
+    Node* next;
+};
+
+
+Main DSA difference:
+
+struct members are public by default.
+
+class members are private by default.
+
+
+MEMORY:
+
+Constructor
+= initializes object
+
+new Node(...)
+= create Node
+
+Node*
+= pointer to Node
+
+->
+= access through pointer

@@ -1,0 +1,76 @@
+========================================
+PRIORITY QUEUE - QUICK REVISION
+========================================
+
+Priority queue gives the highest/lowest
+priority element first.
+
+
+1. MAX HEAP - DEFAULT
+
+priority_queue<int> pq;
+
+pq.push(10);
+pq.push(30);
+pq.push(20);
+
+pq.top();     // 30
+
+
+Largest comes first.
+
+
+----------------------------------------
+
+2. MIN HEAP
+
+priority_queue<
+    int,
+    vector<int>,
+    greater<int>
+> pq;
+
+
+Smallest comes first.
+
+
+----------------------------------------
+
+COMMON OPERATIONS
+
+pq.push(x);
+
+pq.top();
+
+pq.pop();
+
+pq.empty();
+
+pq.size();
+
+
+----------------------------------------
+
+WITH PAIRS
+
+priority_queue<
+    pair<int,int>,
+    vector<pair<int,int>>,
+    greater<pair<int,int>>
+> pq;
+
+
+Useful for:
+
+Dijkstra
+Prim
+Minimum-cost problems
+
+
+MEMORY:
+
+priority_queue<int>
+    = MAX heap
+
+greater<int>
+    = MIN heap

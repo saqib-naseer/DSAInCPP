@@ -1,0 +1,86 @@
+========================================
+VECTOR - QUICK REVISION
+========================================
+
+Vector = dynamic array.
+
+
+CREATE:
+
+vector<int> nums;
+
+vector<int> nums(n);
+
+vector<int> nums(n, 0);
+
+
+2D:
+
+vector<vector<int>> grid(rows,
+                         vector<int>(cols, 0));
+
+
+----------------------------------------
+
+COMMON OPERATIONS
+
+nums.push_back(10);
+
+nums.pop_back();
+
+nums.size();
+
+nums.empty();
+
+nums[i];
+
+nums.front();
+
+nums.back();
+
+nums.clear();
+
+
+----------------------------------------
+
+LOOP
+
+for (int x : nums)
+
+x = copy
+
+
+for (int& x : nums)
+
+x = original element
+
+
+----------------------------------------
+
+IMPORTANT
+
+nums.size()
+= number of elements
+
+
+Last index:
+
+nums.size() - 1
+
+
+----------------------------------------
+
+COMMON DSA OPERATIONS
+
+sort(nums.begin(), nums.end());
+
+reverse(nums.begin(), nums.end());
+
+max_element(nums.begin(), nums.end());
+
+min_element(nums.begin(), nums.end());
+
+
+MEMORY:
+
+vector = array that can grow/shrink

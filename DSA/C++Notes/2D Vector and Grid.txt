@@ -1,0 +1,79 @@
+========================================
+2D VECTOR / GRID - QUICK REVISION
+========================================
+
+CREATE:
+
+vector<vector<int>> grid(
+    rows,
+    vector<int>(cols, 0)
+);
+
+
+ROWS:
+
+grid.size()
+
+
+COLUMNS:
+
+grid[0].size()
+
+
+ACCESS:
+
+grid[r][c]
+
+
+----------------------------------------
+
+TRAVERSE
+
+for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+
+    }
+}
+
+
+----------------------------------------
+
+4 DIRECTIONS
+
+int rows[4] = {-1, 1, 0, 0};
+int cols[4] = {0, 0, -1, 1};
+
+
+Then:
+
+newR = r + rows[k];
+newC = c + cols[k];
+
+
+----------------------------------------
+
+VALID CELL
+
+r >= 0 &&
+r < rows &&
+c >= 0 &&
+c < cols
+
+
+----------------------------------------
+
+COMMON GRID STORAGE
+
+queue<pair<int,int>>
+
+stores:
+
+{row, column}
+
+
+MEMORY:
+
+grid[row][column]
+
+i usually = row
+j usually = column

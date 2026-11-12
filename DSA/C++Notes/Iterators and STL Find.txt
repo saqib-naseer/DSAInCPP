@@ -1,0 +1,68 @@
+========================================
+ITERATORS & FIND - QUICK REVISION
+========================================
+
+begin()
+= first element
+
+
+end()
+= position AFTER last element
+
+
+----------------------------------------
+
+VECTOR FIND
+
+auto it = find(nums.begin(),
+               nums.end(),
+               target);
+
+
+Check:
+
+if (it != nums.end()) {
+    // found
+}
+
+
+----------------------------------------
+
+SET / MAP FIND
+
+auto it = s.find(x);
+
+if (it != s.end()) {
+    // found
+}
+
+
+----------------------------------------
+
+MAP
+
+auto it = mp.find(key);
+
+if (it != mp.end()) {
+    // key exists
+}
+
+
+----------------------------------------
+
+IMPORTANT
+
+end() does NOT mean last element.
+
+It means:
+
+one position AFTER the last element.
+
+
+MEMORY:
+
+find(...) != end()
+    = FOUND
+
+find(...) == end()
+    = NOT FOUND
