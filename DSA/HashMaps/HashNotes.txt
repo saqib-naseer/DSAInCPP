@@ -1,0 +1,1088 @@
+============================================================
+HASHING / HASHMAPS IN DSA - QUICK REVISION
+============================================================
+
+============================================================
+1. MOST IMPORTANT IDEA
+============================================================
+
+Hashing is mainly used when we want FAST:
+
+- Search
+- Insert
+- Delete
+- Frequency counting
+- Check whether something exists
+- Store key -> value relationships
+
+Average time:
+
+Search  = O(1)
+Insert  = O(1)
+Delete  = O(1)
+
+
+In C++, the most common hashing containers are:
+
+unordered_map
+unordered_set
+
+
+MEMORY:
+
+unordered_map = HASH MAP
+unordered_set = HASH SET
+
+
+============================================================
+2. HASHMAP - WHAT DOES IT STORE?
+============================================================
+
+A hashmap stores:
+
+KEY -> VALUE
+
+
+Example:
+
+unordered_map<int, int> mp;
+
+mp[10] = 5;
+mp[20] = 8;
+
+
+Think:
+
+KEY     VALUE
+
+10  ->  5
+20  ->  8
+
+
+Examples of useful relationships:
+
+number -> frequency
+
+character -> frequency
+
+node -> cloned node
+
+island ID -> island size
+
+value -> index
+
+
+============================================================
+3. HASHSET - WHAT DOES IT STORE?
+============================================================
+
+A hashset stores only UNIQUE values.
+
+C++:
+
+unordered_set<int> s;
+
+
+Example:
+
+s.insert(10);
+s.insert(20);
+s.insert(10);
+
+
+Conceptually:
+
+{10, 20}
+
+
+10 is stored only once.
+
+
+MEMORY:
+
+unordered_map
+    KEY -> VALUE
+
+unordered_set
+    UNIQUE VALUES
+
+
+============================================================
+4. HASHMAP vs HASHSET
+============================================================
+
+Need:
+
+number -> frequency
+
+Use:
+
+unordered_map
+
+
+Need:
+
+value exists or not?
+
+Use:
+
+unordered_set
+
+
+Need:
+
+island ID -> island size
+
+Use:
+
+unordered_map
+
+
+Need:
+
+unique neighboring island IDs
+
+Use:
+
+unordered_set
+
+
+GOLDEN RULE:
+
+Need only unique things?
+    -> unordered_set
+
+Need key -> information?
+    -> unordered_map
+
+
+============================================================
+5. MOST COMMON DSA USE - FREQUENCY COUNTING
+============================================================
+
+Given:
+
+1 2 2 3 3 3
+
+
+We want:
+
+1 appears 1 time
+2 appears 2 times
+3 appears 3 times
+
+
+Code:
+
+unordered_map<int, int> freq;
+
+for (int num : nums) {
+    freq[num]++;
+}
+
+
+Result:
+
+1 -> 1
+2 -> 2
+3 -> 3
+
+
+Why does this work?
+
+freq[num]++
+
+means:
+
+Increase the value stored for key "num".
+
+
+Example:
+
+First 2:
+
+freq[2] becomes 1
+
+
+Second 2:
+
+freq[2] becomes 2
+
+
+MEMORY:
+
+freq[x]++
+
+means:
+
+"Increase frequency of x."
+
+
+============================================================
+6. CHARACTER FREQUENCY
+============================================================
+
+String:
+
+"banana"
+
+
+Code:
+
+unordered_map<char, int> freq;
+
+for (char ch : s) {
+    freq[ch]++;
+}
+
+
+Result:
+
+b -> 1
+a -> 3
+n -> 2
+
+
+Very common in:
+
+Anagrams
+Character counting
+String problems
+
+
+============================================================
+7. CHECK WHETHER SOMETHING EXISTS
+============================================================
+
+HASHSET:
+
+if (s.find(x) != s.end()) {
+    // x exists
+}
+
+
+Simpler:
+
+if (s.count(x)) {
+    // x exists
+}
+
+
+----------------------------------------
+
+HASHMAP:
+
+if (mp.find(key) != mp.end()) {
+    // key exists
+}
+
+
+Or:
+
+if (mp.count(key)) {
+    // key exists
+}
+
+
+MEMORY:
+
+find(...) != end()
+    = FOUND
+
+find(...) == end()
+    = NOT FOUND
+
+
+============================================================
+8. IMPORTANT CONFUSION - mp[key]
+============================================================
+
+Suppose:
+
+unordered_map<int, int> mp;
+
+
+This:
+
+mp[5] = 100;
+
+means:
+
+5 -> 100
+
+
+So:
+
+mp[5]
+
+returns:
+
+100
+
+
+BUT BE CAREFUL:
+
+If key does NOT exist:
+
+mp[10]
+
+can automatically CREATE it.
+
+
+For int value:
+
+10 -> 0
+
+
+Therefore:
+
+If you only want to CHECK existence,
+prefer:
+
+mp.find(key)
+
+or:
+
+mp.count(key)
+
+
+============================================================
+9. HASHING FOR FAST LOOKUP
+============================================================
+
+Suppose we have:
+
+nums = {10, 50, 20, 80}
+
+
+Question:
+
+Does 20 exist?
+
+
+Normal array search:
+
+10
+50
+20
+
+Could take:
+
+O(N)
+
+
+Using unordered_set:
+
+unordered_set<int> s(nums.begin(), nums.end());
+
+
+Then:
+
+if (s.count(20))
+
+Average:
+
+O(1)
+
+
+This is one of the biggest reasons hashing
+is useful in DSA.
+
+
+============================================================
+10. CLASSIC EXAMPLE - TWO SUM
+============================================================
+
+Given:
+
+nums = {2, 7, 11, 15}
+
+target = 9
+
+
+At number 7:
+
+We need:
+
+9 - 7 = 2
+
+
+Question:
+
+"Have I already seen 2?"
+
+
+Use hashmap:
+
+value -> index
+
+
+Example:
+
+2 -> 0
+
+
+When we reach 7:
+
+needed = 2
+
+2 exists in hashmap.
+
+Answer found.
+
+
+PATTERN:
+
+For each number:
+
+needed = target - current
+
+Check hashmap for needed.
+
+Then store current.
+
+
+This converts many problems from:
+
+O(N^2)
+
+to:
+
+O(N)
+
+
+============================================================
+11. HASHING FOR DUPLICATES
+============================================================
+
+Example:
+
+nums = {4, 2, 7, 2}
+
+
+Use:
+
+unordered_set<int> seen;
+
+
+For every number:
+
+If already in seen:
+    duplicate found
+
+Otherwise:
+    insert it
+
+
+Pattern:
+
+if (seen.count(x)) {
+    // duplicate
+}
+
+seen.insert(x);
+
+
+============================================================
+12. MAP vs UNORDERED_MAP
+============================================================
+
+map:
+
+- Keys are sorted
+- O(log N)
+- Usually tree based
+
+
+unordered_map:
+
+- Keys are NOT sorted
+- Average O(1)
+- Hashing
+
+
+Example:
+
+map:
+
+1 -> 10
+2 -> 20
+3 -> 30
+
+Keys remain sorted.
+
+
+unordered_map:
+
+Order is NOT guaranteed.
+
+
+MEMORY:
+
+map
+    SORTED
+    O(log N)
+
+unordered_map
+    NOT SORTED
+    Average O(1)
+
+
+If order does not matter in a normal DSA problem,
+unordered_map is often convenient.
+
+
+============================================================
+13. SET vs UNORDERED_SET
+============================================================
+
+set:
+
+- Unique values
+- Sorted
+- O(log N)
+
+
+unordered_set:
+
+- Unique values
+- Not sorted
+- Average O(1)
+
+
+MEMORY:
+
+set
+    UNIQUE + SORTED
+
+unordered_set
+    UNIQUE + NOT SORTED
+
+
+============================================================
+14. WHAT IS A HASH FUNCTION?
+============================================================
+
+Internally, a hashmap uses a HASH FUNCTION.
+
+The hash function converts a key into a location/bucket
+where the data can be stored.
+
+
+Conceptually:
+
+KEY
+ |
+ v
+HASH FUNCTION
+ |
+ v
+BUCKET
+
+
+Example idea:
+
+Key 42
+   |
+   v
+hash(42)
+   |
+   v
+Bucket 7
+
+
+You usually DO NOT need to manually implement this
+when using:
+
+unordered_map
+unordered_set
+
+C++ handles it.
+
+
+============================================================
+15. WHAT IS A COLLISION?
+============================================================
+
+Sometimes two different keys may map to the
+same bucket.
+
+Example conceptually:
+
+Key 10 -> Bucket 5
+
+Key 25 -> Bucket 5
+
+
+This is called:
+
+HASH COLLISION
+
+
+The container handles collisions internally.
+
+
+IMPORTANT:
+
+Average hashmap operation:
+
+O(1)
+
+
+Worst case:
+
+O(N)
+
+
+For normal DSA/interview usage, remember:
+
+unordered_map / unordered_set
+= Average O(1)
+
+
+============================================================
+16. VERY COMMON HASHING PATTERNS
+============================================================
+
+PATTERN 1:
+
+Frequency
+
+value -> count
+
+
+Example:
+
+freq[x]++
+
+
+----------------------------------------
+
+PATTERN 2:
+
+Value -> Index
+
+Used in problems like Two Sum.
+
+
+Example:
+
+mp[value] = index;
+
+
+----------------------------------------
+
+PATTERN 3:
+
+Check existence
+
+Use:
+
+unordered_set
+
+
+Question:
+
+"Have I seen this before?"
+
+
+----------------------------------------
+
+PATTERN 4:
+
+Remove duplicates
+
+Use:
+
+unordered_set
+
+
+----------------------------------------
+
+PATTERN 5:
+
+Group / Store Information
+
+Example:
+
+island ID -> island size
+
+student ID -> marks
+
+node -> cloned node
+
+
+----------------------------------------
+
+PATTERN 6:
+
+Counting distinct values
+
+Insert values into unordered_set.
+
+Then:
+
+s.size()
+
+gives number of unique values.
+
+
+============================================================
+17. IMPORTANT DSA QUESTION TO ASK YOURSELF
+============================================================
+
+When solving a problem, if you repeatedly ask:
+
+"Have I seen this before?"
+
+Think:
+
+HASHING
+
+
+If you ask:
+
+"How many times did this appear?"
+
+Think:
+
+HASHMAP
+
+
+If you ask:
+
+"Does this value exist?"
+
+Think:
+
+HASHSET
+
+
+If you ask:
+
+"What information belongs to this key?"
+
+Think:
+
+HASHMAP
+
+
+============================================================
+18. ARRAY FREQUENCY vs HASHMAP
+============================================================
+
+Sometimes you do NOT need a hashmap.
+
+
+Example:
+
+Only lowercase letters a-z.
+
+
+Can use:
+
+int freq[26] = {0};
+
+
+Then:
+
+freq[ch - 'a']++;
+
+
+This is often simpler/faster because there are
+only 26 possible characters.
+
+
+Similarly, if values are small and known:
+
+0 to 100
+
+you may use:
+
+vector<int> freq(101);
+
+
+Use hashmap when values are:
+
+- Large
+- Unknown
+- Sparse
+- Strings/other hashable keys
+
+
+============================================================
+19. COMMON CONFUSIONS
+============================================================
+
+CONFUSION 1:
+
+unordered_map<int,int>
+
+Does NOT mean unique values.
+
+It means:
+
+KEYS are unique.
+
+Different keys may have the same value.
+
+
+Example:
+
+1 -> 10
+2 -> 10
+
+This is completely valid.
+
+
+----------------------------------------
+
+CONFUSION 2:
+
+unordered_set
+
+Stores unique VALUES.
+
+
+----------------------------------------
+
+CONFUSION 3:
+
+unordered does NOT mean random.
+
+It means:
+
+No guaranteed sorted/iteration order.
+
+
+----------------------------------------
+
+CONFUSION 4:
+
+map and unordered_map both store:
+
+KEY -> VALUE
+
+
+Difference is mainly:
+
+map
+    sorted keys
+    O(log N)
+
+unordered_map
+    unsorted keys
+    average O(1)
+
+
+----------------------------------------
+
+CONFUSION 5:
+
+set and unordered_set both prevent duplicates.
+
+Difference:
+
+set
+    sorted
+
+unordered_set
+    not sorted
+
+
+----------------------------------------
+
+CONFUSION 6:
+
+mp[key]
+
+may CREATE the key if it does not exist.
+
+Use find/count if you only want to check.
+
+
+============================================================
+20. QUICK SYNTAX
+============================================================
+
+HASHMAP:
+
+unordered_map<int, int> mp;
+
+
+Insert/update:
+
+mp[key] = value;
+
+
+Frequency:
+
+mp[x]++;
+
+
+Access:
+
+mp[key];
+
+
+Check:
+
+mp.find(key) != mp.end()
+
+or:
+
+mp.count(key)
+
+
+Delete:
+
+mp.erase(key);
+
+
+Size:
+
+mp.size();
+
+
+----------------------------------------
+
+HASHSET:
+
+unordered_set<int> s;
+
+
+Insert:
+
+s.insert(x);
+
+
+Check:
+
+s.count(x)
+
+or:
+
+s.find(x) != s.end()
+
+
+Delete:
+
+s.erase(x);
+
+
+Size:
+
+s.size();
+
+
+============================================================
+21. COMPLEXITY
+============================================================
+
+unordered_map / unordered_set:
+
+Search:
+Average O(1)
+
+Insert:
+Average O(1)
+
+Delete:
+Average O(1)
+
+Worst case:
+O(N)
+
+
+map / set:
+
+Search:
+O(log N)
+
+Insert:
+O(log N)
+
+Delete:
+O(log N)
+
+
+============================================================
+22. SUPER QUICK REVISION
+============================================================
+
+HASHING:
+
+Fast lookup technique.
+
+
+unordered_map:
+
+KEY -> VALUE
+
+Example:
+
+number -> frequency
+
+Average O(1)
+
+
+unordered_set:
+
+UNIQUE VALUES
+
+Average O(1)
+
+
+Most common patterns:
+
+1. Frequency counting
+2. Duplicate detection
+3. Fast existence checking
+4. Value -> index
+5. Key -> information
+6. Counting distinct elements
+
+
+============================================================
+23. FINAL MEMORY TRICKS
+============================================================
+
+"Have I seen this?"
+        -> HASHSET
+
+
+"How many times?"
+        -> HASHMAP
+
+
+"Where did I see it?"
+        -> HASHMAP
+           value -> index
+
+
+"What information belongs to this ID?"
+        -> HASHMAP
+
+
+"Give me only unique things."
+        -> HASHSET
+
+
+Need sorted order?
+        -> map / set
+
+
+Don't need sorted order?
+        -> unordered_map / unordered_set
+
+
+============================================================
+ONE-LINE MEMORY
+============================================================
+
+HASHSET = UNIQUE THINGS
+
+HASHMAP = THING -> INFORMATION
+
+UNORDERED = HASHING + AVERAGE O(1) + NOT SORTED
+============================================================
